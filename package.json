@@ -7,7 +7,7 @@
     "install": "node-pre-gyp install --fallback-to-build",
     "build:ci": "node-pre-gyp rebuild",
     "package:ci": "node-pre-gyp package",
-    "publish:ci": "cross-env NODE_PRE_GYP_GITHUB_TOKEN=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 node-pre-gyp-github publish"
+    "publish:ci": "node-pre-gyp-github publish"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "package_name": "{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
     "host": "https://github.com/Ezreal105/ic_node_js/releases/download/",
     "napi_versions": [
-      4
+      8
     ]
   },
   "author": "",

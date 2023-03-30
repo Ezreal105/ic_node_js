@@ -20,6 +20,8 @@ install:
 configuration: Release
 
 environment:
+  node_pre_gyp_github_token:
+    secure: bjbQs3HtS0KGSj4BaH8BmQ0MhMHg0j00mIXXapOMtQs9CE7mkKDCfdm7C22CMItU
   matrix:
     # electron
     - nodejs_version: 16
