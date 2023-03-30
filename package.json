@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "node-pre-gyp install --fallback-to-build",
+    "install": "echo install",
     "build:ci": "node-pre-gyp rebuild",
     "package:ci": "node-pre-gyp package",
     "publish:ci": "node-pre-gyp-github publish"
