@@ -24,10 +24,10 @@ environment:
     secure: bjbQs3HtS0KGSj4BaH8BmQ0MhMHg0j00mIXXapOMtQs9CE7mkKDCfdm7C22CMItU
   matrix:
     # electron
-    - nodejs_version: 14
+    - nodejs_version: 16
       platform: x64
       PYTHON: "C:\\Python37-x64"
-    - nodejs_version: 14
+    - nodejs_version: 16
       platform: x86
       PYTHON: "C:\\Python37-x64"
 
