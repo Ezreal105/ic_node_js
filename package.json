@@ -21,10 +21,10 @@
     "module_name": "ic_node",
     "module_path": "./lib/binding/napi-v{napi_build_version}",
     "remote_path": "./v{version}/",
-    "package_name": "{platform}-{arch}-node{nodejs_version}-napi-v{napi_build_version}.tar.gz",
+    "package_name": "{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
     "host": "https://github.com/Ezreal105/ic_node_js/releases/download/",
     "napi_versions": [
-      8
+      7
     ]
   },
   "author": "",

@@ -24,16 +24,6 @@ environment:
     secure: bjbQs3HtS0KGSj4BaH8BmQ0MhMHg0j00mIXXapOMtQs9CE7mkKDCfdm7C22CMItU
   matrix:
     # electron
-    - nodejs_version: 16
-      platform: x64
-      NODE_RUNTIME: electron
-      NODE_RUNTIME_VERSION: 23.2.0
-      TOOLSET_ARGS: --dist-url=https://atom.io/download/electron
-    - nodejs_version: 16
-      platform: x86
-      NODE_RUNTIME: electron
-      NODE_RUNTIME_VERSION: 23.2.0
-      TOOLSET_ARGS: --dist-url=https://atom.io/download/electron
     - nodejs_version: 14
       platform: x64
       NODE_RUNTIME: electron
