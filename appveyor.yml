@@ -26,13 +26,13 @@ environment:
     # electron
     - nodejs_version: 14
       platform: x64
-      PYTHON: "C:\Python37-x64"
+      PYTHON: "C:\\Python39-x64"
       NODE_RUNTIME: electron
       NODE_RUNTIME_VERSION: 23.2.0
       TOOLSET_ARGS: --dist-url=https://atom.io/download/electron
     - nodejs_version: 14
       platform: x86
-      PYTHON: "C:\Python37-x64"
+      PYTHON: "C:\\Python39-x64"
       NODE_RUNTIME: electron
       NODE_RUNTIME_VERSION: 23.2.0
       TOOLSET_ARGS: --dist-url=https://atom.io/download/electron
