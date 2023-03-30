@@ -7,7 +7,7 @@
     "install": "echo installed",
     "build:ci": "node-pre-gyp --target_platform=win32 rebuild",
     "package:ci": "node-pre-gyp --target_platform=win32 package",
-    "publish:ci": "node-pre-gyp-github --target_platform=win32 publish"
+    "publish:ci": "node-pre-gyp-github publish"
   },
   "repository": {
     "type": "git",
