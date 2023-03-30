@@ -15,6 +15,7 @@ install:
   - node -v
   - set GYP_MSVS_VERSION=2019
   - npm config set msvs_version 2019
+  - build.cmd
 
 configuration: Release
 
@@ -33,7 +34,6 @@ environment:
       TOOLSET_ARGS: --dist-url=https://atom.io/download/electron
 
 image: Visual Studio 2019
-build_script: build.cmd
 
 build: OFF
 test: OFF
