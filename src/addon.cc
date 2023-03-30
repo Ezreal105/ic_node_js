@@ -57,7 +57,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     return exports;
 }
 
-NODE_API_MODULE(test, Init);
+NODE_API_MODULE(ic_node, Init);
 #else
 #include <napi.h>
 #include <node_api.h>
@@ -73,6 +73,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports) {
     return exports;
 }
 
-NODE_API_MODULE(test, Init);
+NODE_API_MODULE(ic_node, Init);
 #endif
 
