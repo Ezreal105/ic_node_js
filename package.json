@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install": "node-pre-gyp install --fallback-to-build",
-    "build:ci": "node-pre-gyp build package",
+    "build:ci": "node-pre-gyp rebuild",
     "package:ci": "node-pre-gyp package",
     "publish:ci": "cross-env NODE_PRE_GYP_GITHUB_TOKEN=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 node-pre-gyp-github publish"
   },
