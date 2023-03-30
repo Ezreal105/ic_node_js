@@ -1,0 +1,40 @@
+{
+  "name": "ic_node_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-pre-gyp install --fallback-to-build",
+    "build:ci": "node-pre-gyp build package",
+    "package:ci": "node-pre-gyp package",
+    "publish:ci": "cross-env NODE_PRE_GYP_GITHUB_TOKEN=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 node-pre-gyp-github publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ezreal105/ic_node_js.git"
+  },
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.10",
+    "node-addon-api": "^6.0.0"
+  },
+  "binary": {
+    "module_name": "ic_node",
+    "module_path": "./lib/binding/napi-v{napi_build_version}",
+    "remote_path": "./{module_name}/v{version}/{configuration}/",
+    "package_name": "{platform}-{arch}-napi-v{napi_build_version}.tar.gz",
+    "host": "https://github.com/Ezreal105/ic_node_js/releases/download/",
+    "napi_versions": [
+      4
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ezreal105/ic_node_js/issues"
+  },
+  "homepage": "https://github.com/Ezreal105/ic_node_js#readme",
+  "devDependencies": {
+    "node-gyp": "^9.3.1",
+    "node-pre-gyp-github": "^1.4.4"
+  }
+}
