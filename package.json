@@ -2,12 +2,14 @@
   "name": "ic_node_js",
   "version": "1.0.14",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "scripts": {
-    "install": "node-pre-gyp install --fallback-to-build",
-    "build:ci": "node-pre-gyp --target_platform=win32 rebuild",
-    "package:ci": "node-pre-gyp --target_platform=win32 package",
-    "publish:ci": "node-pre-gyp-github publish"
+    "install": "node scripts/install.js",
+    "build": "rollup -c rollup.config.mjs",
+    "build:addon": "node-pre-gyp --target_platform=win32 rebuild",
+    "package:addon": "node-pre-gyp --target_platform=win32 package",
+    "publish:addon": "node-pre-gyp-github publish"
   },
   "repository": {
     "type": "git",
@@ -34,8 +36,13 @@
   },
   "homepage": "https://github.com/Ezreal105/ic_node_js#readme",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^18.15.11",
     "cross-env": "^7.0.3",
     "node-gyp": "^9.3.1",
-    "node-pre-gyp-github": "^1.4.4"
+    "node-pre-gyp-github": "^1.4.4",
+    "rollup": "^3.20.2",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.3"
   }
 }
