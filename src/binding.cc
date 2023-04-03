@@ -169,16 +169,16 @@ private:
     static IC_SetCodec IC_SetCodec;
     static IC_SetAVIFileName IC_SetAVIFileName;
     static IC_enableAVICapturePause IC_enableAVICapturePause;
-    static AC IC_SetRingBufferSize IC_SetRingBufferSize;
-    static AC IC_GetRingBufferSize IC_GetRingBufferSize;
-    static AC IC_GetMemBuffer IC_GetMemBuffer;
-    static AC IC_GetMemBufferLastAcq IC_GetMemBufferLastAcq;
-    static AC IC_ReleaseMemBuffer IC_ReleaseMemBuffer;
-    static AC IC_GetMemBufferDescription IC_GetMemBufferDescription;
-    static AC IC_MemBufferLock IC_MemBufferLock;
-    static AC IC_MemBufferisLocked IC_MemBufferisLocked;
-    static AC IC_MemBufferGetIndex IC_MemBufferGetIndex;
-    static AC IC_MemBufferGetDataPtr IC_MemBufferGetDataPtr;
+    static IC_SetRingBufferSize IC_SetRingBufferSize;
+    static IC_GetRingBufferSize IC_GetRingBufferSize;
+    static IC_GetMemBuffer IC_GetMemBuffer;
+    static IC_GetMemBufferLastAcq IC_GetMemBufferLastAcq;
+    static IC_ReleaseMemBuffer IC_ReleaseMemBuffer;
+    static IC_GetMemBufferDescription IC_GetMemBufferDescription;
+    static IC_MemBufferLock IC_MemBufferLock;
+    static IC_MemBufferisLocked IC_MemBufferisLocked;
+    static IC_MemBufferGetIndex IC_MemBufferGetIndex;
+    static IC_MemBufferGetDataPtr IC_MemBufferGetDataPtr;
     // HGRABBER m_hgrabber;
 };
 
