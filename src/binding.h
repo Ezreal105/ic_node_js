@@ -1,6 +1,12 @@
 #ifndef _TISGRABBER
 #define _TISGRABBER
+#ifdef _WIN32
+#define AC __stdcall
+#define CDECL __cdecl
+#else
 #define AC __attribute__((stdcall))
+#define CDECL __attribute__((cdecl))
+#endif
 #ifndef _WINUSER_
 #define NOHWNDDEFINED 1
 #define __HWND int
