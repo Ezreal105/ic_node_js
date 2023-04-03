@@ -159,9 +159,10 @@ static AC IC_MemBufferGetDataPtr IC_MemBufferGetDataPtr;`;
 const lines = str.split("\n");
 const str1 = lines
   .map((line) => {
-    const words = line.trim().split(" ");
-    const name = words[words.length - 2];
-    return `LOAD_STATIC_METHOD(${name});`;
+    // const words = line.trim().split(" ");
+    // const name = words[words.length - 2];
+    // return `LOAD_STATIC_METHOD(${name});`;
+    return `${line.slice(0, line.length - 1)} = NULL;`;
   })
   .join("\n");
 console.log(str1);
