@@ -1,22 +1,21 @@
 {
-  "configurations": [
-    {
-      "name": "Mac",
-      "includePath": [
-        "${workspaceFolder}/**",
-        "/Users/lotus/.nvm/versions/node/v18.10.0/include/**",
-        "/usr/local/Cellar/mingw-w64/10.0.0_5/toolchain-x86_64/x86_64-w64-mingw32/include/**",
-        "${workspaceFolder}/node_modules/node-addon-api/**"
-      ],
-      "defines": [],
-      "macFrameworkPath": [
-        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
-      ],
-      "compilerPath": "/usr/bin/clang",
-      "cStandard": "c17",
-      "cppStandard": "c++17",
-      "intelliSenseMode": "macos-clang-x64"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Users/EZREAL/AppData/Local/node-gyp/Cache/16.20.0/include",
+                "${workspaceFolder}/node_modules/node-addon-api/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-clang-x64"
+        }
+    ],
+    "version": 4
 }
