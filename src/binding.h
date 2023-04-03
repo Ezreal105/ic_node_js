@@ -3,9 +3,13 @@
 #ifdef _WIN32
 #define AC __stdcall
 #define CDECL __cdecl
+typedef int __cdecl IC_ENUMCB(char *Name, void *);
+typedef int cdecl ENUMCODECCB(char *CodecName, void *);
 #else
 #define AC __attribute__((stdcall))
 #define CDECL __attribute__((cdecl))
+typedef int __attribute__((cdecl)) IC_ENUMCB(char *Name, void *);
+typedef int __attribute__((cdecl)) ENUMCODECCB(char *CodecName, void *);
 #endif
 #ifndef _WINUSER_
 #define NOHWNDDEFINED 1
@@ -78,7 +82,7 @@ typedef struct HGRABBER_t__
 #define HGRABBER HGRABBER_t *
 struct ImageBuffer;
 typedef struct ImageBuffer *HMEMBUFFER;
-typedef int __attribute__((cdecl)) IC_ENUMCB(char *Name, void *);
+
 typedef struct FILTERPARAMETER_t__
 {
 	char Name[30];
@@ -97,7 +101,6 @@ typedef struct CODECHANDLE_t__
 	int unused;
 } CODECHANDLE_t;
 #define HCODEC CODECHANDLE_t *
-typedef int __attribute__((cdecl)) ENUMCODECCB(char *CodecName, void *);
 #define IC_SUCCESS 1
 #define IC_ERROR 0
 #define IC_NO_HANDLE -1
