@@ -12,7 +12,7 @@
     {                                                                                                                 \
         FreeLibrary(tisgrabber);                                                                                      \
         Napi::Error::New(env, "Cannot find function " #method " in tisgrabber_x64.dll").ThrowAsJavaScriptException(); \
-        return export;                                                                                                \
+        return exports;                                                                                               \
     }                                                                                                                 \
     properties.push_back(StaticMethod<&TISGrabber::##method>(#method, static_cast<napi_property_attributes>(napi_writable | napi_configurable)));
 
