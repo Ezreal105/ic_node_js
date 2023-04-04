@@ -1,0 +1,38 @@
+Napi::Value f_IC_TidyUP(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    if (info.Length() != 0) {
+    Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+    return env.Undefined();
+  }
+    
+    
+    IC_TidyUP f = (IC_TidyUP)GetProcAddress(tisgrabber, "IC_TidyUP");
+    if (f == NULL) {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_TidyUP in tisgrabber_x64.dll").ThrowAsJavaScriptException
+        return env.undefined();
+    };
+    void ret = f();
+    Napi::Object retObj = Napi::Object::New(env);
+retObj.Set("result",env.Undefined());
+return retObj;
+  }
+Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    if (info.Length() != 0) {
+    Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+    return env.Undefined();
+  }
+    
+    
+    IC_CloseLibrary f = (IC_CloseLibrary)GetProcAddress(tisgrabber, "IC_CloseLibrary");
+    if (f == NULL) {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_CloseLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException
+        return env.undefined();
+    };
+    void ret = f();
+    Napi::Object retObj = Napi::Object::New(env);
+retObj.Set("result",env.Undefined());
+return retObj;
+  }

@@ -1,0 +1,2 @@
+	typedef void AC IC_TidyUP();
+	typedef void AC IC_CloseLibrary();
