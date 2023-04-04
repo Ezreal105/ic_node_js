@@ -52,6 +52,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     Napi::Object ic_static = Napi::Object::New(env);
     ic_static.Set("IC_InitLibrary", Napi::Function::New<f_IC_InitLibrary>(env));
+    exports.Set("ic_static", ic_static);
     // INIT_STATIC_METHOD(IC_InitLibrary);
     // INIT_STATIC_METHOD(IC_CreateGrabber);
     // INIT_STATIC_METHOD(IC_ReleaseGrabber);
