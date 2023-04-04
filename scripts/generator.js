@@ -50,6 +50,7 @@ const supportedCTypes = [
 ];
 
 const skipList = [
+  "IC_ReleaseGrabber",
   "IC_ReleaseMemBuffer",
   "IC_MemBufferGetDataPtr",
   "IC_GetImagePtr",
@@ -61,6 +62,7 @@ const skipList = [
   "IC_enumPropertyElements",
   "IC_enumPropertyElementInterfaces",
   "IC_enumCodecs",
+  "IC_CreateFrameFilter",
 ];
 
 const typePattern = `(${supportedCTypes
@@ -151,8 +153,11 @@ function convert(line) {
       } else if (enum_list.includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("IsNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().Int32Value();`;
-      } else if (["void *"].includestype) {
+      } else if (["void *"].includes(type)) {
         pieceForArgDef = `${type} ${paramName} = nullptr;`;
+      } else {
+        return "";
+        throw Error(`Unsupported type: ${type}`);
       }
       pieceForArgDef && piecesForArgDef.push(pieceForArgDef);
       pieceForArgCheck && piecesForArgCheck.push(pieceForArgCheck);

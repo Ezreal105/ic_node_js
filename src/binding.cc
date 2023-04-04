@@ -63,28 +63,6 @@ Napi::Value f_IC_CreateGrabber(const Napi::CallbackInfo &info)
     retObj.Set("result", Napi::External<HGRABBER>::New(env, &ret));
     return retObj;
 }
-Napi::Value f_IC_ReleaseGrabber(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 1)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-
-    IC_ReleaseGrabber *f_ptr = (IC_ReleaseGrabber *)GetProcAddress(tisgrabber, "IC_ReleaseGrabber");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_ReleaseGrabber in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    f(hGrabber);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", env.Undefined());
-    return retObj;
-}
 Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3466,33 +3444,6 @@ Napi::Value f_IC_GetAvailableFrameFilters(const Napi::CallbackInfo &info)
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
-Napi::Value f_IC_CreateFrameFilter(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 2)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    char *szFilterName = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
-    if (!info[0].IsString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_CreateFrameFilter *f_ptr = (IC_CreateFrameFilter *)GetProcAddress(tisgrabber, "IC_CreateFrameFilter");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_CreateFrameFilter in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    int ret = f(szFilterName, FilterHandle);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
 Napi::Value f_IC_AddFrameFilterToDevice(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3597,6 +3548,7 @@ Napi::Value f_IC_FrameFilterGetParameter(const Napi::CallbackInfo &info)
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
     char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    void *Data = nullptr;
     if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -4039,57 +3991,6 @@ Napi::Value f_IC_GetRingBufferSize(const Napi::CallbackInfo &info)
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
-Napi::Value f_IC_GetMemBuffer(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Index = (int)info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].IsNumber())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_GetMemBuffer *f_ptr = (IC_GetMemBuffer *)GetProcAddress(tisgrabber, "IC_GetMemBuffer");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_GetMemBuffer in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    int ret = f(hGrabber, Index, pBuffer);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
-Napi::Value f_IC_GetMemBufferLastAcq(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 2)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-
-    IC_GetMemBufferLastAcq *f_ptr = (IC_GetMemBufferLastAcq *)GetProcAddress(tisgrabber, "IC_GetMemBufferLastAcq");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_GetMemBufferLastAcq in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    int ret = f(hGrabber, pBuffer);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
 Napi::Value f_IC_GetMemBufferDescription(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -4226,7 +4127,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports.Set("ic_static", ic_static);
     INIT_STATIC_METHOD(IC_InitLibrary)
     INIT_STATIC_METHOD(IC_CreateGrabber)
-    INIT_STATIC_METHOD(IC_ReleaseGrabber)
     INIT_STATIC_METHOD(IC_TidyUP)
     INIT_STATIC_METHOD(IC_CloseLibrary)
     INIT_STATIC_METHOD(IC_OpenVideoCaptureDevice)
@@ -4343,7 +4243,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_ResetProperties)
     INIT_STATIC_METHOD(IC_GetAvailableFrameFilterCount)
     INIT_STATIC_METHOD(IC_GetAvailableFrameFilters)
-    INIT_STATIC_METHOD(IC_CreateFrameFilter)
     INIT_STATIC_METHOD(IC_AddFrameFilterToDevice)
     INIT_STATIC_METHOD(IC_RemoveFrameFilterFromDevice)
     INIT_STATIC_METHOD(IC_DeleteFrameFilter)
@@ -4364,8 +4263,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_enableAVICapturePause)
     INIT_STATIC_METHOD(IC_SetRingBufferSize)
     INIT_STATIC_METHOD(IC_GetRingBufferSize)
-    INIT_STATIC_METHOD(IC_GetMemBuffer)
-    INIT_STATIC_METHOD(IC_GetMemBufferLastAcq)
     INIT_STATIC_METHOD(IC_GetMemBufferDescription)
     INIT_STATIC_METHOD(IC_MemBufferLock)
     INIT_STATIC_METHOD(IC_MemBufferisLocked)
