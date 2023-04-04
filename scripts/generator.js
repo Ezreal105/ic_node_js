@@ -1,4 +1,10 @@
-const basic_out_list = ["int *", "float *", "char **"];
+const basic_out_list = [
+  "int *",
+  "float *",
+  "char **",
+  "long *",
+  "COLORFORMAT *",
+];
 const basic_list = [
   "char **",
   "unsigned char *",
@@ -12,7 +18,21 @@ const basic_list = [
   ...basic_out_list,
 ];
 
-const structP_list = ["HGRABBER", "HMEMBUFFER", "HCODEC", "HFRAMEFILTER"];
+const func_p_list = [
+  "FRAME_READY_CALLBACK_EX",
+  "FRAME_READY_CALLBACK",
+  "DEVICE_LOST_CALLBACK",
+];
+
+const func_list = ["IC_ENUMCB", "ENUMCODECCB"];
+
+const structP_list = [
+  "HGRABBER",
+  "HMEMBUFFER",
+  "HCODEC",
+  "HFRAMEFILTER",
+  "__HWND",
+];
 const structPp_list = ["HMEMBUFFER *", "HGRABBER *", "HFRAMEFILTER *"];
 const enum_list = [
   "COLORFORMAT",
@@ -22,33 +42,41 @@ const enum_list = [
 ];
 const supportedCTypes = [
   ...basic_list,
+  ...func_p_list,
+  ...func_list,
   ...structP_list,
   ...structPp_list,
   ...enum_list,
 ];
 
-const skipList = ["IC_ReleaseMemBuffer", "IC_MemBufferGetDataPtr"];
+const skipList = [
+  "IC_ReleaseMemBuffer",
+  "IC_MemBufferGetDataPtr",
+  "IC_GetImagePtr",
+];
 
-const regexForCFunctionSignature =
-  /typedef\s+(\w+)\s+(?:AC\s+)?(\w+)\s*\((.*)\)/;
 const typePattern = `(${supportedCTypes
   .map((i) => i.replace(/\*/g, "\\*"))
   .join("|")})`;
+const regexForCFunctionSignature = new RegExp(
+  `typedef\\s+${typePattern}\\s*(?:AC\\s*)?(\\w+)\\s*\\((.*)\\)`,
+  "s"
+);
 const regexForArgWithoutName = new RegExp(`^${typePattern}$`);
-const regexForArgWithName = new RegExp(`^${typePattern}\\s+(\\w+)$`);
+const regexForArgWithName = new RegExp(`^${typePattern}\\s*(\\w+)$`);
 /**
  *
  * @param {string} line
  */
 function convert(line) {
   line = line.trim();
+  if (!line) return "";
   const match = line.match(regexForCFunctionSignature);
   if (!match) {
     throw Error(`Invalid line: ${line}`);
   }
   const [, returnType, functionName] = match;
   const params = match[3].trim();
-  console.log("[wsttest]", functionName, params);
   if (skipList.includes(functionName)) {
     return "";
   }
@@ -93,9 +121,17 @@ function convert(line) {
         pieceForArgDef = `${type} ${paramName} = info[${idx}].As<Napi::Number>().int64_t();`;
       } else if (structP_list.includes(type)) {
         pieceForArgDef = `${type} ${paramName} = *info[${idx}].As<Napi::External<${type}>>().Data();`;
+      } else if (func_p_list.includes(type)) {
+        pieceForArgCheck = getPieceForArgCheck("isFunction");
+        pieceForArgDef = `${type} ${paramName} = GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()));`;
+      } else if (func_list.includes(type)) {
+        pieceForArgCheck = getPieceForArgCheck("isFunction");
+        pieceForArgDef = `${type} ${paramName} = GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()));`;
       } else if (enum_list.includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("isNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().int32_t();`;
+      } else if (["void *"].includestype) {
+        pieceForArgDef = `${type} ${paramName} = nullptr;`;
       } else if (basic_out_list.includes(type)) {
         argsNum--;
         pieceForArgDef = `${type} ${paramName};`;
@@ -123,16 +159,21 @@ function convert(line) {
   } else {
     throw Error(`Unsupported return type: ${returnType}`);
   }
-  outParamNameTypePairs.forEach((i) => {
-    const { name, type } = i;
-    if (["int *", "float *"].includes(type)) {
-      returnPiece += `\nretObj.Set("${name}", Napi::Number::New(env, ${name}));`;
-    } else if (["char **"].includes(type)) {
-      returnPiece += `\nretObj.Set("${name}", Napi::String::New(env, ${name}));`;
-    } else {
-      throw Error(`Unsupported out param type: ${type}`);
-    }
-  });
+  if (outParamNameTypePairs.length > 0) {
+    returnPiece += `\nNapi::Object outArgs = Napi::Object::New(env);`;
+    outParamNameTypePairs.forEach((i) => {
+      const { name, type } = i;
+      if (["int *", "float *", "long *", "COLORFORMAT *"].includes(type)) {
+        returnPiece += `\noutArgs.Set("${name}", Napi::Number::New(env, ${name}));`;
+      } else if (["char **"].includes(type)) {
+        returnPiece += `\noutArgs.Set("${name}", Napi::String::New(env, ${name}));`;
+      } else {
+        throw Error(`Unsupported out param type: ${type}`);
+      }
+    });
+    returnPiece += `\nretObj.Set("outArgs", outArgs);`;
+  }
+
   returnPiece += `\nreturn retObj;`;
 
   const paramNumCheck = `if (info.Length() != ${argsNum}) {
@@ -145,15 +186,19 @@ function convert(line) {
     ${paramNumCheck}
     ${piecesForArgDef.join("\n")}
     ${piecesForArgCheck.join("\n")}
-    ${functionName} f = (${functionName})GetProcAddress(tisgrabber, "${functionName}");
-    if (f == NULL) {
+    ${functionName} *f_ptr = (${functionName} *)GetProcAddress(tisgrabber, "${functionName}");
+    if (f_ptr == NULL) {
         FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function ${functionName} in tisgrabber_x64.dll").ThrowAsJavaScriptException
-        return env.undefined();
+        Napi::Error::New(env, "Cannot find function ${functionName} in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
     };
-    ${returnType} ret = f(${paramNames.join(", ")});
+    ${functionName} f = *f_ptr;
+    ${returnType === "void" ? "" : `${returnType} ret = `}f(${paramNames.join(
+    ", "
+  )});
     ${returnPiece}
   }`;
+  console.log(`INIT_STATIC_METHOD(${functionName})`);
   return funcStr;
 }
 
@@ -163,7 +208,7 @@ const input = fs.readFileSync(
   path.join(__dirname, "generate_input.txt"),
   "utf8"
 );
-const lines = input.split("\n");
+const lines = input.split(";").map((i) => i.trim());
 const output = lines
   .map(convert)
   .filter((i) => i)
