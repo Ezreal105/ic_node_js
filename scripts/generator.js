@@ -209,7 +209,7 @@ function convert(line) {
         Napi::Error::New(env, "Cannot find function ${functionName} in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    ${functionName} f = *f_ptr;
+    auto f = *f_ptr;
     ${returnType === "void" ? "" : `${returnType} ret = `}f(${paramNames.join(
     ", "
   )});
