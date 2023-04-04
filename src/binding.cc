@@ -1,6 +1,7 @@
 // #define _WIN32
 #ifdef _WIN32
 
+#include <unordered_map>
 #include <napi.h>
 #include <Windows.h>
 #include <functional>
@@ -10,7 +11,6 @@
     ic_static.Set(#method, Napi::Function::New<f_##method>(env));
 
 static HMODULE tisgrabber;
-static Napi::Env js_env;
 static std::unordered_map<HGRABBER, std::vector<Napi::FunctionReference>> grabber_device_lost_callbacks{};
 
 // generate start
@@ -4222,7 +4222,6 @@ void device_lost_cb(HGRABBER hGrabber, void *data = nullptr)
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
-    js_env = env;
     Napi::Object ic_static = Napi::Object::New(env);
     exports.Set("ic_static", ic_static);
     INIT_STATIC_METHOD(IC_InitLibrary)
