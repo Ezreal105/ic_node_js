@@ -170,14 +170,14 @@ function convert(line) {
   if (returnType === "char *") {
     returnPiece += `\nretObj.Set("result", Napi::String::New(env, ret));`;
   } else if (["int", "long", "float", "unsigned long"].includes(returnType)) {
-    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, ret));`;
+    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, (double)ret));`;
   } else if (["void"].includes(returnType)) {
     returnPiece += `\nretObj.Set("result",env.Undefined());`;
   } else if (structP_list.includes(returnType)) {
     returnPiece += `\nretObj.Set("result",Napi::External<${returnType}>::New(env, &ret));`;
   } else if (enum_list.includes(returnType)) {
     // enum
-    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, ret));`;
+    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, (double)ret));`;
   } else {
     throw Error(`Unsupported return type: ${returnType}`);
   }
@@ -186,7 +186,7 @@ function convert(line) {
     outParamNameTypePairs.forEach((i) => {
       const { name, type } = i;
       if (["int *", "float *", "long *", "COLORFORMAT *"].includes(type)) {
-        returnPiece += `\noutArgs.Set("${name}", Napi::Number::New(env, ${name}));`;
+        returnPiece += `\noutArgs.Set("${name}", Napi::Number::New(env, (double)${name}));`;
       } else if (["char **"].includes(type)) {
         returnPiece += `\noutArgs.Set("${name}", Napi::String::New(env, ${name}));`;
       } else {

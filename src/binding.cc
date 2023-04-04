@@ -38,7 +38,7 @@ Napi::Value f_IC_InitLibrary(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(szLicenseKey);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_CreateGrabber(const Napi::CallbackInfo &info)
@@ -132,7 +132,7 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szDeviceName);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_CloseVideoCaptureDevice(const Napi::CallbackInfo &info)
@@ -201,7 +201,7 @@ Napi::Value f_IC_GetVideoFormatWidth(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetVideoFormatHeight(const Napi::CallbackInfo &info)
@@ -224,7 +224,7 @@ Napi::Value f_IC_GetVideoFormatHeight(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetFormat(const Napi::CallbackInfo &info)
@@ -252,7 +252,7 @@ Napi::Value f_IC_SetFormat(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, format);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetFormat(const Napi::CallbackInfo &info)
@@ -275,7 +275,7 @@ Napi::Value f_IC_GetFormat(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     COLORFORMAT ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetVideoFormat(const Napi::CallbackInfo &info)
@@ -303,7 +303,7 @@ Napi::Value f_IC_SetVideoFormat(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFormat);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetVideoNorm(const Napi::CallbackInfo &info)
@@ -331,7 +331,7 @@ Napi::Value f_IC_SetVideoNorm(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szNorm);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetInputChannel(const Napi::CallbackInfo &info)
@@ -359,7 +359,7 @@ Napi::Value f_IC_SetInputChannel(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szChannel);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_StartLive(const Napi::CallbackInfo &info)
@@ -387,7 +387,7 @@ Napi::Value f_IC_StartLive(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iShow);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_PrepareLive(const Napi::CallbackInfo &info)
@@ -415,7 +415,7 @@ Napi::Value f_IC_PrepareLive(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iShow);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SuspendLive(const Napi::CallbackInfo &info)
@@ -438,7 +438,7 @@ Napi::Value f_IC_SuspendLive(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_IsLive(const Napi::CallbackInfo &info)
@@ -461,7 +461,7 @@ Napi::Value f_IC_IsLive(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_StopLive(const Napi::CallbackInfo &info)
@@ -512,7 +512,7 @@ Napi::Value f_IC_IsCameraPropertyAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetCameraProperty(const Napi::CallbackInfo &info)
@@ -546,7 +546,7 @@ Napi::Value f_IC_SetCameraProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_CameraPropertyGetRange(const Napi::CallbackInfo &info)
@@ -576,10 +576,10 @@ Napi::Value f_IC_CameraPropertyGetRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lMin", Napi::Number::New(env, lMin));
-    outArgs.Set("lMax", Napi::Number::New(env, lMax));
+    outArgs.Set("lMin", Napi::Number::New(env, (double)lMin));
+    outArgs.Set("lMax", Napi::Number::New(env, (double)lMax));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -609,9 +609,9 @@ Napi::Value f_IC_GetCameraProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lValue", Napi::Number::New(env, lValue));
+    outArgs.Set("lValue", Napi::Number::New(env, (double)lValue));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -646,7 +646,7 @@ Napi::Value f_IC_EnableAutoCameraProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_IsCameraPropertyAutoAvailable(const Napi::CallbackInfo &info)
@@ -674,7 +674,7 @@ Napi::Value f_IC_IsCameraPropertyAutoAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iProperty);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetAutoCameraProperty(const Napi::CallbackInfo &info)
@@ -703,9 +703,9 @@ Napi::Value f_IC_GetAutoCameraProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("iOnOff", Napi::Number::New(env, iOnOff));
+    outArgs.Set("iOnOff", Napi::Number::New(env, (double)iOnOff));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -734,7 +734,7 @@ Napi::Value f_IC_IsVideoPropertyAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_VideoPropertyGetRange(const Napi::CallbackInfo &info)
@@ -764,10 +764,10 @@ Napi::Value f_IC_VideoPropertyGetRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lMin", Napi::Number::New(env, lMin));
-    outArgs.Set("lMax", Napi::Number::New(env, lMax));
+    outArgs.Set("lMin", Napi::Number::New(env, (double)lMin));
+    outArgs.Set("lMax", Napi::Number::New(env, (double)lMax));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -797,9 +797,9 @@ Napi::Value f_IC_GetVideoProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lValue", Napi::Number::New(env, lValue));
+    outArgs.Set("lValue", Napi::Number::New(env, (double)lValue));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -828,7 +828,7 @@ Napi::Value f_IC_IsVideoPropertyAutoAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetAutoVideoProperty(const Napi::CallbackInfo &info)
@@ -857,9 +857,9 @@ Napi::Value f_IC_GetAutoVideoProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("iOnOff", Napi::Number::New(env, iOnOff));
+    outArgs.Set("iOnOff", Napi::Number::New(env, (double)iOnOff));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -894,7 +894,7 @@ Napi::Value f_IC_SetVideoProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_EnableAutoVideoProperty(const Napi::CallbackInfo &info)
@@ -928,7 +928,7 @@ Napi::Value f_IC_EnableAutoVideoProperty(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetImageDescription(const Napi::CallbackInfo &info)
@@ -955,12 +955,12 @@ Napi::Value f_IC_GetImageDescription(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, lWidth, lHeight, iBitsPerPixel, format);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lWidth", Napi::Number::New(env, lWidth));
-    outArgs.Set("lHeight", Napi::Number::New(env, lHeight));
-    outArgs.Set("iBitsPerPixel", Napi::Number::New(env, iBitsPerPixel));
-    outArgs.Set("format", Napi::Number::New(env, format));
+    outArgs.Set("lWidth", Napi::Number::New(env, (double)lWidth));
+    outArgs.Set("lHeight", Napi::Number::New(env, (double)lHeight));
+    outArgs.Set("iBitsPerPixel", Napi::Number::New(env, (double)iBitsPerPixel));
+    outArgs.Set("format", Napi::Number::New(env, (double)format));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -989,7 +989,7 @@ Napi::Value f_IC_SnapImage(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iTimeOutMillisek);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SaveImage(const Napi::CallbackInfo &info)
@@ -1029,7 +1029,7 @@ Napi::Value f_IC_SaveImage(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFileName, ft, quality);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetHWnd(const Napi::CallbackInfo &info)
@@ -1053,7 +1053,7 @@ Napi::Value f_IC_SetHWnd(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, hWnd);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetSerialNumber(const Napi::CallbackInfo &info)
@@ -1114,7 +1114,7 @@ Napi::Value f_IC_ListDevices(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(szDeviceList, iSize);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ListDevicesbyIndex(const Napi::CallbackInfo &info)
@@ -1153,7 +1153,7 @@ Napi::Value f_IC_ListDevicesbyIndex(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(szDeviceName, iSize, DeviceIndex);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
@@ -1187,7 +1187,7 @@ Napi::Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFormatList, iSize);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ListVideoFormatbyIndex(const Napi::CallbackInfo &info)
@@ -1227,7 +1227,7 @@ Napi::Value f_IC_ListVideoFormatbyIndex(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFormatName, iSize, iIndex);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetDeviceCount(const Napi::CallbackInfo &info)
@@ -1249,7 +1249,7 @@ Napi::Value f_IC_GetDeviceCount(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f();
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetDevice(const Napi::CallbackInfo &info)
@@ -1326,7 +1326,7 @@ Napi::Value f_IC_GetInputChannelCount(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetInputChannel(const Napi::CallbackInfo &info)
@@ -1377,7 +1377,7 @@ Napi::Value f_IC_GetVideoNormCount(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetVideoNorm(const Napi::CallbackInfo &info)
@@ -1428,7 +1428,7 @@ Napi::Value f_IC_GetVideoFormatCount(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetVideoFormat(const Napi::CallbackInfo &info)
@@ -1484,7 +1484,7 @@ Napi::Value f_IC_SaveDeviceStateToFile(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFileName);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_LoadDeviceStateFromFile(const Napi::CallbackInfo &info)
@@ -1546,7 +1546,7 @@ Napi::Value f_IC_LoadDeviceStateFromFileEx(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFileName, OpenDevice);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SaveDeviceSettings(const Napi::CallbackInfo &info)
@@ -1574,7 +1574,7 @@ Napi::Value f_IC_SaveDeviceSettings(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_OpenDeviceBySettings(const Napi::CallbackInfo &info)
@@ -1602,7 +1602,7 @@ Napi::Value f_IC_OpenDeviceBySettings(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_LoadDeviceSettings(const Napi::CallbackInfo &info)
@@ -1630,7 +1630,7 @@ Napi::Value f_IC_LoadDeviceSettings(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_OpenDevByDisplayName(const Napi::CallbackInfo &info)
@@ -1658,7 +1658,7 @@ Napi::Value f_IC_OpenDevByDisplayName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szDisplayname);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetDisplayName(const Napi::CallbackInfo &info)
@@ -1692,7 +1692,7 @@ Napi::Value f_IC_GetDisplayName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szDisplayname, iLen);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
@@ -1720,7 +1720,7 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szDisplayname);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_IsDevValid(const Napi::CallbackInfo &info)
@@ -1743,7 +1743,7 @@ Napi::Value f_IC_IsDevValid(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ShowPropertyDialog(const Napi::CallbackInfo &info)
@@ -1766,7 +1766,7 @@ Napi::Value f_IC_ShowPropertyDialog(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ShowDeviceSelectionDialog(const Napi::CallbackInfo &info)
@@ -1812,7 +1812,7 @@ Napi::Value f_IC_IsTriggerAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_EnableTrigger(const Napi::CallbackInfo &info)
@@ -1840,7 +1840,7 @@ Napi::Value f_IC_EnableTrigger(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iEnable);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_RemoveOverlay(const Napi::CallbackInfo &info)
@@ -1919,7 +1919,7 @@ Napi::Value f_IC_BeginPaint(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     long ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_EndPaint(const Napi::CallbackInfo &info)
@@ -2003,7 +2003,7 @@ Napi::Value f_IC_SetContinuousMode(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, cont);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetFrameRate(const Napi::CallbackInfo &info)
@@ -2031,7 +2031,7 @@ Napi::Value f_IC_SetFrameRate(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, FrameRate);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetFrameRate(const Napi::CallbackInfo &info)
@@ -2054,7 +2054,7 @@ Napi::Value f_IC_GetFrameRate(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     float ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
@@ -2083,9 +2083,9 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Index, fps);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("fps", Napi::Number::New(env, fps));
+    outArgs.Set("fps", Napi::Number::New(env, (double)fps));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2109,7 +2109,7 @@ Napi::Value f_IC_ShowInternalPropertyPage(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ResetUSBCam(const Napi::CallbackInfo &info)
@@ -2132,7 +2132,7 @@ Napi::Value f_IC_ResetUSBCam(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_QueryPropertySet(const Napi::CallbackInfo &info)
@@ -2155,7 +2155,7 @@ Napi::Value f_IC_QueryPropertySet(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetDefaultWindowPosition(const Napi::CallbackInfo &info)
@@ -2183,7 +2183,7 @@ Napi::Value f_IC_SetDefaultWindowPosition(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Default);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetWindowPosition(const Napi::CallbackInfo &info)
@@ -2229,7 +2229,7 @@ Napi::Value f_IC_SetWindowPosition(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, PosX, PosY, Width, Height);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetWindowPosition(const Napi::CallbackInfo &info)
@@ -2256,12 +2256,12 @@ Napi::Value f_IC_GetWindowPosition(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, PosX, PosY, Width, Height);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("PosX", Napi::Number::New(env, PosX));
-    outArgs.Set("PosY", Napi::Number::New(env, PosY));
-    outArgs.Set("Width", Napi::Number::New(env, Width));
-    outArgs.Set("Height", Napi::Number::New(env, Height));
+    outArgs.Set("PosX", Napi::Number::New(env, (double)PosX));
+    outArgs.Set("PosY", Napi::Number::New(env, (double)PosY));
+    outArgs.Set("Width", Napi::Number::New(env, (double)Width));
+    outArgs.Set("Height", Napi::Number::New(env, (double)Height));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2290,7 +2290,7 @@ Napi::Value f_IC_SetWhiteBalanceAuto(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SignalDetected(const Napi::CallbackInfo &info)
@@ -2313,7 +2313,7 @@ Napi::Value f_IC_SignalDetected(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
@@ -2347,7 +2347,7 @@ Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szModeList, iSize);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetTriggerMode(const Napi::CallbackInfo &info)
@@ -2375,7 +2375,7 @@ Napi::Value f_IC_SetTriggerMode(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szMode);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetTriggerPolarity(const Napi::CallbackInfo &info)
@@ -2403,7 +2403,7 @@ Napi::Value f_IC_SetTriggerPolarity(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iPolarity);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetExpRegValRange(const Napi::CallbackInfo &info)
@@ -2428,10 +2428,10 @@ Napi::Value f_IC_GetExpRegValRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lMin", Napi::Number::New(env, lMin));
-    outArgs.Set("lMax", Napi::Number::New(env, lMax));
+    outArgs.Set("lMin", Napi::Number::New(env, (double)lMin));
+    outArgs.Set("lMax", Napi::Number::New(env, (double)lMax));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2456,9 +2456,9 @@ Napi::Value f_IC_GetExpRegVal(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("lValue", Napi::Number::New(env, lValue));
+    outArgs.Set("lValue", Napi::Number::New(env, (double)lValue));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2487,7 +2487,7 @@ Napi::Value f_IC_SetExpRegVal(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, lValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_EnableExpRegValAuto(const Napi::CallbackInfo &info)
@@ -2515,7 +2515,7 @@ Napi::Value f_IC_EnableExpRegValAuto(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetExpRegValAuto(const Napi::CallbackInfo &info)
@@ -2539,9 +2539,9 @@ Napi::Value f_IC_GetExpRegValAuto(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("iOnOff", Napi::Number::New(env, iOnOff));
+    outArgs.Set("iOnOff", Napi::Number::New(env, (double)iOnOff));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2565,7 +2565,7 @@ Napi::Value f_IC_IsExpAbsValAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetExpAbsValRange(const Napi::CallbackInfo &info)
@@ -2590,10 +2590,10 @@ Napi::Value f_IC_GetExpAbsValRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, fMin, fMax);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("fMin", Napi::Number::New(env, fMin));
-    outArgs.Set("fMax", Napi::Number::New(env, fMax));
+    outArgs.Set("fMin", Napi::Number::New(env, (double)fMin));
+    outArgs.Set("fMax", Napi::Number::New(env, (double)fMax));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2618,9 +2618,9 @@ Napi::Value f_IC_GetExpAbsVal(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, fValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("fValue", Napi::Number::New(env, fValue));
+    outArgs.Set("fValue", Napi::Number::New(env, (double)fValue));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2649,7 +2649,7 @@ Napi::Value f_IC_SetExpAbsVal(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, fValue);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetColorEnhancement(const Napi::CallbackInfo &info)
@@ -2673,9 +2673,9 @@ Napi::Value f_IC_GetColorEnhancement(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, OnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("OnOff", Napi::Number::New(env, OnOff));
+    outArgs.Set("OnOff", Napi::Number::New(env, (double)OnOff));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2704,7 +2704,7 @@ Napi::Value f_IC_SetColorEnhancement(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, OnOff);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SoftwareTrigger(const Napi::CallbackInfo &info)
@@ -2727,7 +2727,7 @@ Napi::Value f_IC_SoftwareTrigger(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetWhiteBalanceRed(const Napi::CallbackInfo &info)
@@ -2755,7 +2755,7 @@ Napi::Value f_IC_SetWhiteBalanceRed(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetWhiteBalanceGreen(const Napi::CallbackInfo &info)
@@ -2783,7 +2783,7 @@ Napi::Value f_IC_SetWhiteBalanceGreen(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetWhiteBalanceBlue(const Napi::CallbackInfo &info)
@@ -2811,7 +2811,7 @@ Napi::Value f_IC_SetWhiteBalanceBlue(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FocusOnePush(const Napi::CallbackInfo &info)
@@ -2834,7 +2834,7 @@ Napi::Value f_IC_FocusOnePush(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
@@ -2857,7 +2857,7 @@ Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
@@ -2891,7 +2891,7 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
@@ -2927,10 +2927,10 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("Min", Napi::Number::New(env, Min));
-    outArgs.Set("Max", Napi::Number::New(env, Max));
+    outArgs.Set("Min", Napi::Number::New(env, (double)Min));
+    outArgs.Set("Max", Napi::Number::New(env, (double)Max));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -2966,9 +2966,9 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("Value", Napi::Number::New(env, Value));
+    outArgs.Set("Value", Napi::Number::New(env, (double)Value));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -3009,7 +3009,7 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
@@ -3045,10 +3045,10 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("Min", Napi::Number::New(env, Min));
-    outArgs.Set("Max", Napi::Number::New(env, Max));
+    outArgs.Set("Min", Napi::Number::New(env, (double)Min));
+    outArgs.Set("Max", Napi::Number::New(env, (double)Max));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -3084,9 +3084,9 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("Value", Napi::Number::New(env, Value));
+    outArgs.Set("Value", Napi::Number::New(env, (double)Value));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -3127,7 +3127,7 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
@@ -3162,9 +3162,9 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, On);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("On", Napi::Number::New(env, On));
+    outArgs.Set("On", Napi::Number::New(env, (double)On));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -3205,7 +3205,7 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, On);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
@@ -3239,7 +3239,7 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
@@ -3276,10 +3276,10 @@ Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, StringCount, StringMaxLength, Strings);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("StringCount", Napi::Number::New(env, StringCount));
-    outArgs.Set("StringMaxLength", Napi::Number::New(env, StringMaxLength));
+    outArgs.Set("StringCount", Napi::Number::New(env, (double)StringCount));
+    outArgs.Set("StringMaxLength", Napi::Number::New(env, (double)StringMaxLength));
     outArgs.Set("Strings", Napi::String::New(env, Strings));
     retObj.Set("outArgs", outArgs);
     return retObj;
@@ -3322,9 +3322,9 @@ Napi::Value f_IC_GetPropertyMapString(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, StringLength, String);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("StringLength", Napi::Number::New(env, StringLength));
+    outArgs.Set("StringLength", Napi::Number::New(env, (double)StringLength));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -3365,7 +3365,7 @@ Napi::Value f_IC_SetPropertyMapString(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element, String);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_ResetProperties(const Napi::CallbackInfo &info)
@@ -3388,7 +3388,7 @@ Napi::Value f_IC_ResetProperties(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetAvailableFrameFilterCount(const Napi::CallbackInfo &info)
@@ -3410,7 +3410,7 @@ Napi::Value f_IC_GetAvailableFrameFilterCount(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f();
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetAvailableFrameFilters(const Napi::CallbackInfo &info)
@@ -3438,7 +3438,7 @@ Napi::Value f_IC_GetAvailableFrameFilters(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(szFilterList, iSize);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
     outArgs.Set("szFilterList", Napi::String::New(env, szFilterList));
     retObj.Set("outArgs", outArgs);
@@ -3465,7 +3465,7 @@ Napi::Value f_IC_AddFrameFilterToDevice(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, FilterHandle);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_RemoveFrameFilterFromDevice(const Napi::CallbackInfo &info)
@@ -3535,7 +3535,7 @@ Napi::Value f_IC_FrameFilterShowDialog(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterGetParameter(const Napi::CallbackInfo &info)
@@ -3564,7 +3564,7 @@ Napi::Value f_IC_FrameFilterGetParameter(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle, ParameterName, Data);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterSetParameterInt(const Napi::CallbackInfo &info)
@@ -3598,7 +3598,7 @@ Napi::Value f_IC_FrameFilterSetParameterInt(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle, ParameterName, Data);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterSetParameterFloat(const Napi::CallbackInfo &info)
@@ -3632,7 +3632,7 @@ Napi::Value f_IC_FrameFilterSetParameterFloat(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle, ParameterName, Data);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterSetParameterBoolean(const Napi::CallbackInfo &info)
@@ -3666,7 +3666,7 @@ Napi::Value f_IC_FrameFilterSetParameterBoolean(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle, ParameterName, Data);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterSetParameterString(const Napi::CallbackInfo &info)
@@ -3700,7 +3700,7 @@ Napi::Value f_IC_FrameFilterSetParameterString(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(FilterHandle, ParameterName, Data);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_FrameFilterDeviceClear(const Napi::CallbackInfo &info)
@@ -3723,7 +3723,7 @@ Napi::Value f_IC_FrameFilterDeviceClear(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_Codec_Create(const Napi::CallbackInfo &info)
@@ -3807,7 +3807,7 @@ Napi::Value f_IC_Codec_getName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(Codec, l, Name);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_Codec_hasDialog(const Napi::CallbackInfo &info)
@@ -3830,7 +3830,7 @@ Napi::Value f_IC_Codec_hasDialog(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(Codec);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_Codec_showDialog(const Napi::CallbackInfo &info)
@@ -3853,7 +3853,7 @@ Napi::Value f_IC_Codec_showDialog(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(Codec);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetCodec(const Napi::CallbackInfo &info)
@@ -3877,7 +3877,7 @@ Napi::Value f_IC_SetCodec(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hlGrabber, Codec);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetAVIFileName(const Napi::CallbackInfo &info)
@@ -3905,7 +3905,7 @@ Napi::Value f_IC_SetAVIFileName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hlGrabber, FileName);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_enableAVICapturePause(const Napi::CallbackInfo &info)
@@ -3933,7 +3933,7 @@ Napi::Value f_IC_enableAVICapturePause(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hlGrabber, Pause);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_SetRingBufferSize(const Napi::CallbackInfo &info)
@@ -3961,7 +3961,7 @@ Napi::Value f_IC_SetRingBufferSize(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Count);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_GetRingBufferSize(const Napi::CallbackInfo &info)
@@ -3985,9 +3985,9 @@ Napi::Value f_IC_GetRingBufferSize(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, pCount);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("pCount", Napi::Number::New(env, pCount));
+    outArgs.Set("pCount", Napi::Number::New(env, (double)pCount));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -4014,11 +4014,11 @@ Napi::Value f_IC_GetMemBufferDescription(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hBuffer, pWidth, pHeight, pBitsPerPixel);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("pWidth", Napi::Number::New(env, pWidth));
-    outArgs.Set("pHeight", Napi::Number::New(env, pHeight));
-    outArgs.Set("pBitsPerPixel", Napi::Number::New(env, pBitsPerPixel));
+    outArgs.Set("pWidth", Napi::Number::New(env, (double)pWidth));
+    outArgs.Set("pHeight", Napi::Number::New(env, (double)pHeight));
+    outArgs.Set("pBitsPerPixel", Napi::Number::New(env, (double)pBitsPerPixel));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -4047,7 +4047,7 @@ Napi::Value f_IC_MemBufferLock(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hBuffer, lock);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
 Napi::Value f_IC_MemBufferisLocked(const Napi::CallbackInfo &info)
@@ -4071,9 +4071,9 @@ Napi::Value f_IC_MemBufferisLocked(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hBuffer, plocked);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("plocked", Napi::Number::New(env, plocked));
+    outArgs.Set("plocked", Napi::Number::New(env, (double)plocked));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
@@ -4098,9 +4098,9 @@ Napi::Value f_IC_MemBufferGetIndex(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hBuffer, pIndex);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
+    retObj.Set("result", Napi::Number::New(env, (double)ret));
     Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("pIndex", Napi::Number::New(env, pIndex));
+    outArgs.Set("pIndex", Napi::Number::New(env, (double)pIndex));
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
