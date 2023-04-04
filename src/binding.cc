@@ -19,13 +19,14 @@ Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_TidyUP f = (IC_TidyUP)GetProcAddress(tisgrabber, "IC_TidyUP");
-    if (f == NULL)
+    IC_TidyUP f_ptr = (IC_TidyUP)GetProcAddress(tisgrabber, "IC_TidyUP");
+    if (f_ptr == NULL)
     {
         FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_TidyUP in tisgrabber_x64.dll").ThrowAsJavaScriptException return env.undefined();
+        Napi::Error::New(env, "Cannot find function IC_TidyUP in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
     };
-    void ret = f();
+    void ret = (*f_ptr)();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", env.Undefined());
     return retObj;
@@ -39,13 +40,14 @@ Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_CloseLibrary f = (IC_CloseLibrary)GetProcAddress(tisgrabber, "IC_CloseLibrary");
-    if (f == NULL)
+    IC_CloseLibrary *f_prt = (IC_CloseLibrary *)GetProcAddress(tisgrabber, "IC_CloseLibrary");
+    if (f_prt == NULL)
     {
         FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_CloseLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException return env.undefined();
+        Napi::Error::New(env, "Cannot find function IC_CloseLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
     };
-    void ret = f();
+    void ret = (*f_ptr)();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", env.Undefined());
     return retObj;
