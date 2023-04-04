@@ -132,9 +132,12 @@ function convert(line) {
       if (type === "char *") {
         pieceForArgCheck = getPieceForArgCheck("isString");
         pieceForArgDef = `${type} ${paramName} = info[${idx}].As<Napi::String>().Utf8Value().c_str();`;
-      } else if (["int", "long", "float", "unsigned long"].includes(type)) {
+      } else if (["int", "long", "unsigned long"].includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("isNumber");
-        pieceForArgDef = `${type} ${paramName} = info[${idx}].As<Napi::Number>().Int64Value();`;
+        pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().Int64Value();`;
+      } else if (["float"].includes(type)) {
+        pieceForArgCheck = getPieceForArgCheck("isNumber");
+        pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().DoubleValue();`;
       } else if (structP_list.includes(type)) {
         pieceForArgDef = `${type} ${paramName} = *info[${idx}].As<Napi::External<${type}>>().Data();`;
       } else if (func_p_list.includes(type)) {
