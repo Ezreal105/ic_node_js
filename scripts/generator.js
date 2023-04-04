@@ -130,26 +130,26 @@ function convert(line) {
       }
       argsNum++;
       if (type === "char *") {
-        pieceForArgCheck = getPieceForArgCheck("isString");
-        pieceForArgDef = `${type} ${paramName} = info[${idx}].As<Napi::String>().Utf8Value().c_str();`;
+        pieceForArgCheck = getPieceForArgCheck("IsString");
+        pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::String>().Utf8Value().c_str();`;
       } else if (["int", "long", "unsigned long"].includes(type)) {
-        pieceForArgCheck = getPieceForArgCheck("isNumber");
+        pieceForArgCheck = getPieceForArgCheck("IsNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().Int64Value();`;
       } else if (["float"].includes(type)) {
-        pieceForArgCheck = getPieceForArgCheck("isNumber");
+        pieceForArgCheck = getPieceForArgCheck("IsNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().DoubleValue();`;
       } else if (structP_list.includes(type)) {
         pieceForArgDef = `${type} ${paramName} = *info[${idx}].As<Napi::External<${type}>>().Data();`;
       } else if (func_p_list.includes(type)) {
-        pieceForArgCheck = getPieceForArgCheck("isFunction");
+        pieceForArgCheck = getPieceForArgCheck("IsFunction");
         pieceForArgDef = `${type} ${paramName};
         GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()), info, &${paramName});`;
       } else if (func_list.includes(type)) {
-        pieceForArgCheck = getPieceForArgCheck("isFunction");
+        pieceForArgCheck = getPieceForArgCheck("IsFunction");
         pieceForArgDef = `${type} ${paramName};
         GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()), info, &${paramName});`;
       } else if (enum_list.includes(type)) {
-        pieceForArgCheck = getPieceForArgCheck("isNumber");
+        pieceForArgCheck = getPieceForArgCheck("IsNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().Int32Value();`;
       } else if (["void *"].includestype) {
         pieceForArgDef = `${type} ${paramName} = nullptr;`;

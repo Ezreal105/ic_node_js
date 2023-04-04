@@ -22,8 +22,8 @@ Napi::Value f_IC_InitLibrary(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szLicenseKey = info[0].As<Napi::String>().Utf8Value().c_str();
-    if (!info[0].isString())
+    char *szLicenseKey = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -138,8 +138,8 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szDeviceName = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szDeviceName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -259,7 +259,7 @@ Napi::Value f_IC_SetFormat(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     COLORFORMAT format = (COLORFORMAT)info[1].As<Napi::Number>().Int32Value();
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -309,8 +309,8 @@ Napi::Value f_IC_SetVideoFormat(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFormat = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFormat = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -337,8 +337,8 @@ Napi::Value f_IC_SetVideoNorm(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szNorm = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szNorm = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -365,8 +365,8 @@ Napi::Value f_IC_SetInputChannel(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szChannel = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szChannel = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -393,8 +393,8 @@ Napi::Value f_IC_StartLive(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iShow = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iShow = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -421,8 +421,8 @@ Napi::Value f_IC_PrepareLive(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iShow = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iShow = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -519,7 +519,7 @@ Napi::Value f_IC_IsCameraPropertyAvailable(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -547,13 +547,13 @@ Napi::Value f_IC_SetCameraProperty(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    long lValue = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long lValue = (long)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -583,7 +583,7 @@ Napi::Value f_IC_CameraPropertyGetRange(const Napi::CallbackInfo &info)
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lMin;
     long *lMax;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -616,7 +616,7 @@ Napi::Value f_IC_GetCameraProperty(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lValue;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -646,14 +646,14 @@ Napi::Value f_IC_EnableAutoCameraProperty(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iProperty = info[1].As<Napi::Number>().Int64Value();
-    int iOnOff = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
+    int iOnOff = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -681,7 +681,7 @@ Napi::Value f_IC_IsCameraPropertyAutoAvailable(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     CAMERA_PROPERTY iProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -708,9 +708,9 @@ Napi::Value f_IC_GetAutoCameraProperty(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iProperty = info[1].As<Napi::Number>().Int64Value();
+    int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
     int *iOnOff;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -741,7 +741,7 @@ Napi::Value f_IC_IsVideoPropertyAvailable(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -771,7 +771,7 @@ Napi::Value f_IC_VideoPropertyGetRange(const Napi::CallbackInfo &info)
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lMin;
     long *lMax;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -804,7 +804,7 @@ Napi::Value f_IC_GetVideoProperty(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lValue;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -835,7 +835,7 @@ Napi::Value f_IC_IsVideoPropertyAutoAvailable(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -862,9 +862,9 @@ Napi::Value f_IC_GetAutoVideoProperty(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iProperty = info[1].As<Napi::Number>().Int64Value();
+    int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
     int *iOnOff;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -895,13 +895,13 @@ Napi::Value f_IC_SetVideoProperty(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
-    long lValue = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long lValue = (long)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -928,14 +928,14 @@ Napi::Value f_IC_EnableAutoVideoProperty(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iProperty = info[1].As<Napi::Number>().Int64Value();
-    int iOnOff = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
+    int iOnOff = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -995,8 +995,8 @@ Napi::Value f_IC_SnapImage(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iTimeOutMillisek = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iTimeOutMillisek = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1023,20 +1023,20 @@ Napi::Value f_IC_SaveImage(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFileName = info[1].As<Napi::String>().Utf8Value().c_str();
+    char *szFileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
     IMG_FILETYPE ft = (IMG_FILETYPE)info[2].As<Napi::Number>().Int32Value();
-    long quality = info[3].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    long quality = (long)info[3].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1087,8 +1087,8 @@ Napi::Value f_IC_GetSerialNumber(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szSerial = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szSerial = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1114,14 +1114,14 @@ Napi::Value f_IC_ListDevices(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szDeviceList = info[0].As<Napi::String>().Utf8Value().c_str();
-    int iSize = info[1].As<Napi::Number>().Int64Value();
-    if (!info[0].isString())
+    char *szDeviceList = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    int iSize = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1147,20 +1147,20 @@ Napi::Value f_IC_ListDevicesbyIndex(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szDeviceName = info[0].As<Napi::String>().Utf8Value().c_str();
-    int iSize = info[1].As<Napi::Number>().Int64Value();
-    int DeviceIndex = info[2].As<Napi::Number>().Int64Value();
-    if (!info[0].isString())
+    char *szDeviceName = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    int iSize = (int)info[1].As<Napi::Number>().Int64Value();
+    int DeviceIndex = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1187,14 +1187,14 @@ Napi::Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFormatList = info[1].As<Napi::String>().Utf8Value().c_str();
-    int iSize = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *szFormatList = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int iSize = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1221,20 +1221,20 @@ Napi::Value f_IC_ListVideoFormatbyIndex(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFormatName = info[1].As<Napi::String>().Utf8Value().c_str();
-    int iSize = info[2].As<Napi::Number>().Int64Value();
-    int iIndex = info[3].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *szFormatName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int iSize = (int)info[2].As<Napi::Number>().Int64Value();
+    int iIndex = (int)info[3].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1282,8 +1282,8 @@ Napi::Value f_IC_GetDevice(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    int iIndex = info[0].As<Napi::Number>().Int64Value();
-    if (!info[0].isNumber())
+    int iIndex = (int)info[0].As<Napi::Number>().Int64Value();
+    if (!info[0].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1309,8 +1309,8 @@ Napi::Value f_IC_GetUniqueNamefromList(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    int iIndex = info[0].As<Napi::Number>().Int64Value();
-    if (!info[0].isNumber())
+    int iIndex = (int)info[0].As<Napi::Number>().Int64Value();
+    if (!info[0].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1360,8 +1360,8 @@ Napi::Value f_IC_GetInputChannel(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iIndex = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1411,8 +1411,8 @@ Napi::Value f_IC_GetVideoNorm(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iIndex = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1462,8 +1462,8 @@ Napi::Value f_IC_GetVideoFormat(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iIndex = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1490,8 +1490,8 @@ Napi::Value f_IC_SaveDeviceStateToFile(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFileName = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1518,8 +1518,8 @@ Napi::Value f_IC_LoadDeviceStateFromFile(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFileName = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1546,14 +1546,14 @@ Napi::Value f_IC_LoadDeviceStateFromFileEx(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFileName = info[1].As<Napi::String>().Utf8Value().c_str();
-    int OpenDevice = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *szFileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int OpenDevice = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1580,8 +1580,8 @@ Napi::Value f_IC_SaveDeviceSettings(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFilename = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFilename = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1608,8 +1608,8 @@ Napi::Value f_IC_OpenDeviceBySettings(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFilename = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFilename = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1636,8 +1636,8 @@ Napi::Value f_IC_LoadDeviceSettings(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szFilename = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szFilename = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1664,8 +1664,8 @@ Napi::Value f_IC_OpenDevByDisplayName(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szDisplayname = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szDisplayname = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1692,14 +1692,14 @@ Napi::Value f_IC_GetDisplayName(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szDisplayname = info[1].As<Napi::String>().Utf8Value().c_str();
-    int iLen = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *szDisplayname = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int iLen = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1726,8 +1726,8 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szDisplayname = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szDisplayname = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1846,8 +1846,8 @@ Napi::Value f_IC_EnableTrigger(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iEnable = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iEnable = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1874,8 +1874,8 @@ Napi::Value f_IC_RemoveOverlay(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iEnable = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iEnable = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1902,8 +1902,8 @@ Napi::Value f_IC_EnableOverlay(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iEnable = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iEnable = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -1975,14 +1975,14 @@ Napi::Value f_IC_MsgBox(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szText = info[0].As<Napi::String>().Utf8Value().c_str();
-    char *szTitle = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[0].isString())
+    char *szText = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    char *szTitle = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2009,8 +2009,8 @@ Napi::Value f_IC_SetContinuousMode(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int cont = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int cont = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2037,8 +2037,8 @@ Napi::Value f_IC_SetFrameRate(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    float FrameRate = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    float FrameRate = (float)info[1].As<Napi::Number>().DoubleValue();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2088,9 +2088,9 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Index = info[1].As<Napi::Number>().Int64Value();
+    int Index = (int)info[1].As<Napi::Number>().Int64Value();
     float *fps;
-    if (!info[1].isNumber())
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2189,8 +2189,8 @@ Napi::Value f_IC_SetDefaultWindowPosition(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Default = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int Default = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2217,26 +2217,26 @@ Napi::Value f_IC_SetWindowPosition(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int PosX = info[1].As<Napi::Number>().Int64Value();
-    int PosY = info[2].As<Napi::Number>().Int64Value();
-    int Width = info[3].As<Napi::Number>().Int64Value();
-    int Height = info[4].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int PosX = (int)info[1].As<Napi::Number>().Int64Value();
+    int PosY = (int)info[2].As<Napi::Number>().Int64Value();
+    int Width = (int)info[3].As<Napi::Number>().Int64Value();
+    int Height = (int)info[4].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[4].isNumber())
+    if (!info[4].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 4").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2296,8 +2296,8 @@ Napi::Value f_IC_SetWhiteBalanceAuto(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iOnOff = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iOnOff = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2347,14 +2347,14 @@ Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szModeList = info[1].As<Napi::String>().Utf8Value().c_str();
-    int iSize = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *szModeList = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int iSize = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2381,8 +2381,8 @@ Napi::Value f_IC_SetTriggerMode(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szMode = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *szMode = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2409,8 +2409,8 @@ Napi::Value f_IC_SetTriggerPolarity(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iPolarity = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iPolarity = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2493,8 +2493,8 @@ Napi::Value f_IC_SetExpRegVal(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    long lValue = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long lValue = (long)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2521,8 +2521,8 @@ Napi::Value f_IC_EnableExpRegValAuto(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int iOnOff = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iOnOff = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2655,8 +2655,8 @@ Napi::Value f_IC_SetExpAbsVal(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    float fValue = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    float fValue = (float)info[1].As<Napi::Number>().DoubleValue();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2710,8 +2710,8 @@ Napi::Value f_IC_SetColorEnhancement(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int OnOff = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int OnOff = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2761,8 +2761,8 @@ Napi::Value f_IC_SetWhiteBalanceRed(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    long Value = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long Value = (long)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2789,8 +2789,8 @@ Napi::Value f_IC_SetWhiteBalanceGreen(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    long Value = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long Value = (long)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2817,8 +2817,8 @@ Napi::Value f_IC_SetWhiteBalanceBlue(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    long Value = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    long Value = (long)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2891,14 +2891,14 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2925,16 +2925,16 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     int *Min;
     int *Max;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2965,15 +2965,15 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     int *Value;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3003,20 +3003,20 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    int Value = info[3].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    int Value = (int)info[3].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3043,16 +3043,16 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     float *Min;
     float *Max;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3083,15 +3083,15 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     float *Value;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3121,20 +3121,20 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    float Value = info[3].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    float Value = (float)info[3].As<Napi::Number>().DoubleValue();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3161,15 +3161,15 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     int *On;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3199,20 +3199,20 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    int On = info[3].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    int On = (int)info[3].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isNumber())
+    if (!info[3].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3239,14 +3239,14 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3273,17 +3273,17 @@ Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     int *StringCount;
     int *StringMaxLength;
     char **Strings;
-    if (!info[1].isString())
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3315,21 +3315,21 @@ Napi::Value f_IC_GetPropertyMapString(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
     int *StringLength;
-    char *String = info[4].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *String = (char *)info[4].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[4].isString())
+    if (!info[4].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 4").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3359,20 +3359,20 @@ Napi::Value f_IC_SetPropertyMapString(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
-    char *String = info[3].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    char *String = (char *)info[3].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[3].isString())
+    if (!info[3].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3444,8 +3444,8 @@ Napi::Value f_IC_GetAvailableFrameFilters(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     char **szFilterList;
-    int iSize = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int iSize = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3474,8 +3474,8 @@ Napi::Value f_IC_CreateFrameFilter(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szFilterName = info[0].As<Napi::String>().Utf8Value().c_str();
-    if (!info[0].isString())
+    char *szFilterName = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3596,8 +3596,8 @@ Napi::Value f_IC_FrameFilterGetParameter(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
-    char *ParameterName = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3624,14 +3624,14 @@ Napi::Value f_IC_FrameFilterSetParameterInt(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
-    char *ParameterName = info[1].As<Napi::String>().Utf8Value().c_str();
-    int Data = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int Data = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3658,14 +3658,14 @@ Napi::Value f_IC_FrameFilterSetParameterFloat(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
-    char *ParameterName = info[1].As<Napi::String>().Utf8Value().c_str();
-    float Data = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    float Data = (float)info[2].As<Napi::Number>().DoubleValue();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3692,14 +3692,14 @@ Napi::Value f_IC_FrameFilterSetParameterBoolean(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
-    char *ParameterName = info[1].As<Napi::String>().Utf8Value().c_str();
-    int Data = info[2].As<Napi::Number>().Int64Value();
-    if (!info[1].isString())
+    char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    int Data = (int)info[2].As<Napi::Number>().Int64Value();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isNumber())
+    if (!info[2].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3726,14 +3726,14 @@ Napi::Value f_IC_FrameFilterSetParameterString(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HFRAMEFILTER FilterHandle = *info[0].As<Napi::External<HFRAMEFILTER>>().Data();
-    char *ParameterName = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Data = info[2].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *ParameterName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    char *Data = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3782,8 +3782,8 @@ Napi::Value f_IC_Codec_Create(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *Name = info[0].As<Napi::String>().Utf8Value().c_str();
-    if (!info[0].isString())
+    char *Name = (char *)info[0].As<Napi::String>().Utf8Value().c_str();
+    if (!info[0].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3833,14 +3833,14 @@ Napi::Value f_IC_Codec_getName(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HCODEC Codec = *info[0].As<Napi::External<HCODEC>>().Data();
-    int l = info[1].As<Napi::Number>().Int64Value();
-    char *Name = info[2].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isNumber())
+    int l = (int)info[1].As<Napi::Number>().Int64Value();
+    char *Name = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].isString())
+    if (!info[2].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3937,8 +3937,8 @@ Napi::Value f_IC_SetAVIFileName(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hlGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *FileName = info[1].As<Napi::String>().Utf8Value().c_str();
-    if (!info[1].isString())
+    char *FileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3965,8 +3965,8 @@ Napi::Value f_IC_enableAVICapturePause(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hlGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Pause = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int Pause = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -3993,8 +3993,8 @@ Napi::Value f_IC_SetRingBufferSize(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Count = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int Count = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -4048,8 +4048,8 @@ Napi::Value f_IC_GetMemBuffer(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    int Index = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int Index = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -4130,8 +4130,8 @@ Napi::Value f_IC_MemBufferLock(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
-    int lock = info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].isNumber())
+    int lock = (int)info[1].As<Napi::Number>().Int64Value();
+    if (!info[1].IsNumber())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
