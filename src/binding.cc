@@ -10,66 +10,8 @@
     ic_static.Set(#method, Napi::Function::New<f_##method>(env));
 
 static HMODULE tisgrabber;
-
-void device_lost_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, void *data = nullptr)
-{
-    Napi::Env env = info.Env();
-    // js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
-}
-
-void GET_DEVICE_LOST_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, DEVICE_LOST_CALLBACK *cb)
-{
-    auto func = std::bind(frame_ready_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    *cb = reinterpret_cast<DEVICE_LOST_CALLBACK>(std::addressof(func));
-}
-
-void frame_ready_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, unsigned char *pData, unsigned long frameNumber, void *data = nullptr)
-{
-    Napi::Env env = info.Env();
-    js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<unsigned char>::New(env, pData), Napi::Number::New(env, frameNumber)});
-}
-
-void GET_FRAME_READY_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, FRAME_READY_CALLBACK *cb)
-{
-    auto func = std::bind(frame_ready_cb, js_func, info, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    *cb = reinterpret_cast<FRAME_READY_CALLBACK>(std::addressof(func));
-}
-
-void frame_ready_cb_ex(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, HMEMBUFFER hBuffer, unsigned long frameNumber, void *data = nullptr)
-{
-    Napi::Env env = info.Env();
-    js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<HMEMBUFFER>::New(env, hBuffer), Napi::Number::New(env, frameNumber)});
-}
-
-void GET_FRAME_READY_CALLBACK_EX(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, FRAME_READY_CALLBACK_EX *cb)
-{
-    auto func = std::bind(frame_ready_cb_ex, js_func, info, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    *cb = reinterpret_cast<FRAME_READY_CALLBACK_EX>(std::addressof(func));
-}
-
-void ic_enum_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, char *Name, void *data = nullptr)
-{
-    Napi::Env env = info.Env();
-    js_func.Call({Napi::String::New(env, Name)});
-}
-
-void GET_IC_ENUMCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, IC_ENUMCB *cb)
-{
-    auto func = std::bind(ic_enum_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    *cb = reinterpret_cast<IC_ENUMCB>(func);
-}
-
-void enum_codec_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, char *CodecName, void *data = nullptr)
-{
-    Napi::Env env = info.Env();
-    js_func.Call({Napi::String::New(env, CodecName)});
-}
-
-void GET_ENUMCODECCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, ENUMCODECCB *cb)
-{
-    auto func = std::bind(ic_enum_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    *cb = reinterpret_cast<ENUMCODECCB>(func);
-}
+static Napi::Env js_env;
+static std::unordered_map<HGRABBER, std::vector<Napi::FunctionReference>> grabber_device_lost_callbacks{};
 
 // generate start
 Napi::Value f_IC_InitLibrary(const Napi::CallbackInfo &info)
@@ -1803,40 +1745,6 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
     retObj.Set("result", Napi::Number::New(env, ret));
     return retObj;
 }
-Napi::Value f_IC_GetUniqueName(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szUniquename = info[1].As<Napi::String>().utf8Value().c_str();
-    int iLen = info[2].As<Napi::Number>().int64_t();
-    if (!info[1].isString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[2].isNumber())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_GetUniqueName *f_ptr = (IC_GetUniqueName *)GetProcAddress(tisgrabber, "IC_GetUniqueName");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_GetUniqueName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_GetUniqueName f = *f_ptr;
-    int ret = f(hGrabber, szUniquename, iLen);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
 Napi::Value f_IC_IsDevValid(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -2090,100 +1998,6 @@ Napi::Value f_IC_MsgBox(const Napi::CallbackInfo &info)
     f(szText, szTitle);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", env.Undefined());
-    return retObj;
-}
-Napi::Value f_IC_SetFrameReadyCallbackEx(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK_EX cb;
-    GET_FRAME_READY_CALLBACK_EX(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
-    if (!info[1].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetFrameReadyCallbackEx *f_ptr = (IC_SetFrameReadyCallbackEx *)GetProcAddress(tisgrabber, "IC_SetFrameReadyCallbackEx");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_SetFrameReadyCallbackEx in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetFrameReadyCallbackEx f = *f_ptr;
-    int ret = f(hGrabber, cb, x1_argument_in_void_userdata);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
-Napi::Value f_IC_SetFrameReadyCallback(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK cb;
-    GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
-    if (!info[1].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetFrameReadyCallback *f_ptr = (IC_SetFrameReadyCallback *)GetProcAddress(tisgrabber, "IC_SetFrameReadyCallback");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_SetFrameReadyCallback in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetFrameReadyCallback f = *f_ptr;
-    int ret = f(hGrabber, cb, x1_argument_in_void_userdata);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
-Napi::Value f_IC_SetCallbacks(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 5)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK cb;
-    GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
-    DEVICE_LOST_CALLBACK dlCB;
-    GET_DEVICE_LOST_CALLBACK(Napi::Weak(info[3].As<Napi::Function>()), info, &dlCB);
-    if (!info[1].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[3].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetCallbacks *f_ptr = (IC_SetCallbacks *)GetProcAddress(tisgrabber, "IC_SetCallbacks");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_SetCallbacks in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_SetCallbacks f = *f_ptr;
-    int ret = f(hGrabber, cb, x1_argument_in_void_userdata, dlCB, x2_argument_in_void_userdata);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
     return retObj;
 }
 Napi::Value f_IC_SetContinuousMode(const Napi::CallbackInfo &info)
@@ -3045,35 +2859,6 @@ Napi::Value f_IC_FocusOnePush(const Napi::CallbackInfo &info)
     retObj.Set("result", Napi::Number::New(env, ret));
     return retObj;
 }
-Napi::Value f_IC_enumProperties(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    IC_ENUMCB cb;
-    GET_IC_ENUMCB(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
-    if (!info[1].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumProperties *f_ptr = (IC_enumProperties *)GetProcAddress(tisgrabber, "IC_enumProperties");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_enumProperties in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumProperties f = *f_ptr;
-    int ret = f(hGrabber, cb, data);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
 Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3093,82 +2878,6 @@ Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
     };
     IC_printItemandElementNames f = *f_ptr;
     int ret = f(hGrabber);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
-Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 4)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().utf8Value().c_str();
-    IC_ENUMCB cb;
-    GET_IC_ENUMCB(Napi::Weak(info[2].As<Napi::Function>()), info, &cb);
-    if (!info[1].isString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[2].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumPropertyElements *f_ptr = (IC_enumPropertyElements *)GetProcAddress(tisgrabber, "IC_enumPropertyElements");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_enumPropertyElements in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumPropertyElements f = *f_ptr;
-    int ret = f(hGrabber, Property, cb, data);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, ret));
-    return retObj;
-}
-Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 5)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().utf8Value().c_str();
-    IC_ENUMCB cb;
-    GET_IC_ENUMCB(Napi::Weak(info[3].As<Napi::Function>()), info, &cb);
-    if (!info[1].isString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[2].isString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[3].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 3").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumPropertyElementInterfaces *f_ptr = (IC_enumPropertyElementInterfaces *)GetProcAddress(tisgrabber, "IC_enumPropertyElementInterfaces");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_enumPropertyElementInterfaces in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumPropertyElementInterfaces f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, cb, data);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", Napi::Number::New(env, ret));
     return retObj;
@@ -4065,34 +3774,6 @@ Napi::Value f_IC_FrameFilterDeviceClear(const Napi::CallbackInfo &info)
     retObj.Set("result", Napi::Number::New(env, ret));
     return retObj;
 }
-Napi::Value f_IC_enumCodecs(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 2)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    ENUMCODECCB cb;
-    GET_ENUMCODECCB(Napi::Weak(info[0].As<Napi::Function>()), info, &cb);
-    if (!info[0].isFunction())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumCodecs *f_ptr = (IC_enumCodecs *)GetProcAddress(tisgrabber, "IC_enumCodecs");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_enumCodecs in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_enumCodecs f = *f_ptr;
-    f(cb, data);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", env.Undefined());
-    return retObj;
-}
 Napi::Value f_IC_Codec_Create(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -4524,8 +4205,24 @@ Napi::Value f_IC_MemBufferGetIndex(const Napi::CallbackInfo &info)
 }
 // generate end
 
+void device_lost_cb(HGRABBER hGrabber, void *data = nullptr)
+{
+    if (js_env == NULL)
+    {
+        // TODO: log
+        return
+    }
+    std::vector<Napi::FunctionReference> cbs = grabber_device_lost_callbacks[hGrabber];
+    for (std::vector<Napi::FunctionReference>::iterator it = cbs.begin(); it != cbs.end(); ++it)
+    {
+        Napi::FunctionReference cb = *it;
+        cb.Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
+    }
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
+    js_env = env;
     Napi::Object ic_static = Napi::Object::New(env);
     exports.Set("ic_static", ic_static);
     INIT_STATIC_METHOD(IC_InitLibrary)
@@ -4589,7 +4286,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_OpenDevByDisplayName)
     INIT_STATIC_METHOD(IC_GetDisplayName)
     INIT_STATIC_METHOD(IC_OpenDevByUniqueName)
-    INIT_STATIC_METHOD(IC_GetUniqueName)
     INIT_STATIC_METHOD(IC_IsDevValid)
     INIT_STATIC_METHOD(IC_ShowPropertyDialog)
     INIT_STATIC_METHOD(IC_ShowDeviceSelectionDialog)
@@ -4600,9 +4296,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_BeginPaint)
     INIT_STATIC_METHOD(IC_EndPaint)
     INIT_STATIC_METHOD(IC_MsgBox)
-    INIT_STATIC_METHOD(IC_SetFrameReadyCallbackEx)
-    INIT_STATIC_METHOD(IC_SetFrameReadyCallback)
-    INIT_STATIC_METHOD(IC_SetCallbacks)
     INIT_STATIC_METHOD(IC_SetContinuousMode)
     INIT_STATIC_METHOD(IC_SetFrameRate)
     INIT_STATIC_METHOD(IC_GetFrameRate)
@@ -4634,10 +4327,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SetWhiteBalanceGreen)
     INIT_STATIC_METHOD(IC_SetWhiteBalanceBlue)
     INIT_STATIC_METHOD(IC_FocusOnePush)
-    INIT_STATIC_METHOD(IC_enumProperties)
     INIT_STATIC_METHOD(IC_printItemandElementNames)
-    INIT_STATIC_METHOD(IC_enumPropertyElements)
-    INIT_STATIC_METHOD(IC_enumPropertyElementInterfaces)
     INIT_STATIC_METHOD(IC_IsPropertyAvailable)
     INIT_STATIC_METHOD(IC_GetPropertyValueRange)
     INIT_STATIC_METHOD(IC_GetPropertyValue)
@@ -4665,7 +4355,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_FrameFilterSetParameterBoolean)
     INIT_STATIC_METHOD(IC_FrameFilterSetParameterString)
     INIT_STATIC_METHOD(IC_FrameFilterDeviceClear)
-    INIT_STATIC_METHOD(IC_enumCodecs)
     INIT_STATIC_METHOD(IC_Codec_Create)
     INIT_STATIC_METHOD(IC_Codec_Release)
     INIT_STATIC_METHOD(IC_Codec_getName)

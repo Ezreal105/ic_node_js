@@ -53,6 +53,14 @@ const skipList = [
   "IC_ReleaseMemBuffer",
   "IC_MemBufferGetDataPtr",
   "IC_GetImagePtr",
+  "IC_GetUniqueName",
+  "IC_SetFrameReadyCallbackEx",
+  "IC_SetFrameReadyCallback",
+  "IC_SetCallbacks",
+  "IC_enumProperties",
+  "IC_enumPropertyElements",
+  "IC_enumPropertyElementInterfaces",
+  "IC_enumCodecs",
 ];
 
 const typePattern = `(${supportedCTypes
@@ -112,6 +120,14 @@ function convert(line) {
       return env.Undefined();
     };`;
       let paramName = name || `arg${idx}`;
+      if (basic_out_list.includes(type)) {
+        pieceForArgDef = `${type} ${paramName};`;
+        outParamNameTypePairs.push({ name: paramName, type });
+        pieceForArgDef && piecesForArgDef.push(pieceForArgDef);
+        pieceForArgCheck && piecesForArgCheck.push(pieceForArgCheck);
+        paramNames.push(paramName);
+        continue;
+      }
       argsNum++;
       if (type === "char *") {
         pieceForArgCheck = getPieceForArgCheck("isString");
@@ -134,10 +150,6 @@ function convert(line) {
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().int32_t();`;
       } else if (["void *"].includestype) {
         pieceForArgDef = `${type} ${paramName} = nullptr;`;
-      } else if (basic_out_list.includes(type)) {
-        argsNum--;
-        pieceForArgDef = `${type} ${paramName};`;
-        outParamNameTypePairs.push({ name: paramName, type });
       }
       pieceForArgDef && piecesForArgDef.push(pieceForArgDef);
       pieceForArgCheck && piecesForArgCheck.push(pieceForArgCheck);
