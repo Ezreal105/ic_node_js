@@ -1750,7 +1750,8 @@ Napi::Value f_IC_SetFrameReadyCallbackEx(const Napi::CallbackInfo& info) {
     return env.Undefined();
   }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-FRAME_READY_CALLBACK_EX cb = GET_FRAME_READY_CALLBACK_EX(Napi::Weak(info[1].As<Napi::Function>()));
+FRAME_READY_CALLBACK_EX cb;
+        GET_FRAME_READY_CALLBACK_EX(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -1774,7 +1775,8 @@ Napi::Value f_IC_SetFrameReadyCallback(const Napi::CallbackInfo& info) {
     return env.Undefined();
   }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-FRAME_READY_CALLBACK cb = GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()));
+FRAME_READY_CALLBACK cb;
+        GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -1798,8 +1800,10 @@ Napi::Value f_IC_SetCallbacks(const Napi::CallbackInfo& info) {
     return env.Undefined();
   }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-FRAME_READY_CALLBACK cb = GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()));
-DEVICE_LOST_CALLBACK dlCB = GET_DEVICE_LOST_CALLBACK(Napi::Weak(info[3].As<Napi::Function>()));
+FRAME_READY_CALLBACK cb;
+        GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
+DEVICE_LOST_CALLBACK dlCB;
+        GET_DEVICE_LOST_CALLBACK(Napi::Weak(info[3].As<Napi::Function>()), info, &dlCB);
     if (!info[1].isFunction()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -2573,7 +2577,8 @@ Napi::Value f_IC_enumProperties(const Napi::CallbackInfo& info) {
     return env.Undefined();
   }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[1].As<Napi::Function>()));
+IC_ENUMCB cb;
+        GET_IC_ENUMCB(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -2618,7 +2623,8 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo& info) {
   }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
 char * Property = info[1].As<Napi::String>().utf8Value().c_str();
-IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[2].As<Napi::Function>()));
+IC_ENUMCB cb;
+        GET_IC_ENUMCB(Napi::Weak(info[2].As<Napi::Function>()), info, &cb);
     if (!info[1].isString()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -2648,7 +2654,8 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo& info) {
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
 char * Property = info[1].As<Napi::String>().utf8Value().c_str();
 char * Element = info[2].As<Napi::String>().utf8Value().c_str();
-IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[3].As<Napi::Function>()));
+IC_ENUMCB cb;
+        GET_IC_ENUMCB(Napi::Weak(info[3].As<Napi::Function>()), info, &cb);
     if (!info[1].isString()) {
       Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
       return env.Undefined();
@@ -3449,7 +3456,8 @@ Napi::Value f_IC_enumCodecs(const Napi::CallbackInfo& info) {
     Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
     return env.Undefined();
   }
-    ENUMCODECCB cb = GET_ENUMCODECCB(Napi::Weak(info[0].As<Napi::Function>()));
+    ENUMCODECCB cb;
+        GET_ENUMCODECCB(Napi::Weak(info[0].As<Napi::Function>()), info, &cb);
     if (!info[0].isFunction()) {
       Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
       return env.Undefined();

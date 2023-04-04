@@ -123,10 +123,12 @@ function convert(line) {
         pieceForArgDef = `${type} ${paramName} = *info[${idx}].As<Napi::External<${type}>>().Data();`;
       } else if (func_p_list.includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("isFunction");
-        pieceForArgDef = `${type} ${paramName} = GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()));`;
+        pieceForArgDef = `${type} ${paramName};
+        GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()), info, &${paramName});`;
       } else if (func_list.includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("isFunction");
-        pieceForArgDef = `${type} ${paramName} = GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()));`;
+        pieceForArgDef = `${type} ${paramName};
+        GET_${type}(Napi::Weak(info[${idx}].As<Napi::Function>()), info, &${paramName});`;
       } else if (enum_list.includes(type)) {
         pieceForArgCheck = getPieceForArgCheck("isNumber");
         pieceForArgDef = `${type} ${paramName} = (${type})info[${idx}].As<Napi::Number>().int32_t();`;

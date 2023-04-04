@@ -14,13 +14,13 @@ static HMODULE tisgrabber;
 void device_lost_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, void *data = nullptr)
 {
     Napi::Env env = info.Env();
-    js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
+    // js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
 }
 
-DEVICE_LOST_CALLBACK GET_DEVICE_LOST_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info)
+void GET_DEVICE_LOST_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, DEVICE_LOST_CALLBACK *cb)
 {
     auto func = std::bind(frame_ready_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    return reinterpret_cast<DEVICE_LOST_CALLBACK>(std::addressof(func));
+    *cb = reinterpret_cast<DEVICE_LOST_CALLBACK>(std::addressof(func));
 }
 
 void frame_ready_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, unsigned char *pData, unsigned long frameNumber, void *data = nullptr)
@@ -29,10 +29,10 @@ void frame_ready_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &i
     js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<unsigned char>::New(env, pData), Napi::Number::New(env, frameNumber)});
 }
 
-FRAME_READY_CALLBACK GET_FRAME_READY_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info)
+void GET_FRAME_READY_CALLBACK(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, FRAME_READY_CALLBACK *cb)
 {
     auto func = std::bind(frame_ready_cb, js_func, info, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    return reinterpret_cast<FRAME_READY_CALLBACK>(std::addressof(func));
+    *cb = reinterpret_cast<FRAME_READY_CALLBACK>(std::addressof(func));
 }
 
 void frame_ready_cb_ex(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, HGRABBER hGrabber, HMEMBUFFER hBuffer, unsigned long frameNumber, void *data = nullptr)
@@ -41,10 +41,10 @@ void frame_ready_cb_ex(Napi::FunctionReference js_func, const Napi::CallbackInfo
     js_func.Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<HMEMBUFFER>::New(env, hBuffer), Napi::Number::New(env, frameNumber)});
 }
 
-FRAME_READY_CALLBACK GET_FRAME_READY_CALLBACK_EX(Napi::FunctionReference js_func, const Napi::CallbackInfo &info)
+void GET_FRAME_READY_CALLBACK_EX(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, FRAME_READY_CALLBACK_EX *cb)
 {
     auto func = std::bind(frame_ready_cb_ex, js_func, info, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    return reinterpret_cast<FRAME_READY_CALLBACK_EX>(std::addressof(func));
+    *cb = reinterpret_cast<FRAME_READY_CALLBACK_EX>(std::addressof(func));
 }
 
 void ic_enum_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, char *Name, void *data = nullptr)
@@ -53,10 +53,10 @@ void ic_enum_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info,
     js_func.Call({Napi::String::New(env, Name)});
 }
 
-IC_ENUMCB GET_IC_ENUMCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info)
+void GET_IC_ENUMCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, IC_ENUMCB *cb)
 {
     auto func = std::bind(ic_enum_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    return reinterpret_cast<IC_ENUMCB>(func);
+    *cb = reinterpret_cast<IC_ENUMCB>(func);
 }
 
 void enum_codec_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, char *CodecName, void *data = nullptr)
@@ -65,14 +65,13 @@ void enum_codec_cb(Napi::FunctionReference js_func, const Napi::CallbackInfo &in
     js_func.Call({Napi::String::New(env, CodecName)});
 }
 
-IC_ENUMCB GET_ENUMCODECCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info)
+void GET_ENUMCODECCB(Napi::FunctionReference js_func, const Napi::CallbackInfo &info, ENUMCODECCB *cb)
 {
     auto func = std::bind(ic_enum_cb, js_func, info, std::placeholders::_1, std::placeholders::_2);
-    return reinterpret_cast<ENUMCODECCB>(func);
+    *cb = reinterpret_cast<ENUMCODECCB>(func);
 }
 
 // generate start
-
 Napi::Value f_IC_InitLibrary(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -2102,7 +2101,8 @@ Napi::Value f_IC_SetFrameReadyCallbackEx(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK_EX cb = GET_FRAME_READY_CALLBACK_EX(Napi::Weak(info[1].As<Napi::Function>()));
+    FRAME_READY_CALLBACK_EX cb;
+    GET_FRAME_READY_CALLBACK_EX(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -2130,7 +2130,8 @@ Napi::Value f_IC_SetFrameReadyCallback(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK cb = GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()));
+    FRAME_READY_CALLBACK cb;
+    GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -2158,8 +2159,10 @@ Napi::Value f_IC_SetCallbacks(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    FRAME_READY_CALLBACK cb = GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()));
-    DEVICE_LOST_CALLBACK dlCB = GET_DEVICE_LOST_CALLBACK(Napi::Weak(info[3].As<Napi::Function>()));
+    FRAME_READY_CALLBACK cb;
+    GET_FRAME_READY_CALLBACK(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
+    DEVICE_LOST_CALLBACK dlCB;
+    GET_DEVICE_LOST_CALLBACK(Napi::Weak(info[3].As<Napi::Function>()), info, &dlCB);
     if (!info[1].isFunction())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -3051,7 +3054,8 @@ Napi::Value f_IC_enumProperties(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[1].As<Napi::Function>()));
+    IC_ENUMCB cb;
+    GET_IC_ENUMCB(Napi::Weak(info[1].As<Napi::Function>()), info, &cb);
     if (!info[1].isFunction())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -3103,7 +3107,8 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     char *Property = info[1].As<Napi::String>().utf8Value().c_str();
-    IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[2].As<Napi::Function>()));
+    IC_ENUMCB cb;
+    GET_IC_ENUMCB(Napi::Weak(info[2].As<Napi::Function>()), info, &cb);
     if (!info[1].isString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -3138,7 +3143,8 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
     char *Property = info[1].As<Napi::String>().utf8Value().c_str();
     char *Element = info[2].As<Napi::String>().utf8Value().c_str();
-    IC_ENUMCB cb = GET_IC_ENUMCB(Napi::Weak(info[3].As<Napi::Function>()));
+    IC_ENUMCB cb;
+    GET_IC_ENUMCB(Napi::Weak(info[3].As<Napi::Function>()), info, &cb);
     if (!info[1].isString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
@@ -4067,7 +4073,8 @@ Napi::Value f_IC_enumCodecs(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    ENUMCODECCB cb = GET_ENUMCODECCB(Napi::Weak(info[0].As<Napi::Function>()));
+    ENUMCODECCB cb;
+    GET_ENUMCODECCB(Napi::Weak(info[0].As<Napi::Function>()), info, &cb);
     if (!info[0].isFunction())
     {
         Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
@@ -4515,7 +4522,6 @@ Napi::Value f_IC_MemBufferGetIndex(const Napi::CallbackInfo &info)
     retObj.Set("outArgs", outArgs);
     return retObj;
 }
-
 // generate end
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
