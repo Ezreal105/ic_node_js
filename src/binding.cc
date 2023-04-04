@@ -19,35 +19,16 @@ Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_TidyUP f_ptr = (IC_TidyUP)GetProcAddress(tisgrabber, "IC_TidyUP");
+    IC_TidyUP *f_ptr = (IC_TidyUP *)GetProcAddress(tisgrabber, "IC_TidyUP");
+
     if (f_ptr == NULL)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_TidyUP in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    void ret = (*f_ptr)();
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", env.Undefined());
-    return retObj;
-}
-Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 0)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-
-    IC_CloseLibrary *f_prt = (IC_CloseLibrary *)GetProcAddress(tisgrabber, "IC_CloseLibrary");
-    if (f_prt == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_CloseLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    void ret = (*f_ptr)();
+    auto f = *f_ptr;
+    void ret = f();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", env.Undefined());
     return retObj;
@@ -57,7 +38,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     Napi::Object ic_static = Napi::Object::New(env);
     INIT_STATIC_METHOD(f_IC_TidyUP);
-    INIT_STATIC_METHOD(f_IC_CloseLibrary);
     exports.Set("ic_static", ic_static);
     // INIT_STATIC_METHOD(IC_InitLibrary);
     // INIT_STATIC_METHOD(IC_CreateGrabber);
