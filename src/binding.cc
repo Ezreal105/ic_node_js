@@ -5,6 +5,9 @@
 #include <Windows.h>
 #include "./binding.h"
 
+#define INIT_STATIC_METHOD(method) \
+    ic_static.Set(#method, Napi::Function::New<f_##method>(env));
+
 static HMODULE tisgrabber;
 
 Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
@@ -51,7 +54,8 @@ Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     Napi::Object ic_static = Napi::Object::New(env);
-    ic_static.Set("IC_InitLibrary", Napi::Function::New<f_IC_InitLibrary>(env));
+    INIT_STATIC_METHOD(f_IC_TidyUP);
+    INIT_STATIC_METHOD(f_IC_CloseLibrary);
     exports.Set("ic_static", ic_static);
     // INIT_STATIC_METHOD(IC_InitLibrary);
     // INIT_STATIC_METHOD(IC_CreateGrabber);
