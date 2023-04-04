@@ -63,6 +63,8 @@ const skipList = [
   "IC_enumPropertyElementInterfaces",
   "IC_enumCodecs",
   "IC_CreateFrameFilter",
+  "IC_GetPropertyMapStrings",
+  "IC_GetAvailableFrameFilters",
 ];
 
 const typePattern = `(${supportedCTypes
@@ -187,8 +189,6 @@ function convert(line) {
       const { name, type } = i;
       if (["int *", "float *", "long *", "COLORFORMAT *"].includes(type)) {
         returnPiece += `\noutArgs.Set("${name}", Napi::Number::New(env, *${name}));`;
-      } else if (["char **"].includes(type)) {
-        returnPiece += `\noutArgs.Set("${name}", Napi::String::New(env, ${name}));`;
       } else {
         throw Error(`Unsupported out param type: ${type}`);
       }

@@ -3242,48 +3242,6 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
     retObj.Set("result", Napi::Number::New(env, (double)ret));
     return retObj;
 }
-Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 3)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
-    int *StringCount;
-    int *StringMaxLength;
-    char **Strings;
-    if (!info[1].IsString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    if (!info[2].IsString())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_GetPropertyMapStrings *f_ptr = (IC_GetPropertyMapStrings *)GetProcAddress(tisgrabber, "IC_GetPropertyMapStrings");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_GetPropertyMapStrings in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, StringCount, StringMaxLength, Strings);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, (double)ret));
-    Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("StringCount", Napi::Number::New(env, *StringCount));
-    outArgs.Set("StringMaxLength", Napi::Number::New(env, *StringMaxLength));
-    outArgs.Set("Strings", Napi::String::New(env, Strings));
-    retObj.Set("outArgs", outArgs);
-    return retObj;
-}
 Napi::Value f_IC_GetPropertyMapString(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3411,37 +3369,6 @@ Napi::Value f_IC_GetAvailableFrameFilterCount(const Napi::CallbackInfo &info)
     int ret = f();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("result", Napi::Number::New(env, (double)ret));
-    return retObj;
-}
-Napi::Value f_IC_GetAvailableFrameFilters(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 1)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
-    char **szFilterList;
-    int iSize = (int)info[1].As<Napi::Number>().Int64Value();
-    if (!info[1].IsNumber())
-    {
-        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    IC_GetAvailableFrameFilters *f_ptr = (IC_GetAvailableFrameFilters *)GetProcAddress(tisgrabber, "IC_GetAvailableFrameFilters");
-    if (f_ptr == NULL)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_GetAvailableFrameFilters in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    int ret = f(szFilterList, iSize);
-    Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("result", Napi::Number::New(env, (double)ret));
-    Napi::Object outArgs = Napi::Object::New(env);
-    outArgs.Set("szFilterList", Napi::String::New(env, szFilterList));
-    retObj.Set("outArgs", outArgs);
     return retObj;
 }
 Napi::Value f_IC_AddFrameFilterToDevice(const Napi::CallbackInfo &info)
@@ -4237,12 +4164,10 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_GetPropertySwitch)
     INIT_STATIC_METHOD(IC_SetPropertySwitch)
     INIT_STATIC_METHOD(IC_PropertyOnePush)
-    INIT_STATIC_METHOD(IC_GetPropertyMapStrings)
     INIT_STATIC_METHOD(IC_GetPropertyMapString)
     INIT_STATIC_METHOD(IC_SetPropertyMapString)
     INIT_STATIC_METHOD(IC_ResetProperties)
     INIT_STATIC_METHOD(IC_GetAvailableFrameFilterCount)
-    INIT_STATIC_METHOD(IC_GetAvailableFrameFilters)
     INIT_STATIC_METHOD(IC_AddFrameFilterToDevice)
     INIT_STATIC_METHOD(IC_RemoveFrameFilterFromDevice)
     INIT_STATIC_METHOD(IC_DeleteFrameFilter)
