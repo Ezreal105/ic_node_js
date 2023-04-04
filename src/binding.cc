@@ -4046,6 +4046,12 @@ void device_lost_cb(HGRABBER hGrabber, void *data = nullptr)
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
+    tisgrabber = LoadLibrary("tisgrabber_x64.dll");
+    if (module == NULL)
+    {
+        Napi::Error::New(env, "Cannot load tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
     Napi::Object ic_static = Napi::Object::New(env);
     exports.Set("ic_static", ic_static);
     INIT_STATIC_METHOD(IC_InitLibrary)
