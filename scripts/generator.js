@@ -159,7 +159,6 @@ function convert(line) {
         pieceForArgDef = `${type} ${paramName} = nullptr;`;
       } else {
         return "";
-        throw Error(`Unsupported type: ${type}`);
       }
       pieceForArgDef && piecesForArgDef.push(pieceForArgDef);
       pieceForArgCheck && piecesForArgCheck.push(pieceForArgCheck);
@@ -168,18 +167,17 @@ function convert(line) {
   }
 
   let returnPiece = "Napi::Object retObj = Napi::Object::New(env);";
-  // the return type is an object with a property "result" and a property "outArgs"
   if (returnType === "char *") {
-    returnPiece += `\nretObj.Set("result", Napi::String::New(env, ret));`;
+    returnPiece += `\nretObj.Set("data", Napi::String::New(env, ret));`;
   } else if (["int", "long", "float", "unsigned long"].includes(returnType)) {
-    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, (double)ret));`;
+    returnPiece += `\nretObj.Set("data", Napi::Number::New(env, ret));`;
   } else if (["void"].includes(returnType)) {
-    returnPiece += `\nretObj.Set("result",env.Undefined());`;
+    returnPiece += `\nretObj.Set("data",env.Undefined());`;
   } else if (structP_list.includes(returnType)) {
-    returnPiece += `\nretObj.Set("result",Napi::External<${returnType}>::New(env, &ret));`;
+    returnPiece += `\nretObj.Set("data",Napi::External<${returnType}>::New(env, &ret));`;
   } else if (enum_list.includes(returnType)) {
     // enum
-    returnPiece += `\nretObj.Set("result", Napi::Number::New(env, ret));`;
+    returnPiece += `\nretObj.Set("data", Napi::Number::New(env, ret));`;
   } else {
     throw Error(`Unsupported return type: ${returnType}`);
   }
@@ -206,8 +204,9 @@ function convert(line) {
   const funcStr = `Napi::Value f_${functionName}(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     ${paramNumCheck}
-    ${piecesForArgDef.join("\n")}
     ${piecesForArgCheck.join("\n")}
+    ${piecesForArgDef.join("\n")}
+ 
     ${functionName} *f_ptr = (${functionName} *)GetProcAddress(tisgrabber, "${functionName}");
     if (f_ptr == NULL) {
         FreeLibrary(tisgrabber);
