@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "install": "node scripts/install.js",
     "build": "rollup -c rollup.config.mjs",
