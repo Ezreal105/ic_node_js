@@ -1501,35 +1501,6 @@ Napi::Value f_IC_SaveDeviceStateToFile(const Napi::CallbackInfo &info)
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
 }
-// Napi::Value f_IC_LoadDeviceStateFromFile(const Napi::CallbackInfo &info)
-// {
-//     Napi::Env env = info.Env();
-//     if (info.Length() != 2)
-//     {
-//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     }
-//     if (!info[1].IsString())
-//     {
-//         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-//     char *szFileName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-
-//     IC_LoadDeviceStateFromFile *f_ptr = (IC_LoadDeviceStateFromFile *)GetProcAddress(tisgrabber, "IC_LoadDeviceStateFromFile");
-//     if (f_ptr == nullptr)
-//     {
-//         FreeLibrary(tisgrabber);
-//         Napi::Error::New(env, "Cannot find function IC_LoadDeviceStateFromFile in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     auto f = *f_ptr;
-//     HGRABBER ret = f(hGrabber, szFileName);
-//     Napi::Object retObj = Napi::Object::New(env);
-//     retObj.Set("data", Napi::External<HGRABBER>::New(env, &ret));
-//     return retObj;
-// }
 Napi::Value f_IC_LoadDeviceStateFromFileEx(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -2085,78 +2056,6 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
     retObj.Set("data", FloatVectorToJsArray(env, fpsList));
     return retObj;
 }
-// Napi::Value f_IC_ShowInternalPropertyPage(const Napi::CallbackInfo &info)
-// {
-//     Napi::Env env = info.Env();
-//     if (info.Length() != 1)
-//     {
-//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     }
-
-//     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-
-//     IC_ShowInternalPropertyPage *f_ptr = (IC_ShowInternalPropertyPage *)GetProcAddress(tisgrabber, "IC_ShowInternalPropertyPage");
-//     if (f_ptr == nullptr)
-//     {
-//         FreeLibrary(tisgrabber);
-//         Napi::Error::New(env, "Cannot find function IC_ShowInternalPropertyPage in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     auto f = *f_ptr;
-//     int ret = f(hGrabber);
-//     Napi::Object retObj = Napi::Object::New(env);
-//     retObj.Set("code", Napi::Number::New(env, ret));
-//     return retObj;
-// }
-// Napi::Value f_IC_ResetUSBCam(const Napi::CallbackInfo &info)
-// {
-//     Napi::Env env = info.Env();
-//     if (info.Length() != 1)
-//     {
-//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     }
-
-//     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-
-//     IC_ResetUSBCam *f_ptr = (IC_ResetUSBCam *)GetProcAddress(tisgrabber, "IC_ResetUSBCam");
-//     if (f_ptr == nullptr)
-//     {
-//         FreeLibrary(tisgrabber);
-//         Napi::Error::New(env, "Cannot find function IC_ResetUSBCam in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     auto f = *f_ptr;
-//     int ret = f(hGrabber);
-//     Napi::Object retObj = Napi::Object::New(env);
-//     retObj.Set("data", Napi::Number::New(env, ret));
-//     return retObj;
-// }
-// Napi::Value f_IC_QueryPropertySet(const Napi::CallbackInfo &info)
-// {
-//     Napi::Env env = info.Env();
-//     if (info.Length() != 1)
-//     {
-//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     }
-
-//     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-
-//     IC_QueryPropertySet *f_ptr = (IC_QueryPropertySet *)GetProcAddress(tisgrabber, "IC_QueryPropertySet");
-//     if (f_ptr == nullptr)
-//     {
-//         FreeLibrary(tisgrabber);
-//         Napi::Error::New(env, "Cannot find function IC_QueryPropertySet in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     auto f = *f_ptr;
-//     int ret = f(hGrabber);
-//     Napi::Object retObj = Napi::Object::New(env);
-//     retObj.Set("data", Napi::Number::New(env, ret));
-//     return retObj;
-// }
 Napi::Value f_IC_SetDefaultWindowPosition(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3904,66 +3803,66 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
     return retObj;
 }
 
-Napi : Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
-{
-    Napi::Env env = info.Env();
-    if (info.Length() != 1)
-    {
-        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
+// Napi::Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
+// {
+//     Napi::Env env = info.Env();
+//     if (info.Length() != 1)
+//     {
+//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+//         return env.Undefined();
+//     }
 
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    IC_ListVideoFormats *f_ptr = (IC_ListVideoFormats *)GetProcAddress(tisgrabber, "IC_ListVideoFormats");
-    if (f_ptr == nullptr)
-    {
-        FreeLibrary(tisgrabber);
-        Napi::Error::New(env, "Cannot find function IC_ListVideoFormats in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-        return env.Undefined();
-    };
-    auto f = *f_ptr;
-    Napi::Object retObj = Napi::Object::New(env);
-    Napi::Array arr = Napi::Array::New(env);
-    retObj.Set("data", arr);
-    int count = f(hGrabber, nullptr, 0);
-    if (count == 0)
-    {
-        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-    }
-    else if (count > 0)
-    {
-        char *szFormatList = new char[count];
-        const int FORMAT_STR_SIZE = 40;
-        for (size_t i = 0; i < count; i++)
-        {
-            szFormatList[i] = new char[FORMAT_STR_SIZE];
-        }
+//     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
+//     IC_ListVideoFormats *f_ptr = (IC_ListVideoFormats *)GetProcAddress(tisgrabber, "IC_ListVideoFormats");
+//     if (f_ptr == nullptr)
+//     {
+//         FreeLibrary(tisgrabber);
+//         Napi::Error::New(env, "Cannot find function IC_ListVideoFormats in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+//         return env.Undefined();
+//     };
+//     auto f = *f_ptr;
+//     Napi::Object retObj = Napi::Object::New(env);
+//     Napi::Array arr = Napi::Array::New(env);
+//     retObj.Set("data", arr);
+//     int count = f(hGrabber, nullptr, 0);
+//     if (count == 0)
+//     {
+//         retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+//     }
+//     else if (count > 0)
+//     {
+//         char **szFormatList = new char *[count];
+//         const int FORMAT_STR_SIZE = 40;
+//         for (size_t i = 0; i < count; i++)
+//         {
+//             szFormatList[i] = new char[FORMAT_STR_SIZE];
+//         }
 
-        int ret = f(hGrabber, szFormatList, FORMAT_STR_SIZE);
-        if (ret == IC_SUCCESS)
-        {
-            for (size_t i = 0; i < count; i++)
-            {
-                arr.Set(i, Napi::String::New(env, szFormatList[i]));
-                delete szFormatList[i];
-            }
+//         int ret = f(hGrabber, szFormatList, FORMAT_STR_SIZE);
+//         if (ret == IC_SUCCESS)
+//         {
+//             for (size_t i = 0; i < count; i++)
+//             {
+//                 arr.Set(i, Napi::String::New(env, szFormatList[i]));
+//                 delete szFormatList[i];
+//             }
 
-            retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-            retObj.Set("data", arr);
-        }
-        else
-        {
-            retObj.Set("code", Napi::Number::New(env, ret));
-        }
+//             retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+//             retObj.Set("data", arr);
+//         }
+//         else
+//         {
+//             retObj.Set("code", Napi::Number::New(env, ret));
+//         }
 
-        // clean up
-        for (size_t i = 0; i < count; i++)
-        {
-            delete szFormatList[i];
-        }
-        delete szFormatList;
-    }
-}
+//         // clean up
+//         for (size_t i = 0; i < count; i++)
+//         {
+//             delete szFormatList[i];
+//         }
+//         delete szFormatList;
+//     }
+// }
 // generate end
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
@@ -4014,7 +3913,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SaveImage)
     INIT_STATIC_METHOD(IC_SetHWnd)
     INIT_STATIC_METHOD(IC_GetSerialNumber)
-    INIT_STATIC_METHOD(IC_ListVideoFormats)
+    // INIT_STATIC_METHOD(IC_ListVideoFormats)
     INIT_STATIC_METHOD(IC_GetDeviceCount)
     INIT_STATIC_METHOD(IC_GetDevice)
     INIT_STATIC_METHOD(IC_GetUniqueNamefromList)
@@ -4025,7 +3924,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_GetVideoFormatCount)
     INIT_STATIC_METHOD(IC_GetVideoFormat)
     INIT_STATIC_METHOD(IC_SaveDeviceStateToFile)
-    INIT_STATIC_METHOD(IC_LoadDeviceStateFromFile)
     INIT_STATIC_METHOD(IC_LoadDeviceStateFromFileEx)
     INIT_STATIC_METHOD(IC_SaveDeviceSettings)
     INIT_STATIC_METHOD(IC_OpenDeviceBySettings)
@@ -4043,9 +3941,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SetFrameRate)
     INIT_STATIC_METHOD(IC_GetFrameRate)
     INIT_STATIC_METHOD(IC_GetAvailableFrameRates)
-    INIT_STATIC_METHOD(IC_ShowInternalPropertyPage)
-    INIT_STATIC_METHOD(IC_ResetUSBCam)
-    INIT_STATIC_METHOD(IC_QueryPropertySet)
     INIT_STATIC_METHOD(IC_SetDefaultWindowPosition)
     INIT_STATIC_METHOD(IC_SetWindowPosition)
     INIT_STATIC_METHOD(IC_GetWindowPosition)
@@ -4070,7 +3965,6 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SetWhiteBalanceGreen)
     INIT_STATIC_METHOD(IC_SetWhiteBalanceBlue)
     INIT_STATIC_METHOD(IC_FocusOnePush)
-    INIT_STATIC_METHOD(IC_printItemandElementNames)
     INIT_STATIC_METHOD(IC_IsPropertyAvailable)
     INIT_STATIC_METHOD(IC_GetPropertyValueRange)
     INIT_STATIC_METHOD(IC_GetPropertyValue)
