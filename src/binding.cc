@@ -44,12 +44,12 @@
     else                                                        \
     {                                                           \
         retObj.Set("code", Napi::Number::New(env, IC_SUCCESS)); \
-        retObj.Set("data", Napi::String::New(env, ret));        \
+        retObj.Set("data", Napi::Number::New(env, ret));        \
     }
 
 struct EnumCbData
 {
-    Napi::FunctionReference &jsFunc
+    Napi::FunctionReference &jsFunc;
 };
 
 static Napi::FunctionReference *g_frameReadyCb = nullptr;
@@ -71,7 +71,7 @@ void frameReadyCb(HGRABBER hGrabber, HMEMBUFFER hBuffer, unsigned long frameNumb
     if (g_frameReadyCb != nullptr)
     {
         auto env = g_frameReadyCb->Env();
-        g_frameReadyCb->Call({Napi::External<HGRABBER>::New(env, hGrabber), Napi::External<HMEMBUFFER>::New(env, hBuffer), Napi::Number::New(env, frameNumber)});
+        g_frameReadyCb->Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<HMEMBUFFER>::New(env, &hBuffer), Napi::Number::New(env, frameNumber)});
     }
 }
 
@@ -80,7 +80,7 @@ void deviceLostCb(HGRABBER hGrabber, void *data = nullptr)
     if (g_deviceLostCb != nullptr)
     {
         auto env = g_deviceLostCb->Env();
-        g_deviceLostCb->Call({Napi::External<HMEMBUFFER>::New(env, hBuffer)});
+        g_deviceLostCb->Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
     }
 }
 
@@ -144,12 +144,12 @@ Napi::Value f_IC_CreateGrabber(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     if (ret)
     {
-        retObj.Set("code", Napi::Number::New(IC_SUCCESS));
+        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
         retObj.Set("data", Napi::External<HGRABBER>::New(env, &ret));
     }
     else
     {
-        retObj.Set("code", Napi::Number::New(IC_ERROR));
+        retObj.Set("code", Napi::Number::New(env, IC_ERROR));
     }
     return retObj;
 }
@@ -172,7 +172,7 @@ Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     f();
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("code", Napi::Number::New(IC_SUCCESS));
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     return retObj;
 }
 Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
@@ -194,7 +194,7 @@ Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     f();
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("code", Napi::Number::New(IC_SUCCESS));
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     return retObj;
 }
 Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
@@ -247,7 +247,7 @@ Napi::Value f_IC_CloseVideoCaptureDevice(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("code", Napi::Number::New(IC_SUCCESS));
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     return retObj;
 }
 Napi::Value f_IC_GetDeviceName(const Napi::CallbackInfo &info)
@@ -273,7 +273,7 @@ Napi::Value f_IC_GetDeviceName(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     if (ret == NULL)
     {
-        retObj.Set("code", Napi::Number::New(IC_ERROR));
+        retObj.Set("code", Napi::Number::New(env, IC_ERROR));
         retObj.Set("message", Napi::String::New(env, "Device is invalid"));
         return retObj;
     }
@@ -2384,12 +2384,12 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
     };
     auto f = *f_ptr;
 
-    std::vector<float> fpsList{};
+    std::vector<float> fpsList;
     int Index = 0;
     float fps = 0.0f;
-    while (IC_GetAvailableFrameRates(hGrabber, Index, &fps) == IC_SUCCESS)
+    while (f(hGrabber, Index, &fps) == IC_SUCCESS)
     {
-        fpsList.push_back(*fps);
+        fpsList.push_back(fps);
         Index++;
     }
     Napi::Object retObj = Napi::Object::New(env);
@@ -2652,23 +2652,24 @@ Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
     Napi::Array modesArr = Napi::Array::New(env);
     retObj.Set("data", modesArr);
     auto f = *f_ptr;
-    char szModes[20][10];
+    const int SIZE = 20;
+    char szModes[SIZE][10];
     int iModeCount;
-    iModeCount = f(hGrabber, (char *)szModes, 20);
-    if (isModeCount < 0)
+    iModeCount = f(hGrabber, (char *)szModes, SIZE);
+    if (iModeCount < 0)
     {
         Napi::Error::New(env, "IC_GetTriggerModes error").ThrowAsJavaScriptException();
         return env.Undefined();
     }
     else
     {
-        for (int i = 0; i < min(iModeCount, 20); i++)
+        for (int i = 0; i < min(iModeCount, SIZE); i++)
         {
             modesArr.Set(i, Napi::String::New(env, szModes[i]));
         }
     }
 
-    int ret = f(hGrabber, szModeList, iSize);
+    int ret = f(hGrabber, (char *)szModes, SIZE);
 
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     retObj.Set("data", modesArr);
@@ -3207,7 +3208,7 @@ Napi::Value f_IC_enumProperties(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    auto cbData = EnumCbData { Napi::Weak(callback) }
+    auto cbData = EnumCbData { Napi::Weak(callback) };
     int ret = f(hGrabber, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3258,7 +3259,7 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
     };
 
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
     Napi::Function callback = info[2].As<Napi::Function>();
 
     IC_enumPropertyElements *f_ptr = (IC_enumPropertyElements *)GetProcAddress(tisgrabber, "IC_enumPropertyElements");
@@ -3269,8 +3270,8 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    auto cbData = EnumCbData { Napi::Weak(callback) }
-    int ret = f(hGrabber, Property, &EnumCb, &cbData);
+    auto cbData = EnumCbData { Napi::Weak(callback) };
+    int ret = f(hGrabber, (const char *)Property, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -3301,8 +3302,8 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
     };
 
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     Napi::Function callback = info[3].As<Napi::Function>();
 
     IC_enumPropertyElementInterfaces *f_ptr = (IC_enumPropertyElementInterfaces *)GetProcAddress(tisgrabber, "IC_enumPropertyElementInterfaces");
@@ -3313,8 +3314,8 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    auto cbData = EnumCbData { Napi::Weak(callback) }
-    int ret = f(hGrabber, Property, Element, &EnumCb, &cbData);
+    auto cbData = EnumCbData { Napi::Weak(callback) };
+    int ret = f(hGrabber, (const char*)Property, (const char*) Element, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -3339,8 +3340,8 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
 
     IC_IsPropertyAvailable *f_ptr = (IC_IsPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsPropertyAvailable");
     if (f_ptr == NULL)
@@ -3350,7 +3351,7 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
     return retObj;
@@ -3377,8 +3378,8 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     int *Min;
     int *Max;
 
@@ -3390,7 +3391,7 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Min, Max);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
@@ -3418,8 +3419,8 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     int *Value;
 
     IC_GetPropertyValue *f_ptr = (IC_GetPropertyValue *)GetProcAddress(tisgrabber, "IC_GetPropertyValue");
@@ -3430,7 +3431,7 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Value);
+    int ret = f(hGrabber,  (const char*)Property, (const char*)Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     retObj.Set("data", Napi::Number::New(env, *Value));
@@ -3460,8 +3461,8 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     int Value = (int)info[3].As<Napi::Number>().Int64Value();
 
     IC_SetPropertyValue *f_ptr = (IC_SetPropertyValue *)GetProcAddress(tisgrabber, "IC_SetPropertyValue");
@@ -3472,7 +3473,7 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Value);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -3496,8 +3497,8 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     float *Min;
     float *Max;
 
@@ -3509,7 +3510,7 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Min, Max);
+    int ret = f(hGrabber, (const char*)Property,  (const char*)Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
@@ -3537,8 +3538,8 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     float *Value;
 
     IC_GetPropertyAbsoluteValue *f_ptr = (IC_GetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValue");
@@ -3549,7 +3550,7 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Value);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     retObj.Set("data", Napi::Number::New(env, *Value));
@@ -3579,8 +3580,8 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     float Value = (float)info[3].As<Napi::Number>().DoubleValue();
 
     IC_SetPropertyAbsoluteValue *f_ptr = (IC_SetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_SetPropertyAbsoluteValue");
@@ -3591,7 +3592,7 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, Value);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -3615,8 +3616,8 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     int *On;
 
     IC_GetPropertySwitch *f_ptr = (IC_GetPropertySwitch *)GetProcAddress(tisgrabber, "IC_GetPropertySwitch");
@@ -3627,7 +3628,7 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, On);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, On);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     retObj.Set("data", Napi::Number::New(env, *On));
@@ -3657,8 +3658,8 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Element = info[2].As<Napi::String>().Utf8Value().c_str();
     int On = (int)info[3].As<Napi::Number>().Int32Value();
 
     IC_SetPropertySwitch *f_ptr = (IC_SetPropertySwitch *)GetProcAddress(tisgrabber, "IC_SetPropertySwitch");
@@ -3669,7 +3670,7 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Property, Element, On);
+    int ret = f(hGrabber,  (const char*)Property,  (const char*)Element, On);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -3693,7 +3694,7 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
     char *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
 
     IC_PropertyOnePush *f_ptr = (IC_PropertyOnePush *)GetProcAddress(tisgrabber, "IC_PropertyOnePush");

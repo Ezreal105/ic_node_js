@@ -164,7 +164,7 @@ extern "C"
 	typedef int AC IC_SaveImage(HGRABBER hGrabber, char *szFileName, IMG_FILETYPE ft, long quality);
 	typedef unsigned char *AC IC_GetImagePtr(HGRABBER hGrabber);
 	typedef int AC IC_SetHWnd(HGRABBER hGrabber, __HWND hWnd);
-	typedef void AC IC_GetSerialNumber(HGRABBER hGrabber, char *szSerial);
+	typedef int AC IC_GetSerialNumber(HGRABBER hGrabber, char *szSerial);
 	typedef int AC IC_ListDevices(char *szDeviceList, int iSize);
 	typedef int AC IC_ListDevicesbyIndex(char *szDeviceName, int iSize, int DeviceIndex);
 	typedef int AC IC_ListVideoFormats(HGRABBER hGrabber, char *szFormatList, int iSize);
