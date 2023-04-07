@@ -4242,17 +4242,6 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
 
 // generate end
 
-void device_lost_cb(HGRABBER hGrabber, void *data = nullptr)
-{
-
-    // std::vector<Napi::FunctionReference> cbs = grabber_device_lost_callbacks[hGrabber];
-    // for (std::vector<Napi::FunctionReference>::iterator it = cbs.begin(); it != cbs.end(); ++it)
-    // {
-    //     Napi::FunctionReference cb = *it;
-    //     cb.Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
-    // }
-}
-
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     tisgrabber = LoadLibrary("tisgrabber_x64.dll");
