@@ -8,3 +8,6 @@ const name = icNode.IC_GetDevice(0).data
 const uniqueName = icNode.IC_GetUniqueNamefromList(0).data
 console.log('[wsttest] name', name)
 icNode.IC_OpenVideoCaptureDevice(grabber, name).data
+if (icNode.IC_IsDevValid(grabber)) {
+    icNode.IC_StartLive(grabber, 0);
+}
