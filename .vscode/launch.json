@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "cppvsdbg",
+        "request": "launch",
+        "name": "vsDebug",
+        "program": "C:/Users/EZREAL/AppData/Roaming/nvm/v16.20.0/node", // Node安装的路径
+        "args": ["${workspaceFolder}/debug.js"], // 用于调用node-addon的js文件
+        "cwd": "${workspaceFolder}/lib/binding/napi-v8"
+    }
+    ]
+  }
+  
