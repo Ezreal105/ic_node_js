@@ -145,7 +145,7 @@ Napi::Value f_IC_CreateGrabber(const Napi::CallbackInfo &info)
     if (ret)
     {
         retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-        retObj.Set("data", Napi::External<HGRABBER>::New(env, &ret));
+        retObj.Set("data", Napi::External<HGRABBER_t>::New(env, ret));
     }
     else
     {
@@ -219,12 +219,10 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    auto hGrabberObj = info[0].As<Napi::External<HGRABBER>>();
-    auto hGrabber = *hGrabberObj.Data();
+    auto hGrabberObj = info[0].As<Napi::External<HGRABBER_t>>();
+    HGRABBER hGrabber = hGrabberObj.Data();
     auto szDeviceNameStr = info[1].As<Napi::String>().Utf8Value();
     char *szDeviceName = (char *)szDeviceNameStr.c_str();
-    // IC_CreateGrabber *f_ptr_1 = (IC_CreateGrabber *)GetProcAddress(tisgrabber, "IC_CreateGrabber");
-    // auto hGrabber = (*f_ptr_1)();
     int ret = f(hGrabber, szDeviceName);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
