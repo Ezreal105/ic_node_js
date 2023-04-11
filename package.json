@@ -8,6 +8,7 @@
   "scripts": {
     "install": "node scripts/install.js",
     "build": "rollup -c rollup.config.mjs",
+    "build:addon:debug": "node-pre-gyp --target_platform=win32 rebuild --debug",
     "build:addon": "node-pre-gyp --target_platform=win32 rebuild",
     "package:addon": "node-pre-gyp --target_platform=win32 package",
     "publish:addon": "node-pre-gyp-github publish"

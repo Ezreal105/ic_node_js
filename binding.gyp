@@ -37,7 +37,7 @@
       "dependencies": [ "<(module_name)" ],
       "copies": [
         {
-          "files": [ "<(PRODUCT_DIR)/<(module_name).node" ],
+          "files": [ "<(PRODUCT_DIR)/<(module_name).node", "<(PRODUCT_DIR)/<(module_name).pdb" ],
           "destination": "<(module_path)"
         }
       ]

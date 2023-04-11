@@ -210,8 +210,6 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    HGRABBER hGrabber = *info[0].As<Napi::External<HGRABBER>>().Data();
-    char *szDeviceName = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
 
     IC_OpenVideoCaptureDevice *f_ptr = (IC_OpenVideoCaptureDevice *)GetProcAddress(tisgrabber, "IC_OpenVideoCaptureDevice");
     if (f_ptr == nullptr)
@@ -221,6 +219,12 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
+    auto hGrabberObj = info[0].As<Napi::External<HGRABBER>>();
+    auto hGrabber = *hGrabberObj.Data();
+    auto szDeviceNameStr = info[1].As<Napi::String>().Utf8Value();
+    char *szDeviceName = (char *)szDeviceNameStr.c_str();
+    // IC_CreateGrabber *f_ptr_1 = (IC_CreateGrabber *)GetProcAddress(tisgrabber, "IC_CreateGrabber");
+    // auto hGrabber = (*f_ptr_1)();
     int ret = f(hGrabber, szDeviceName);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1705,6 +1709,11 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
+    if (!info[0].IsExternal())
+    {
+        Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
     if (!info[1].IsString())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
