@@ -1743,7 +1743,7 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, szDisplayname);
     Napi::Object retObj = Napi::Object::New(env);
-    retObj.Set("data", Napi::Number::New(env, ret));
+    retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
 }
 
