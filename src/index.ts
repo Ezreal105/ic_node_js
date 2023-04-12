@@ -284,7 +284,7 @@ class ICGrabber {
   }
 
   getSupportedFrameRates(): number[] {
-    return FORCE_DATA(ICGrabber.METHODS.IC_GetAvailableFrameRates(this.grabber));
+    return FORCE_DATA(ICGrabber.METHODS.IC_GetAvailableFrameRates(this.grabber)).map(i => Math.floor(i));
   }
 
   isPropertyAvailable<T extends ICNodePropertyElement>(property: T[0], element: T[1]) {

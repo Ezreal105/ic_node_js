@@ -111,14 +111,14 @@ Napi::Value f_IC_InitLibrary(const Napi::CallbackInfo &info)
     auto szLicenseKeyStr = info[0].As<Napi::String>().Utf8Value();
     char *szLicenseKey = (char *)szLicenseKeyStr.c_str();
 
-    IC_InitLibrary *f_ptr = (IC_InitLibrary *)GetProcAddress(tisgrabber, "IC_InitLibrary");
-    if (f_ptr == nullptr)
+    IC_InitLibrary *fPtr = (IC_InitLibrary *)GetProcAddress(tisgrabber, "IC_InitLibrary");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_InitLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(szLicenseKey);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -133,14 +133,14 @@ Napi::Value f_IC_CreateGrabber(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_CreateGrabber *f_ptr = (IC_CreateGrabber *)GetProcAddress(tisgrabber, "IC_CreateGrabber");
-    if (f_ptr == nullptr)
+    IC_CreateGrabber *fPtr = (IC_CreateGrabber *)GetProcAddress(tisgrabber, "IC_CreateGrabber");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_CreateGrabber in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     HGRABBER ret = f();
     Napi::Object retObj = Napi::Object::New(env);
     if (ret)
@@ -163,14 +163,14 @@ Napi::Value f_IC_TidyUP(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_TidyUP *f_ptr = (IC_TidyUP *)GetProcAddress(tisgrabber, "IC_TidyUP");
-    if (f_ptr == nullptr)
+    IC_TidyUP *fPtr = (IC_TidyUP *)GetProcAddress(tisgrabber, "IC_TidyUP");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_TidyUP in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     f();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -185,14 +185,14 @@ Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_CloseLibrary *f_ptr = (IC_CloseLibrary *)GetProcAddress(tisgrabber, "IC_CloseLibrary");
-    if (f_ptr == nullptr)
+    IC_CloseLibrary *fPtr = (IC_CloseLibrary *)GetProcAddress(tisgrabber, "IC_CloseLibrary");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_CloseLibrary in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     f();
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -212,14 +212,14 @@ Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
 
-    IC_OpenVideoCaptureDevice *f_ptr = (IC_OpenVideoCaptureDevice *)GetProcAddress(tisgrabber, "IC_OpenVideoCaptureDevice");
-    if (f_ptr == nullptr)
+    IC_OpenVideoCaptureDevice *fPtr = (IC_OpenVideoCaptureDevice *)GetProcAddress(tisgrabber, "IC_OpenVideoCaptureDevice");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_OpenVideoCaptureDevice in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     auto szDeviceNameStr = info[1].As<Napi::String>().Utf8Value();
     char *szDeviceName = (char *)szDeviceNameStr.c_str();
@@ -239,14 +239,14 @@ Napi::Value f_IC_CloseVideoCaptureDevice(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_CloseVideoCaptureDevice *f_ptr = (IC_CloseVideoCaptureDevice *)GetProcAddress(tisgrabber, "IC_CloseVideoCaptureDevice");
-    if (f_ptr == nullptr)
+    IC_CloseVideoCaptureDevice *fPtr = (IC_CloseVideoCaptureDevice *)GetProcAddress(tisgrabber, "IC_CloseVideoCaptureDevice");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_CloseVideoCaptureDevice in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -263,14 +263,14 @@ Napi::Value f_IC_GetDeviceName(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetDeviceName *f_ptr = (IC_GetDeviceName *)GetProcAddress(tisgrabber, "IC_GetDeviceName");
-    if (f_ptr == nullptr)
+    IC_GetDeviceName *fPtr = (IC_GetDeviceName *)GetProcAddress(tisgrabber, "IC_GetDeviceName");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetDeviceName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     if (ret == nullptr)
@@ -294,14 +294,14 @@ Napi::Value f_IC_GetVideoFormatWidth(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetVideoFormatWidth *f_ptr = (IC_GetVideoFormatWidth *)GetProcAddress(tisgrabber, "IC_GetVideoFormatWidth");
-    if (f_ptr == nullptr)
+    IC_GetVideoFormatWidth *fPtr = (IC_GetVideoFormatWidth *)GetProcAddress(tisgrabber, "IC_GetVideoFormatWidth");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoFormatWidth in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -319,14 +319,14 @@ Napi::Value f_IC_GetVideoFormatHeight(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetVideoFormatHeight *f_ptr = (IC_GetVideoFormatHeight *)GetProcAddress(tisgrabber, "IC_GetVideoFormatHeight");
-    if (f_ptr == nullptr)
+    IC_GetVideoFormatHeight *fPtr = (IC_GetVideoFormatHeight *)GetProcAddress(tisgrabber, "IC_GetVideoFormatHeight");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoFormatHeight in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -349,14 +349,14 @@ Napi::Value f_IC_SetFormat(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     COLORFORMAT format = (COLORFORMAT)info[1].As<Napi::Number>().Int32Value();
 
-    IC_SetFormat *f_ptr = (IC_SetFormat *)GetProcAddress(tisgrabber, "IC_SetFormat");
-    if (f_ptr == nullptr)
+    IC_SetFormat *fPtr = (IC_SetFormat *)GetProcAddress(tisgrabber, "IC_SetFormat");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetFormat in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, format);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -373,14 +373,14 @@ Napi::Value f_IC_GetFormat(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetFormat *f_ptr = (IC_GetFormat *)GetProcAddress(tisgrabber, "IC_GetFormat");
-    if (f_ptr == nullptr)
+    IC_GetFormat *fPtr = (IC_GetFormat *)GetProcAddress(tisgrabber, "IC_GetFormat");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetFormat in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     COLORFORMAT ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -404,14 +404,14 @@ Napi::Value f_IC_SetVideoFormat(const Napi::CallbackInfo &info)
     auto szFormatStr = info[1].As<Napi::String>().Utf8Value();
     char *szFormat = (char *)szFormatStr.c_str();
 
-    IC_SetVideoFormat *f_ptr = (IC_SetVideoFormat *)GetProcAddress(tisgrabber, "IC_SetVideoFormat");
-    if (f_ptr == nullptr)
+    IC_SetVideoFormat *fPtr = (IC_SetVideoFormat *)GetProcAddress(tisgrabber, "IC_SetVideoFormat");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetVideoFormat in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFormat);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -434,14 +434,14 @@ Napi::Value f_IC_SetVideoNorm(const Napi::CallbackInfo &info)
     auto szNormStr = info[1].As<Napi::String>().Utf8Value();
     char *szNorm = (char *)szNormStr.c_str();
 
-    IC_SetVideoNorm *f_ptr = (IC_SetVideoNorm *)GetProcAddress(tisgrabber, "IC_SetVideoNorm");
-    if (f_ptr == nullptr)
+    IC_SetVideoNorm *fPtr = (IC_SetVideoNorm *)GetProcAddress(tisgrabber, "IC_SetVideoNorm");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetVideoNorm in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szNorm);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -464,14 +464,14 @@ Napi::Value f_IC_SetInputChannel(const Napi::CallbackInfo &info)
     auto szChannelStr = info[1].As<Napi::String>().Utf8Value();
     char *szChannel = (char *)szChannelStr.c_str();
 
-    IC_SetInputChannel *f_ptr = (IC_SetInputChannel *)GetProcAddress(tisgrabber, "IC_SetInputChannel");
-    if (f_ptr == nullptr)
+    IC_SetInputChannel *fPtr = (IC_SetInputChannel *)GetProcAddress(tisgrabber, "IC_SetInputChannel");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetInputChannel in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szChannel);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -493,14 +493,14 @@ Napi::Value f_IC_StartLive(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iShow = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_StartLive *f_ptr = (IC_StartLive *)GetProcAddress(tisgrabber, "IC_StartLive");
-    if (f_ptr == nullptr)
+    IC_StartLive *fPtr = (IC_StartLive *)GetProcAddress(tisgrabber, "IC_StartLive");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_StartLive in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iShow);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -522,14 +522,14 @@ Napi::Value f_IC_PrepareLive(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iShow = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_PrepareLive *f_ptr = (IC_PrepareLive *)GetProcAddress(tisgrabber, "IC_PrepareLive");
-    if (f_ptr == nullptr)
+    IC_PrepareLive *fPtr = (IC_PrepareLive *)GetProcAddress(tisgrabber, "IC_PrepareLive");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_PrepareLive in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iShow);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -546,14 +546,14 @@ Napi::Value f_IC_SuspendLive(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_SuspendLive *f_ptr = (IC_SuspendLive *)GetProcAddress(tisgrabber, "IC_SuspendLive");
-    if (f_ptr == nullptr)
+    IC_SuspendLive *fPtr = (IC_SuspendLive *)GetProcAddress(tisgrabber, "IC_SuspendLive");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SuspendLive in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -570,14 +570,14 @@ Napi::Value f_IC_IsLive(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_IsLive *f_ptr = (IC_IsLive *)GetProcAddress(tisgrabber, "IC_IsLive");
-    if (f_ptr == nullptr)
+    IC_IsLive *fPtr = (IC_IsLive *)GetProcAddress(tisgrabber, "IC_IsLive");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsLive in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -594,14 +594,14 @@ Napi::Value f_IC_StopLive(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_StopLive *f_ptr = (IC_StopLive *)GetProcAddress(tisgrabber, "IC_StopLive");
-    if (f_ptr == nullptr)
+    IC_StopLive *fPtr = (IC_StopLive *)GetProcAddress(tisgrabber, "IC_StopLive");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_StopLive in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -623,14 +623,14 @@ Napi::Value f_IC_IsCameraPropertyAvailable(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
 
-    IC_IsCameraPropertyAvailable *f_ptr = (IC_IsCameraPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsCameraPropertyAvailable");
-    if (f_ptr == nullptr)
+    IC_IsCameraPropertyAvailable *fPtr = (IC_IsCameraPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsCameraPropertyAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsCameraPropertyAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -658,14 +658,14 @@ Napi::Value f_IC_SetCameraProperty(const Napi::CallbackInfo &info)
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long lValue = (long)info[2].As<Napi::Number>().Int64Value();
 
-    IC_SetCameraProperty *f_ptr = (IC_SetCameraProperty *)GetProcAddress(tisgrabber, "IC_SetCameraProperty");
-    if (f_ptr == nullptr)
+    IC_SetCameraProperty *fPtr = (IC_SetCameraProperty *)GetProcAddress(tisgrabber, "IC_SetCameraProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetCameraProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -689,14 +689,14 @@ Napi::Value f_IC_CameraPropertyGetRange(const Napi::CallbackInfo &info)
     long *lMin;
     long *lMax;
 
-    IC_CameraPropertyGetRange *f_ptr = (IC_CameraPropertyGetRange *)GetProcAddress(tisgrabber, "IC_CameraPropertyGetRange");
-    if (f_ptr == nullptr)
+    IC_CameraPropertyGetRange *fPtr = (IC_CameraPropertyGetRange *)GetProcAddress(tisgrabber, "IC_CameraPropertyGetRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_CameraPropertyGetRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -727,14 +727,14 @@ Napi::Value f_IC_GetCameraProperty(const Napi::CallbackInfo &info)
     CAMERA_PROPERTY eProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lValue;
 
-    IC_GetCameraProperty *f_ptr = (IC_GetCameraProperty *)GetProcAddress(tisgrabber, "IC_GetCameraProperty");
-    if (f_ptr == nullptr)
+    IC_GetCameraProperty *fPtr = (IC_GetCameraProperty *)GetProcAddress(tisgrabber, "IC_GetCameraProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetCameraProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -769,14 +769,14 @@ Napi::Value f_IC_EnableAutoCameraProperty(const Napi::CallbackInfo &info)
     CAMERA_PROPERTY iProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     int iOnOff = (int)info[2].As<Napi::Number>().Int32Value();
 
-    IC_EnableAutoCameraProperty *f_ptr = (IC_EnableAutoCameraProperty *)GetProcAddress(tisgrabber, "IC_EnableAutoCameraProperty");
-    if (f_ptr == nullptr)
+    IC_EnableAutoCameraProperty *fPtr = (IC_EnableAutoCameraProperty *)GetProcAddress(tisgrabber, "IC_EnableAutoCameraProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_EnableAutoCameraProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -798,14 +798,14 @@ Napi::Value f_IC_IsCameraPropertyAutoAvailable(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     CAMERA_PROPERTY iProperty = (CAMERA_PROPERTY)info[1].As<Napi::Number>().Int32Value();
 
-    IC_IsCameraPropertyAutoAvailable *f_ptr = (IC_IsCameraPropertyAutoAvailable *)GetProcAddress(tisgrabber, "IC_IsCameraPropertyAutoAvailable");
-    if (f_ptr == nullptr)
+    IC_IsCameraPropertyAutoAvailable *fPtr = (IC_IsCameraPropertyAutoAvailable *)GetProcAddress(tisgrabber, "IC_IsCameraPropertyAutoAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsCameraPropertyAutoAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iProperty);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -828,14 +828,14 @@ Napi::Value f_IC_GetAutoCameraProperty(const Napi::CallbackInfo &info)
     int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
     int *iOnOff;
 
-    IC_GetAutoCameraProperty *f_ptr = (IC_GetAutoCameraProperty *)GetProcAddress(tisgrabber, "IC_GetAutoCameraProperty");
-    if (f_ptr == nullptr)
+    IC_GetAutoCameraProperty *fPtr = (IC_GetAutoCameraProperty *)GetProcAddress(tisgrabber, "IC_GetAutoCameraProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetAutoCameraProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -858,14 +858,14 @@ Napi::Value f_IC_IsVideoPropertyAvailable(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
 
-    IC_IsVideoPropertyAvailable *f_ptr = (IC_IsVideoPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsVideoPropertyAvailable");
-    if (f_ptr == nullptr)
+    IC_IsVideoPropertyAvailable *fPtr = (IC_IsVideoPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsVideoPropertyAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsVideoPropertyAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -889,14 +889,14 @@ Napi::Value f_IC_VideoPropertyGetRange(const Napi::CallbackInfo &info)
     long *lMin;
     long *lMax;
 
-    IC_VideoPropertyGetRange *f_ptr = (IC_VideoPropertyGetRange *)GetProcAddress(tisgrabber, "IC_VideoPropertyGetRange");
-    if (f_ptr == nullptr)
+    IC_VideoPropertyGetRange *fPtr = (IC_VideoPropertyGetRange *)GetProcAddress(tisgrabber, "IC_VideoPropertyGetRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_VideoPropertyGetRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -923,14 +923,14 @@ Napi::Value f_IC_GetVideoProperty(const Napi::CallbackInfo &info)
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long *lValue;
 
-    IC_GetVideoProperty *f_ptr = (IC_GetVideoProperty *)GetProcAddress(tisgrabber, "IC_GetVideoProperty");
-    if (f_ptr == nullptr)
+    IC_GetVideoProperty *fPtr = (IC_GetVideoProperty *)GetProcAddress(tisgrabber, "IC_GetVideoProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -955,14 +955,14 @@ Napi::Value f_IC_IsVideoPropertyAutoAvailable(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
 
-    IC_IsVideoPropertyAutoAvailable *f_ptr = (IC_IsVideoPropertyAutoAvailable *)GetProcAddress(tisgrabber, "IC_IsVideoPropertyAutoAvailable");
-    if (f_ptr == nullptr)
+    IC_IsVideoPropertyAutoAvailable *fPtr = (IC_IsVideoPropertyAutoAvailable *)GetProcAddress(tisgrabber, "IC_IsVideoPropertyAutoAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsVideoPropertyAutoAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -985,14 +985,14 @@ Napi::Value f_IC_GetAutoVideoProperty(const Napi::CallbackInfo &info)
     int iProperty = (int)info[1].As<Napi::Number>().Int64Value();
     int *iOnOff;
 
-    IC_GetAutoVideoProperty *f_ptr = (IC_GetAutoVideoProperty *)GetProcAddress(tisgrabber, "IC_GetAutoVideoProperty");
-    if (f_ptr == nullptr)
+    IC_GetAutoVideoProperty *fPtr = (IC_GetAutoVideoProperty *)GetProcAddress(tisgrabber, "IC_GetAutoVideoProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetAutoVideoProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1021,14 +1021,14 @@ Napi::Value f_IC_SetVideoProperty(const Napi::CallbackInfo &info)
     VIDEO_PROPERTY eProperty = (VIDEO_PROPERTY)info[1].As<Napi::Number>().Int32Value();
     long lValue = (long)info[2].As<Napi::Number>().Int64Value();
 
-    IC_SetVideoProperty *f_ptr = (IC_SetVideoProperty *)GetProcAddress(tisgrabber, "IC_SetVideoProperty");
-    if (f_ptr == nullptr)
+    IC_SetVideoProperty *fPtr = (IC_SetVideoProperty *)GetProcAddress(tisgrabber, "IC_SetVideoProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetVideoProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, eProperty, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1056,14 +1056,14 @@ Napi::Value f_IC_EnableAutoVideoProperty(const Napi::CallbackInfo &info)
     int iProperty = (int)info[1].As<Napi::Number>().Int32Value();
     int iOnOff = (int)info[2].As<Napi::Number>().Int32Value();
 
-    IC_EnableAutoVideoProperty *f_ptr = (IC_EnableAutoVideoProperty *)GetProcAddress(tisgrabber, "IC_EnableAutoVideoProperty");
-    if (f_ptr == nullptr)
+    IC_EnableAutoVideoProperty *fPtr = (IC_EnableAutoVideoProperty *)GetProcAddress(tisgrabber, "IC_EnableAutoVideoProperty");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_EnableAutoVideoProperty in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1084,14 +1084,14 @@ Napi::Value f_IC_GetImageDescription(const Napi::CallbackInfo &info)
     int *iBitsPerPixel;
     COLORFORMAT *format;
 
-    IC_GetImageDescription *f_ptr = (IC_GetImageDescription *)GetProcAddress(tisgrabber, "IC_GetImageDescription");
-    if (f_ptr == nullptr)
+    IC_GetImageDescription *fPtr = (IC_GetImageDescription *)GetProcAddress(tisgrabber, "IC_GetImageDescription");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetImageDescription in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, lWidth, lHeight, iBitsPerPixel, format);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("data", Napi::Number::New(env, ret));
@@ -1119,14 +1119,14 @@ Napi::Value f_IC_SnapImage(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iTimeOutMillisek = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SnapImage *f_ptr = (IC_SnapImage *)GetProcAddress(tisgrabber, "IC_SnapImage");
-    if (f_ptr == nullptr)
+    IC_SnapImage *fPtr = (IC_SnapImage *)GetProcAddress(tisgrabber, "IC_SnapImage");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SnapImage in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iTimeOutMillisek);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1162,14 +1162,14 @@ Napi::Value f_IC_SaveImage(const Napi::CallbackInfo &info)
     IMG_FILETYPE ft = (IMG_FILETYPE)info[2].As<Napi::Number>().Int32Value();
     long quality = (long)info[3].As<Napi::Number>().Int64Value();
 
-    IC_SaveImage *f_ptr = (IC_SaveImage *)GetProcAddress(tisgrabber, "IC_SaveImage");
-    if (f_ptr == nullptr)
+    IC_SaveImage *fPtr = (IC_SaveImage *)GetProcAddress(tisgrabber, "IC_SaveImage");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SaveImage in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFileName, ft, quality);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1188,14 +1188,14 @@ Napi::Value f_IC_SetHWnd(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     __HWND hWnd = *info[1].As<Napi::Buffer<__HWND>>().Data();
 
-    IC_SetHWnd *f_ptr = (IC_SetHWnd *)GetProcAddress(tisgrabber, "IC_SetHWnd");
-    if (f_ptr == nullptr)
+    IC_SetHWnd *fPtr = (IC_SetHWnd *)GetProcAddress(tisgrabber, "IC_SetHWnd");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetHWnd in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, hWnd);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1212,14 +1212,14 @@ Napi::Value f_IC_GetSerialNumber(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     char szSerial[20];
 
-    IC_GetSerialNumber *f_ptr = (IC_GetSerialNumber *)GetProcAddress(tisgrabber, "IC_GetSerialNumber");
-    if (f_ptr == nullptr)
+    IC_GetSerialNumber *fPtr = (IC_GetSerialNumber *)GetProcAddress(tisgrabber, "IC_GetSerialNumber");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetSerialNumber in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szSerial);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1241,14 +1241,14 @@ Napi::Value f_IC_GetDeviceCount(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    IC_GetDeviceCount *f_ptr = (IC_GetDeviceCount *)GetProcAddress(tisgrabber, "IC_GetDeviceCount");
-    if (f_ptr == nullptr)
+    IC_GetDeviceCount *fPtr = (IC_GetDeviceCount *)GetProcAddress(tisgrabber, "IC_GetDeviceCount");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetDeviceCount in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f();
     Napi::Object retObj = Napi::Object::New(env);
     if (ret < 0)
@@ -1278,14 +1278,14 @@ Napi::Value f_IC_GetDevice(const Napi::CallbackInfo &info)
     };
     int iIndex = (int)info[0].As<Napi::Number>().Int64Value();
 
-    IC_GetDevice *f_ptr = (IC_GetDevice *)GetProcAddress(tisgrabber, "IC_GetDevice");
-    if (f_ptr == nullptr)
+    IC_GetDevice *fPtr = (IC_GetDevice *)GetProcAddress(tisgrabber, "IC_GetDevice");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetDevice in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(iIndex);
     Napi::Object retObj = Napi::Object::New(env);
     STRING_RETURN()
@@ -1306,14 +1306,14 @@ Napi::Value f_IC_GetUniqueNamefromList(const Napi::CallbackInfo &info)
     };
     int iIndex = (int)info[0].As<Napi::Number>().Int64Value();
 
-    IC_GetUniqueNamefromList *f_ptr = (IC_GetUniqueNamefromList *)GetProcAddress(tisgrabber, "IC_GetUniqueNamefromList");
-    if (f_ptr == nullptr)
+    IC_GetUniqueNamefromList *fPtr = (IC_GetUniqueNamefromList *)GetProcAddress(tisgrabber, "IC_GetUniqueNamefromList");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetUniqueNamefromList in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(iIndex);
     Napi::Object retObj = Napi::Object::New(env);
     STRING_RETURN()
@@ -1330,14 +1330,14 @@ Napi::Value f_IC_GetInputChannelCount(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetInputChannelCount *f_ptr = (IC_GetInputChannelCount *)GetProcAddress(tisgrabber, "IC_GetInputChannelCount");
-    if (f_ptr == nullptr)
+    IC_GetInputChannelCount *fPtr = (IC_GetInputChannelCount *)GetProcAddress(tisgrabber, "IC_GetInputChannelCount");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetInputChannelCount in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     COUNT_RETURN()
@@ -1359,14 +1359,14 @@ Napi::Value f_IC_GetInputChannel(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_GetInputChannel *f_ptr = (IC_GetInputChannel *)GetProcAddress(tisgrabber, "IC_GetInputChannel");
-    if (f_ptr == nullptr)
+    IC_GetInputChannel *fPtr = (IC_GetInputChannel *)GetProcAddress(tisgrabber, "IC_GetInputChannel");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetInputChannel in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(hGrabber, iIndex);
     Napi::Object retObj = Napi::Object::New(env);
     STRING_RETURN()
@@ -1383,14 +1383,14 @@ Napi::Value f_IC_GetVideoNormCount(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetVideoNormCount *f_ptr = (IC_GetVideoNormCount *)GetProcAddress(tisgrabber, "IC_GetVideoNormCount");
-    if (f_ptr == nullptr)
+    IC_GetVideoNormCount *fPtr = (IC_GetVideoNormCount *)GetProcAddress(tisgrabber, "IC_GetVideoNormCount");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoNormCount in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     COUNT_RETURN()
@@ -1412,14 +1412,14 @@ Napi::Value f_IC_GetVideoNorm(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_GetVideoNorm *f_ptr = (IC_GetVideoNorm *)GetProcAddress(tisgrabber, "IC_GetVideoNorm");
-    if (f_ptr == nullptr)
+    IC_GetVideoNorm *fPtr = (IC_GetVideoNorm *)GetProcAddress(tisgrabber, "IC_GetVideoNorm");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoNorm in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(hGrabber, iIndex);
     Napi::Object retObj = Napi::Object::New(env);
     STRING_RETURN()
@@ -1436,14 +1436,14 @@ Napi::Value f_IC_GetVideoFormatCount(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetVideoFormatCount *f_ptr = (IC_GetVideoFormatCount *)GetProcAddress(tisgrabber, "IC_GetVideoFormatCount");
-    if (f_ptr == nullptr)
+    IC_GetVideoFormatCount *fPtr = (IC_GetVideoFormatCount *)GetProcAddress(tisgrabber, "IC_GetVideoFormatCount");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoFormatCount in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     COUNT_RETURN()
@@ -1465,14 +1465,14 @@ Napi::Value f_IC_GetVideoFormat(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iIndex = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_GetVideoFormat *f_ptr = (IC_GetVideoFormat *)GetProcAddress(tisgrabber, "IC_GetVideoFormat");
-    if (f_ptr == nullptr)
+    IC_GetVideoFormat *fPtr = (IC_GetVideoFormat *)GetProcAddress(tisgrabber, "IC_GetVideoFormat");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetVideoFormat in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     char *ret = f(hGrabber, iIndex);
     Napi::Object retObj = Napi::Object::New(env);
     STRING_RETURN()
@@ -1495,14 +1495,14 @@ Napi::Value f_IC_SaveDeviceStateToFile(const Napi::CallbackInfo &info)
     auto szFileNameStr = info[1].As<Napi::String>().Utf8Value();
     char *szFileName = (char *)szFileNameStr.c_str();
 
-    IC_SaveDeviceStateToFile *f_ptr = (IC_SaveDeviceStateToFile *)GetProcAddress(tisgrabber, "IC_SaveDeviceStateToFile");
-    if (f_ptr == nullptr)
+    IC_SaveDeviceStateToFile *fPtr = (IC_SaveDeviceStateToFile *)GetProcAddress(tisgrabber, "IC_SaveDeviceStateToFile");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SaveDeviceStateToFile in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFileName);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1532,14 +1532,14 @@ Napi::Value f_IC_LoadDeviceStateFromFileEx(const Napi::CallbackInfo &info)
 
     int OpenDevice = (int)info[2].As<Napi::Number>().Int32Value();
 
-    IC_LoadDeviceStateFromFileEx *f_ptr = (IC_LoadDeviceStateFromFileEx *)GetProcAddress(tisgrabber, "IC_LoadDeviceStateFromFileEx");
-    if (f_ptr == nullptr)
+    IC_LoadDeviceStateFromFileEx *fPtr = (IC_LoadDeviceStateFromFileEx *)GetProcAddress(tisgrabber, "IC_LoadDeviceStateFromFileEx");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_LoadDeviceStateFromFileEx in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFileName, OpenDevice);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1562,14 +1562,14 @@ Napi::Value f_IC_SaveDeviceSettings(const Napi::CallbackInfo &info)
     auto szFilenameStr = info[1].As<Napi::String>().Utf8Value();
     char *szFilename = (char *)szFilenameStr.c_str();
 
-    IC_SaveDeviceSettings *f_ptr = (IC_SaveDeviceSettings *)GetProcAddress(tisgrabber, "IC_SaveDeviceSettings");
-    if (f_ptr == nullptr)
+    IC_SaveDeviceSettings *fPtr = (IC_SaveDeviceSettings *)GetProcAddress(tisgrabber, "IC_SaveDeviceSettings");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SaveDeviceSettings in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1592,14 +1592,14 @@ Napi::Value f_IC_OpenDeviceBySettings(const Napi::CallbackInfo &info)
     auto szFilenameStr = info[1].As<Napi::String>().Utf8Value();
     char *szFilename = (char *)szFilenameStr.c_str();
 
-    IC_OpenDeviceBySettings *f_ptr = (IC_OpenDeviceBySettings *)GetProcAddress(tisgrabber, "IC_OpenDeviceBySettings");
-    if (f_ptr == nullptr)
+    IC_OpenDeviceBySettings *fPtr = (IC_OpenDeviceBySettings *)GetProcAddress(tisgrabber, "IC_OpenDeviceBySettings");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_OpenDeviceBySettings in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("data", Napi::Number::New(env, ret));
@@ -1622,14 +1622,14 @@ Napi::Value f_IC_LoadDeviceSettings(const Napi::CallbackInfo &info)
     auto szFilenameStr = info[1].As<Napi::String>().Utf8Value();
     char *szFilename = (char *)szFilenameStr.c_str();
 
-    IC_LoadDeviceSettings *f_ptr = (IC_LoadDeviceSettings *)GetProcAddress(tisgrabber, "IC_LoadDeviceSettings");
-    if (f_ptr == nullptr)
+    IC_LoadDeviceSettings *fPtr = (IC_LoadDeviceSettings *)GetProcAddress(tisgrabber, "IC_LoadDeviceSettings");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_LoadDeviceSettings in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szFilename);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1652,14 +1652,14 @@ Napi::Value f_IC_OpenDevByDisplayName(const Napi::CallbackInfo &info)
     auto szDisplaynameStr = info[1].As<Napi::String>().Utf8Value();
     char *szDisplayname = (char *)szDisplaynameStr.c_str();
 
-    IC_OpenDevByDisplayName *f_ptr = (IC_OpenDevByDisplayName *)GetProcAddress(tisgrabber, "IC_OpenDevByDisplayName");
-    if (f_ptr == nullptr)
+    IC_OpenDevByDisplayName *fPtr = (IC_OpenDevByDisplayName *)GetProcAddress(tisgrabber, "IC_OpenDevByDisplayName");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_OpenDevByDisplayName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szDisplayname);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1675,14 +1675,14 @@ Napi::Value f_IC_GetDisplayName(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetDisplayName *f_ptr = (IC_GetDisplayName *)GetProcAddress(tisgrabber, "IC_GetDisplayName");
-    if (f_ptr == nullptr)
+    IC_GetDisplayName *fPtr = (IC_GetDisplayName *)GetProcAddress(tisgrabber, "IC_GetDisplayName");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetDisplayName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int len = f(hGrabber, nullptr, 0);
     if (len <= 1)
     {
@@ -1732,14 +1732,14 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
     auto szUniqueNameStr = info[1].As<Napi::String>().Utf8Value();
     char *szUniqueName = (char *)szUniqueNameStr.c_str();
 
-    IC_OpenDevByUniqueName *f_ptr = (IC_OpenDevByUniqueName *)GetProcAddress(tisgrabber, "IC_OpenDevByUniqueName");
-    if (f_ptr == nullptr)
+    IC_OpenDevByUniqueName *fPtr = (IC_OpenDevByUniqueName *)GetProcAddress(tisgrabber, "IC_OpenDevByUniqueName");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_OpenDevByUniqueName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szUniqueName);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1756,26 +1756,23 @@ Napi::Value f_IC_GetUniqueName(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetUniqueName *f_ptr = (IC_GetUniqueName *)GetProcAddress(tisgrabber, "IC_GetUniqueName");
-    if (f_ptr == nullptr)
+    IC_GetUniqueName *fPtr = (IC_GetUniqueName *)GetProcAddress(tisgrabber, "IC_GetUniqueName");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetUniqueName in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int len = f(hGrabber, nullptr, 0);
     if (len <= 1)
     {
         Napi::Error::New(env, "Cannot get unique name lenght").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    char *szUniqueName = (char *)malloc(len * sizeof(char));
-    if (szUniqueName == nullptr)
-    {
-        Napi::Error::New(env, "Cannot allocate memory for unique name").ThrowAsJavaScriptException();
-        return env.Undefined();
-    }
+    int lenWithNull = len + 1;
+    char *szUniqueName = new char[lenWithNull];
+    memset(szUniqueName, 0, lenWithNull);
     int ret = f(hGrabber, szUniqueName, len);
     Napi::Object retObj = Napi::Object::New(env);
     if (ret == IC_SUCCESS)
@@ -1787,8 +1784,7 @@ Napi::Value f_IC_GetUniqueName(const Napi::CallbackInfo &info)
     {
         retObj.Set("code", Napi::Number::New(env, ret));
     }
-    retObj.Set("data", Napi::Number::New(env, ret));
-    free(szUniqueName);
+    delete szUniqueName;
     return retObj;
 }
 Napi::Value f_IC_IsDevValid(const Napi::CallbackInfo &info)
@@ -1802,14 +1798,14 @@ Napi::Value f_IC_IsDevValid(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_IsDevValid *f_ptr = (IC_IsDevValid *)GetProcAddress(tisgrabber, "IC_IsDevValid");
-    if (f_ptr == nullptr)
+    IC_IsDevValid *fPtr = (IC_IsDevValid *)GetProcAddress(tisgrabber, "IC_IsDevValid");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsDevValid in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -1826,14 +1822,14 @@ Napi::Value f_IC_ShowPropertyDialog(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_ShowPropertyDialog *f_ptr = (IC_ShowPropertyDialog *)GetProcAddress(tisgrabber, "IC_ShowPropertyDialog");
-    if (f_ptr == nullptr)
+    IC_ShowPropertyDialog *fPtr = (IC_ShowPropertyDialog *)GetProcAddress(tisgrabber, "IC_ShowPropertyDialog");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_ShowPropertyDialog in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1850,14 +1846,14 @@ Napi::Value f_IC_ShowDeviceSelectionDialog(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_ShowDeviceSelectionDialog *f_ptr = (IC_ShowDeviceSelectionDialog *)GetProcAddress(tisgrabber, "IC_ShowDeviceSelectionDialog");
-    if (f_ptr == nullptr)
+    IC_ShowDeviceSelectionDialog *fPtr = (IC_ShowDeviceSelectionDialog *)GetProcAddress(tisgrabber, "IC_ShowDeviceSelectionDialog");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_ShowDeviceSelectionDialog in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     HGRABBER ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::External<HGRABBER>::New(env, &ret));
@@ -1874,14 +1870,14 @@ Napi::Value f_IC_IsTriggerAvailable(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_IsTriggerAvailable *f_ptr = (IC_IsTriggerAvailable *)GetProcAddress(tisgrabber, "IC_IsTriggerAvailable");
-    if (f_ptr == nullptr)
+    IC_IsTriggerAvailable *fPtr = (IC_IsTriggerAvailable *)GetProcAddress(tisgrabber, "IC_IsTriggerAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsTriggerAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -1903,14 +1899,14 @@ Napi::Value f_IC_EnableTrigger(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iEnable = (int)info[1].As<Napi::Boolean>().Value();
 
-    IC_EnableTrigger *f_ptr = (IC_EnableTrigger *)GetProcAddress(tisgrabber, "IC_EnableTrigger");
-    if (f_ptr == nullptr)
+    IC_EnableTrigger *fPtr = (IC_EnableTrigger *)GetProcAddress(tisgrabber, "IC_EnableTrigger");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_EnableTrigger in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iEnable);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1941,14 +1937,14 @@ Napi::Value f_IC_MsgBox(const Napi::CallbackInfo &info)
     auto szTitleStr = info[1].As<Napi::String>().Utf8Value();
     char *szTitle = (char *)szTitleStr.c_str();
 
-    IC_MsgBox *f_ptr = (IC_MsgBox *)GetProcAddress(tisgrabber, "IC_MsgBox");
-    if (f_ptr == nullptr)
+    IC_MsgBox *fPtr = (IC_MsgBox *)GetProcAddress(tisgrabber, "IC_MsgBox");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_MsgBox in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     f(szText, szTitle);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
@@ -1970,14 +1966,14 @@ Napi::Value f_IC_SetContinuousMode(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int cont = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_SetContinuousMode *f_ptr = (IC_SetContinuousMode *)GetProcAddress(tisgrabber, "IC_SetContinuousMode");
-    if (f_ptr == nullptr)
+    IC_SetContinuousMode *fPtr = (IC_SetContinuousMode *)GetProcAddress(tisgrabber, "IC_SetContinuousMode");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetContinuousMode in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, cont);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -1999,14 +1995,14 @@ Napi::Value f_IC_SetFrameRate(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     float FrameRate = (float)info[1].As<Napi::Number>().FloatValue();
 
-    IC_SetFrameRate *f_ptr = (IC_SetFrameRate *)GetProcAddress(tisgrabber, "IC_SetFrameRate");
-    if (f_ptr == nullptr)
+    IC_SetFrameRate *fPtr = (IC_SetFrameRate *)GetProcAddress(tisgrabber, "IC_SetFrameRate");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetFrameRate in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, FrameRate);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2023,14 +2019,14 @@ Napi::Value f_IC_GetFrameRate(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetFrameRate *f_ptr = (IC_GetFrameRate *)GetProcAddress(tisgrabber, "IC_GetFrameRate");
-    if (f_ptr == nullptr)
+    IC_GetFrameRate *fPtr = (IC_GetFrameRate *)GetProcAddress(tisgrabber, "IC_GetFrameRate");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetFrameRate in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     float ret = f(hGrabber);
     bool supported = ret > 0;
     Napi::Object retObj = Napi::Object::New(env);
@@ -2057,14 +2053,14 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetAvailableFrameRates *f_ptr = (IC_GetAvailableFrameRates *)GetProcAddress(tisgrabber, "IC_GetAvailableFrameRates");
-    if (f_ptr == nullptr)
+    IC_GetAvailableFrameRates *fPtr = (IC_GetAvailableFrameRates *)GetProcAddress(tisgrabber, "IC_GetAvailableFrameRates");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetAvailableFrameRates in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
 
     std::vector<float> fpsList;
     int Index = 0;
@@ -2095,14 +2091,14 @@ Napi::Value f_IC_SetDefaultWindowPosition(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int Default = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_SetDefaultWindowPosition *f_ptr = (IC_SetDefaultWindowPosition *)GetProcAddress(tisgrabber, "IC_SetDefaultWindowPosition");
-    if (f_ptr == nullptr)
+    IC_SetDefaultWindowPosition *fPtr = (IC_SetDefaultWindowPosition *)GetProcAddress(tisgrabber, "IC_SetDefaultWindowPosition");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetDefaultWindowPosition in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Default);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2142,14 +2138,14 @@ Napi::Value f_IC_SetWindowPosition(const Napi::CallbackInfo &info)
     int Width = (int)info[3].As<Napi::Number>().Int64Value();
     int Height = (int)info[4].As<Napi::Number>().Int64Value();
 
-    IC_SetWindowPosition *f_ptr = (IC_SetWindowPosition *)GetProcAddress(tisgrabber, "IC_SetWindowPosition");
-    if (f_ptr == nullptr)
+    IC_SetWindowPosition *fPtr = (IC_SetWindowPosition *)GetProcAddress(tisgrabber, "IC_SetWindowPosition");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetWindowPosition in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, PosX, PosY, Width, Height);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2170,14 +2166,14 @@ Napi::Value f_IC_GetWindowPosition(const Napi::CallbackInfo &info)
     int *Width;
     int *Height;
 
-    IC_GetWindowPosition *f_ptr = (IC_GetWindowPosition *)GetProcAddress(tisgrabber, "IC_GetWindowPosition");
-    if (f_ptr == nullptr)
+    IC_GetWindowPosition *fPtr = (IC_GetWindowPosition *)GetProcAddress(tisgrabber, "IC_GetWindowPosition");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetWindowPosition in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, PosX, PosY, Width, Height);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2205,14 +2201,14 @@ Napi::Value f_IC_SetWhiteBalanceAuto(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iOnOff = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_SetWhiteBalanceAuto *f_ptr = (IC_SetWhiteBalanceAuto *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceAuto");
-    if (f_ptr == nullptr)
+    IC_SetWhiteBalanceAuto *fPtr = (IC_SetWhiteBalanceAuto *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceAuto");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetWhiteBalanceAuto in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2229,14 +2225,14 @@ Napi::Value f_IC_SignalDetected(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_SignalDetected *f_ptr = (IC_SignalDetected *)GetProcAddress(tisgrabber, "IC_SignalDetected");
-    if (f_ptr == nullptr)
+    IC_SignalDetected *fPtr = (IC_SignalDetected *)GetProcAddress(tisgrabber, "IC_SignalDetected");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SignalDetected in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -2252,8 +2248,8 @@ Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
     }
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_GetTriggerModes *f_ptr = (IC_GetTriggerModes *)GetProcAddress(tisgrabber, "IC_GetTriggerModes");
-    if (f_ptr == nullptr)
+    IC_GetTriggerModes *fPtr = (IC_GetTriggerModes *)GetProcAddress(tisgrabber, "IC_GetTriggerModes");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetTriggerModes in tisgrabber_x64.dll").ThrowAsJavaScriptException();
@@ -2262,7 +2258,7 @@ Napi::Value f_IC_GetTriggerModes(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     Napi::Array modesArr = Napi::Array::New(env);
     retObj.Set("data", modesArr);
-    auto f = *f_ptr;
+    auto f = *fPtr;
     const int SIZE = 20;
     char szModes[SIZE][10];
     int iModeCount;
@@ -2303,14 +2299,14 @@ Napi::Value f_IC_SetTriggerMode(const Napi::CallbackInfo &info)
     auto szModeStr = info[1].As<Napi::String>().Utf8Value();
     char *szMode = (char *)szModeStr.c_str();
 
-    IC_SetTriggerMode *f_ptr = (IC_SetTriggerMode *)GetProcAddress(tisgrabber, "IC_SetTriggerMode");
-    if (f_ptr == nullptr)
+    IC_SetTriggerMode *fPtr = (IC_SetTriggerMode *)GetProcAddress(tisgrabber, "IC_SetTriggerMode");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetTriggerMode in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, szMode);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2332,14 +2328,14 @@ Napi::Value f_IC_SetTriggerPolarity(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iPolarity = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetTriggerPolarity *f_ptr = (IC_SetTriggerPolarity *)GetProcAddress(tisgrabber, "IC_SetTriggerPolarity");
-    if (f_ptr == nullptr)
+    IC_SetTriggerPolarity *fPtr = (IC_SetTriggerPolarity *)GetProcAddress(tisgrabber, "IC_SetTriggerPolarity");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetTriggerPolarity in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iPolarity);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2358,14 +2354,14 @@ Napi::Value f_IC_GetExpRegValRange(const Napi::CallbackInfo &info)
     long *lMin;
     long *lMax;
 
-    IC_GetExpRegValRange *f_ptr = (IC_GetExpRegValRange *)GetProcAddress(tisgrabber, "IC_GetExpRegValRange");
-    if (f_ptr == nullptr)
+    IC_GetExpRegValRange *fPtr = (IC_GetExpRegValRange *)GetProcAddress(tisgrabber, "IC_GetExpRegValRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetExpRegValRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, lMin, lMax);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2387,14 +2383,14 @@ Napi::Value f_IC_GetExpRegVal(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     long *lValue;
 
-    IC_GetExpRegVal *f_ptr = (IC_GetExpRegVal *)GetProcAddress(tisgrabber, "IC_GetExpRegVal");
-    if (f_ptr == nullptr)
+    IC_GetExpRegVal *fPtr = (IC_GetExpRegVal *)GetProcAddress(tisgrabber, "IC_GetExpRegVal");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetExpRegVal in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2417,14 +2413,14 @@ Napi::Value f_IC_SetExpRegVal(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     long lValue = (long)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetExpRegVal *f_ptr = (IC_SetExpRegVal *)GetProcAddress(tisgrabber, "IC_SetExpRegVal");
-    if (f_ptr == nullptr)
+    IC_SetExpRegVal *fPtr = (IC_SetExpRegVal *)GetProcAddress(tisgrabber, "IC_SetExpRegVal");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetExpRegVal in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, lValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2446,14 +2442,14 @@ Napi::Value f_IC_EnableExpRegValAuto(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int iOnOff = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_EnableExpRegValAuto *f_ptr = (IC_EnableExpRegValAuto *)GetProcAddress(tisgrabber, "IC_EnableExpRegValAuto");
-    if (f_ptr == nullptr)
+    IC_EnableExpRegValAuto *fPtr = (IC_EnableExpRegValAuto *)GetProcAddress(tisgrabber, "IC_EnableExpRegValAuto");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_EnableExpRegValAuto in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2471,14 +2467,14 @@ Napi::Value f_IC_GetExpRegValAuto(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int *iOnOff;
 
-    IC_GetExpRegValAuto *f_ptr = (IC_GetExpRegValAuto *)GetProcAddress(tisgrabber, "IC_GetExpRegValAuto");
-    if (f_ptr == nullptr)
+    IC_GetExpRegValAuto *fPtr = (IC_GetExpRegValAuto *)GetProcAddress(tisgrabber, "IC_GetExpRegValAuto");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetExpRegValAuto in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2496,14 +2492,14 @@ Napi::Value f_IC_IsExpAbsValAvailable(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_IsExpAbsValAvailable *f_ptr = (IC_IsExpAbsValAvailable *)GetProcAddress(tisgrabber, "IC_IsExpAbsValAvailable");
-    if (f_ptr == nullptr)
+    IC_IsExpAbsValAvailable *fPtr = (IC_IsExpAbsValAvailable *)GetProcAddress(tisgrabber, "IC_IsExpAbsValAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsExpAbsValAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     BOOL_RETURN()
@@ -2522,14 +2518,14 @@ Napi::Value f_IC_GetExpAbsValRange(const Napi::CallbackInfo &info)
     float *fMin;
     float *fMax;
 
-    IC_GetExpAbsValRange *f_ptr = (IC_GetExpAbsValRange *)GetProcAddress(tisgrabber, "IC_GetExpAbsValRange");
-    if (f_ptr == nullptr)
+    IC_GetExpAbsValRange *fPtr = (IC_GetExpAbsValRange *)GetProcAddress(tisgrabber, "IC_GetExpAbsValRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetExpAbsValRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, fMin, fMax);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2554,14 +2550,14 @@ Napi::Value f_IC_GetExpAbsVal(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     float *fValue;
 
-    IC_GetExpAbsVal *f_ptr = (IC_GetExpAbsVal *)GetProcAddress(tisgrabber, "IC_GetExpAbsVal");
-    if (f_ptr == nullptr)
+    IC_GetExpAbsVal *fPtr = (IC_GetExpAbsVal *)GetProcAddress(tisgrabber, "IC_GetExpAbsVal");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetExpAbsVal in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, fValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2588,14 +2584,14 @@ Napi::Value f_IC_SetExpAbsVal(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     float fValue = (float)info[1].As<Napi::Number>().DoubleValue();
 
-    IC_SetExpAbsVal *f_ptr = (IC_SetExpAbsVal *)GetProcAddress(tisgrabber, "IC_SetExpAbsVal");
-    if (f_ptr == nullptr)
+    IC_SetExpAbsVal *fPtr = (IC_SetExpAbsVal *)GetProcAddress(tisgrabber, "IC_SetExpAbsVal");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetExpAbsVal in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, fValue);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2613,14 +2609,14 @@ Napi::Value f_IC_GetColorEnhancement(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int *OnOff;
 
-    IC_GetColorEnhancement *f_ptr = (IC_GetColorEnhancement *)GetProcAddress(tisgrabber, "IC_GetColorEnhancement");
-    if (f_ptr == nullptr)
+    IC_GetColorEnhancement *fPtr = (IC_GetColorEnhancement *)GetProcAddress(tisgrabber, "IC_GetColorEnhancement");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetColorEnhancement in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, OnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2646,14 +2642,14 @@ Napi::Value f_IC_SetColorEnhancement(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int OnOff = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_SetColorEnhancement *f_ptr = (IC_SetColorEnhancement *)GetProcAddress(tisgrabber, "IC_SetColorEnhancement");
-    if (f_ptr == nullptr)
+    IC_SetColorEnhancement *fPtr = (IC_SetColorEnhancement *)GetProcAddress(tisgrabber, "IC_SetColorEnhancement");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetColorEnhancement in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, OnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2670,14 +2666,14 @@ Napi::Value f_IC_SoftwareTrigger(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_SoftwareTrigger *f_ptr = (IC_SoftwareTrigger *)GetProcAddress(tisgrabber, "IC_SoftwareTrigger");
-    if (f_ptr == nullptr)
+    IC_SoftwareTrigger *fPtr = (IC_SoftwareTrigger *)GetProcAddress(tisgrabber, "IC_SoftwareTrigger");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SoftwareTrigger in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2699,14 +2695,14 @@ Napi::Value f_IC_SetWhiteBalanceRed(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     long Value = (long)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetWhiteBalanceRed *f_ptr = (IC_SetWhiteBalanceRed *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceRed");
-    if (f_ptr == nullptr)
+    IC_SetWhiteBalanceRed *fPtr = (IC_SetWhiteBalanceRed *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceRed");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetWhiteBalanceRed in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2728,14 +2724,14 @@ Napi::Value f_IC_SetWhiteBalanceGreen(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     long Value = (long)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetWhiteBalanceGreen *f_ptr = (IC_SetWhiteBalanceGreen *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceGreen");
-    if (f_ptr == nullptr)
+    IC_SetWhiteBalanceGreen *fPtr = (IC_SetWhiteBalanceGreen *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceGreen");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetWhiteBalanceGreen in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2757,14 +2753,14 @@ Napi::Value f_IC_SetWhiteBalanceBlue(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     long Value = (long)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetWhiteBalanceBlue *f_ptr = (IC_SetWhiteBalanceBlue *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceBlue");
-    if (f_ptr == nullptr)
+    IC_SetWhiteBalanceBlue *fPtr = (IC_SetWhiteBalanceBlue *)GetProcAddress(tisgrabber, "IC_SetWhiteBalanceBlue");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetWhiteBalanceBlue in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2781,14 +2777,14 @@ Napi::Value f_IC_FocusOnePush(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_FocusOnePush *f_ptr = (IC_FocusOnePush *)GetProcAddress(tisgrabber, "IC_FocusOnePush");
-    if (f_ptr == nullptr)
+    IC_FocusOnePush *fPtr = (IC_FocusOnePush *)GetProcAddress(tisgrabber, "IC_FocusOnePush");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_FocusOnePush in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -2812,14 +2808,14 @@ Napi::Value f_IC_enumProperties(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     Napi::Function callback = info[1].As<Napi::Function>();
 
-    IC_enumProperties *f_ptr = (IC_enumProperties *)GetProcAddress(tisgrabber, "IC_enumProperties");
-    if (f_ptr == nullptr)
+    IC_enumProperties *fPtr = (IC_enumProperties *)GetProcAddress(tisgrabber, "IC_enumProperties");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_enumProperties in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     auto cbData = EnumCbData{Napi::Weak(callback)};
     int ret = f(hGrabber, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
@@ -2851,14 +2847,14 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
     char *Property = (char *)PropertyStr.c_str();
     Napi::Function callback = info[2].As<Napi::Function>();
 
-    IC_enumPropertyElements *f_ptr = (IC_enumPropertyElements *)GetProcAddress(tisgrabber, "IC_enumPropertyElements");
-    if (f_ptr == nullptr)
+    IC_enumPropertyElements *fPtr = (IC_enumPropertyElements *)GetProcAddress(tisgrabber, "IC_enumPropertyElements");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_enumPropertyElements in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     auto cbData = EnumCbData{Napi::Weak(callback)};
     int ret = f(hGrabber, Property, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
@@ -2897,14 +2893,14 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     Napi::Function callback = info[3].As<Napi::Function>();
 
-    IC_enumPropertyElementInterfaces *f_ptr = (IC_enumPropertyElementInterfaces *)GetProcAddress(tisgrabber, "IC_enumPropertyElementInterfaces");
-    if (f_ptr == nullptr)
+    IC_enumPropertyElementInterfaces *fPtr = (IC_enumPropertyElementInterfaces *)GetProcAddress(tisgrabber, "IC_enumPropertyElementInterfaces");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_enumPropertyElementInterfaces in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     auto cbData = EnumCbData{Napi::Weak(callback)};
     int ret = f(hGrabber, Property, Element, &EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
@@ -2936,14 +2932,14 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
     auto ElementStr = info[2].As<Napi::String>().Utf8Value();
     char *Element = (char *)ElementStr.c_str();
 
-    IC_IsPropertyAvailable *f_ptr = (IC_IsPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsPropertyAvailable");
-    if (f_ptr == nullptr)
+    IC_IsPropertyAvailable *fPtr = (IC_IsPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsPropertyAvailable");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_IsPropertyAvailable in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element);
     Napi::Object retObj = Napi::Object::New(env);
     if (ret == IC_SUCCESS)
@@ -2989,14 +2985,14 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
     int *Min;
     int *Max;
 
-    IC_GetPropertyValueRange *f_ptr = (IC_GetPropertyValueRange *)GetProcAddress(tisgrabber, "IC_GetPropertyValueRange");
-    if (f_ptr == nullptr)
+    IC_GetPropertyValueRange *fPtr = (IC_GetPropertyValueRange *)GetProcAddress(tisgrabber, "IC_GetPropertyValueRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyValueRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3031,14 +3027,14 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     int *Value;
 
-    IC_GetPropertyValue *f_ptr = (IC_GetPropertyValue *)GetProcAddress(tisgrabber, "IC_GetPropertyValue");
-    if (f_ptr == nullptr)
+    IC_GetPropertyValue *fPtr = (IC_GetPropertyValue *)GetProcAddress(tisgrabber, "IC_GetPropertyValue");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyValue in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3075,14 +3071,14 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     int Value = (int)info[3].As<Napi::Number>().Int64Value();
 
-    IC_SetPropertyValue *f_ptr = (IC_SetPropertyValue *)GetProcAddress(tisgrabber, "IC_SetPropertyValue");
-    if (f_ptr == nullptr)
+    IC_SetPropertyValue *fPtr = (IC_SetPropertyValue *)GetProcAddress(tisgrabber, "IC_SetPropertyValue");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetPropertyValue in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3114,14 +3110,14 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
     float *Min;
     float *Max;
 
-    IC_GetPropertyAbsoluteValueRange *f_ptr = (IC_GetPropertyAbsoluteValueRange *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValueRange");
-    if (f_ptr == nullptr)
+    IC_GetPropertyAbsoluteValueRange *fPtr = (IC_GetPropertyAbsoluteValueRange *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValueRange");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyAbsoluteValueRange in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Min, Max);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3156,14 +3152,14 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     float *Value;
 
-    IC_GetPropertyAbsoluteValue *f_ptr = (IC_GetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValue");
-    if (f_ptr == nullptr)
+    IC_GetPropertyAbsoluteValue *fPtr = (IC_GetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValue");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyAbsoluteValue in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3200,14 +3196,14 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     float Value = (float)info[3].As<Napi::Number>().DoubleValue();
 
-    IC_SetPropertyAbsoluteValue *f_ptr = (IC_SetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_SetPropertyAbsoluteValue");
-    if (f_ptr == nullptr)
+    IC_SetPropertyAbsoluteValue *fPtr = (IC_SetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_SetPropertyAbsoluteValue");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetPropertyAbsoluteValue in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, Value);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3238,14 +3234,14 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     int *On;
 
-    IC_GetPropertySwitch *f_ptr = (IC_GetPropertySwitch *)GetProcAddress(tisgrabber, "IC_GetPropertySwitch");
-    if (f_ptr == nullptr)
+    IC_GetPropertySwitch *fPtr = (IC_GetPropertySwitch *)GetProcAddress(tisgrabber, "IC_GetPropertySwitch");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertySwitch in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, On);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3282,14 +3278,14 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
     char *Element = (char *)ElementStr.c_str();
     int On = (int)info[3].As<Napi::Number>().Int32Value();
 
-    IC_SetPropertySwitch *f_ptr = (IC_SetPropertySwitch *)GetProcAddress(tisgrabber, "IC_SetPropertySwitch");
-    if (f_ptr == nullptr)
+    IC_SetPropertySwitch *fPtr = (IC_SetPropertySwitch *)GetProcAddress(tisgrabber, "IC_SetPropertySwitch");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetPropertySwitch in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, On);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3319,14 +3315,14 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
     auto ElementStr = info[2].As<Napi::String>().Utf8Value();
     char *Element = (char *)ElementStr.c_str();
 
-    IC_PropertyOnePush *f_ptr = (IC_PropertyOnePush *)GetProcAddress(tisgrabber, "IC_PropertyOnePush");
-    if (f_ptr == nullptr)
+    IC_PropertyOnePush *fPtr = (IC_PropertyOnePush *)GetProcAddress(tisgrabber, "IC_PropertyOnePush");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_PropertyOnePush in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3358,14 +3354,14 @@ Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
     auto ElementStr = info[2].As<Napi::String>().Utf8Value();
     char *Element = (char *)ElementStr.c_str();
 
-    IC_GetPropertyMapStrings *f_ptr = (IC_GetPropertyMapStrings *)GetProcAddress(tisgrabber, "IC_GetPropertyMapStrings");
-    if (f_ptr == nullptr)
+    IC_GetPropertyMapStrings *fPtr = (IC_GetPropertyMapStrings *)GetProcAddress(tisgrabber, "IC_GetPropertyMapStrings");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyMapStrings in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int StringCount = 0;
     int StringLength = 0;
     char **Strings = nullptr;
@@ -3373,11 +3369,15 @@ Napi::Value f_IC_GetPropertyMapStrings(const Napi::CallbackInfo &info)
     int getSizeRet = f(hGrabber, Property, Element, &StringCount, &StringLength, nullptr);
     if (getSizeRet == IC_SUCCESS)
     {
-        char **Strings = new char *[StringCount];
+        int stringCountWithNull = StringLength + 1;
+        char **Strings = new char *[stringCountWithNull];
+        memset(Strings, 0, stringCountWithNull);
 
         for (size_t i = 0; i < StringCount; i++)
         {
-            Strings[i] = new char[StringLength];
+            int stringLengthWithNull = StringLength + 1;
+            Strings[i] = new char[stringLengthWithNull];
+            memset(Strings[i], 0, stringLengthWithNull);
         }
 
         // Second call, fill the created array:
@@ -3436,20 +3436,22 @@ Napi::Value f_IC_GetPropertyMapString(const Napi::CallbackInfo &info)
     auto ElementStr = info[2].As<Napi::String>().Utf8Value();
     char *Element = (char *)ElementStr.c_str();
 
-    IC_GetPropertyMapString *f_ptr = (IC_GetPropertyMapString *)GetProcAddress(tisgrabber, "IC_GetPropertyMapString");
-    if (f_ptr == nullptr)
+    IC_GetPropertyMapString *fPtr = (IC_GetPropertyMapString *)GetProcAddress(tisgrabber, "IC_GetPropertyMapString");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetPropertyMapString in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int StringLength = 0;
     Napi::Object retObj = Napi::Object::New(env);
     int getLengthRet = f(hGrabber, Property, Element, &StringLength, nullptr);
     if (getLengthRet == IC_SUCCESS)
     {
-        char *String = new char[StringLength];
+        int stringLengthWithNull = StringLength + 1;
+        char *String = new char[stringLengthWithNull];
+        memset(String, 0, stringLengthWithNull);
         int ret = f(hGrabber, Property, Element, &StringLength, String);
         retObj.Set("code", Napi::Number::New(env, ret));
         retObj.Set("data", Napi::String::New(env, String));
@@ -3495,14 +3497,14 @@ Napi::Value f_IC_SetPropertyMapString(const Napi::CallbackInfo &info)
     auto StringStr = info[3].As<Napi::String>().Utf8Value();
     char *String = (char *)StringStr.c_str();
 
-    IC_SetPropertyMapString *f_ptr = (IC_SetPropertyMapString *)GetProcAddress(tisgrabber, "IC_SetPropertyMapString");
-    if (f_ptr == nullptr)
+    IC_SetPropertyMapString *fPtr = (IC_SetPropertyMapString *)GetProcAddress(tisgrabber, "IC_SetPropertyMapString");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetPropertyMapString in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Property, Element, String);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3519,14 +3521,14 @@ Napi::Value f_IC_ResetProperties(const Napi::CallbackInfo &info)
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
 
-    IC_ResetProperties *f_ptr = (IC_ResetProperties *)GetProcAddress(tisgrabber, "IC_ResetProperties");
-    if (f_ptr == nullptr)
+    IC_ResetProperties *fPtr = (IC_ResetProperties *)GetProcAddress(tisgrabber, "IC_ResetProperties");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_ResetProperties in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3549,14 +3551,14 @@ Napi::Value f_IC_SetRingBufferSize(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int Count = (int)info[1].As<Napi::Number>().Int64Value();
 
-    IC_SetRingBufferSize *f_ptr = (IC_SetRingBufferSize *)GetProcAddress(tisgrabber, "IC_SetRingBufferSize");
-    if (f_ptr == nullptr)
+    IC_SetRingBufferSize *fPtr = (IC_SetRingBufferSize *)GetProcAddress(tisgrabber, "IC_SetRingBufferSize");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_SetRingBufferSize in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Count);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3574,14 +3576,14 @@ Napi::Value f_IC_GetRingBufferSize(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     int *pCount;
 
-    IC_GetRingBufferSize *f_ptr = (IC_GetRingBufferSize *)GetProcAddress(tisgrabber, "IC_GetRingBufferSize");
-    if (f_ptr == nullptr)
+    IC_GetRingBufferSize *fPtr = (IC_GetRingBufferSize *)GetProcAddress(tisgrabber, "IC_GetRingBufferSize");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetRingBufferSize in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, pCount);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3607,14 +3609,14 @@ Napi::Value f_IC_GetMemBuffer(const Napi::CallbackInfo &info)
     int Index = info[1].As<Napi::Number>().Int32Value();
     HMEMBUFFER *phBuffer;
 
-    IC_GetMemBuffer *f_ptr = (IC_GetMemBuffer *)GetProcAddress(tisgrabber, "IC_GetMemBuffer");
-    if (f_ptr == nullptr)
+    IC_GetMemBuffer *fPtr = (IC_GetMemBuffer *)GetProcAddress(tisgrabber, "IC_GetMemBuffer");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetMemBuffer in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, Index, phBuffer);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3634,14 +3636,14 @@ Napi::Value f_IC_GetMemBufferLastAcq(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     HMEMBUFFER *phBuffer;
 
-    IC_GetMemBufferLastAcq *f_ptr = (IC_GetMemBufferLastAcq *)GetProcAddress(tisgrabber, "IC_GetMemBufferLastAcq");
-    if (f_ptr == nullptr)
+    IC_GetMemBufferLastAcq *fPtr = (IC_GetMemBufferLastAcq *)GetProcAddress(tisgrabber, "IC_GetMemBufferLastAcq");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetMemBufferLastAcq in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hGrabber, phBuffer);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3667,14 +3669,14 @@ Napi::Value f_IC_GetMemBufferDescription(const Napi::CallbackInfo &info)
     int *pHeight;
     int *pBitsPerPixel;
 
-    IC_GetMemBufferDescription *f_ptr = (IC_GetMemBufferDescription *)GetProcAddress(tisgrabber, "IC_GetMemBufferDescription");
-    if (f_ptr == nullptr)
+    IC_GetMemBufferDescription *fPtr = (IC_GetMemBufferDescription *)GetProcAddress(tisgrabber, "IC_GetMemBufferDescription");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_GetMemBufferDescription in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hBuffer, pWidth, pHeight, pBitsPerPixel);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3701,14 +3703,14 @@ Napi::Value f_IC_MemBufferLock(const Napi::CallbackInfo &info)
     HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int lock = (int)info[1].As<Napi::Number>().Int32Value();
 
-    IC_MemBufferLock *f_ptr = (IC_MemBufferLock *)GetProcAddress(tisgrabber, "IC_MemBufferLock");
-    if (f_ptr == nullptr)
+    IC_MemBufferLock *fPtr = (IC_MemBufferLock *)GetProcAddress(tisgrabber, "IC_MemBufferLock");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_MemBufferLock in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hBuffer, lock);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3726,14 +3728,14 @@ Napi::Value f_IC_MemBufferisLocked(const Napi::CallbackInfo &info)
     HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int *plocked;
 
-    IC_MemBufferisLocked *f_ptr = (IC_MemBufferisLocked *)GetProcAddress(tisgrabber, "IC_MemBufferisLocked");
-    if (f_ptr == nullptr)
+    IC_MemBufferisLocked *fPtr = (IC_MemBufferisLocked *)GetProcAddress(tisgrabber, "IC_MemBufferisLocked");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_MemBufferisLocked in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hBuffer, plocked);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3752,14 +3754,14 @@ Napi::Value f_IC_MemBufferGetIndex(const Napi::CallbackInfo &info)
     HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int *pIndex;
 
-    IC_MemBufferGetIndex *f_ptr = (IC_MemBufferGetIndex *)GetProcAddress(tisgrabber, "IC_MemBufferGetIndex");
-    if (f_ptr == nullptr)
+    IC_MemBufferGetIndex *fPtr = (IC_MemBufferGetIndex *)GetProcAddress(tisgrabber, "IC_MemBufferGetIndex");
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_MemBufferGetIndex in tisgrabber_x64.dll").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    auto f = *f_ptr;
+    auto f = *fPtr;
     int ret = f(hBuffer, pIndex);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
@@ -3776,9 +3778,9 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
     }
 
     HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
-    IC_MemBufferGetDataPtr *f_ptr = (IC_MemBufferGetDataPtr *)GetProcAddress(tisgrabber, "IC_MemBufferGetDataPtr");
+    IC_MemBufferGetDataPtr *fPtr = (IC_MemBufferGetDataPtr *)GetProcAddress(tisgrabber, "IC_MemBufferGetDataPtr");
     IC_GetMemBufferDescription *f_ptr_get_desc = (IC_GetMemBufferDescription *)GetProcAddress(tisgrabber, "IC_GetMemBufferDescription");
-    if (f_ptr == nullptr)
+    if (fPtr == nullptr)
     {
         FreeLibrary(tisgrabber);
         Napi::Error::New(env, "Cannot find function IC_MemBufferGetDataPtr in tisgrabber_x64.dll").ThrowAsJavaScriptException();
@@ -3797,7 +3799,7 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
     if ((*f_ptr_get_desc)(hBuffer, pWidth, pHeight, pBitsPerPixel) == IC_SUCCESS)
     {
         size_t size = (*pWidth) * (*pHeight) * (*pBitsPerPixel) / 8;
-        auto f = *f_ptr;
+        auto f = *fPtr;
         unsigned char *bufferPtr;
         int ret = f(hBuffer, &bufferPtr);
         if (ret == IC_SUCCESS)
@@ -3833,14 +3835,14 @@ Napi::Value f_IC_SetFrameReadyCallbackEx(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     if (g_frameReadyCb == nullptr)
     {
-        IC_SetFrameReadyCallbackEx *f_ptr = (IC_SetFrameReadyCallbackEx *)GetProcAddress(tisgrabber, "IC_SetFrameReadyCallbackEx");
-        if (f_ptr == nullptr)
+        IC_SetFrameReadyCallbackEx *fPtr = (IC_SetFrameReadyCallbackEx *)GetProcAddress(tisgrabber, "IC_SetFrameReadyCallbackEx");
+        if (fPtr == nullptr)
         {
             FreeLibrary(tisgrabber);
             Napi::Error::New(env, "Cannot find function IC_SetFrameReadyCallbackEx in tisgrabber_x64.dll").ThrowAsJavaScriptException();
             return env.Undefined();
         };
-        auto f = *f_ptr;
+        auto f = *fPtr;
         int ret = f(hGrabber, frameReadyCb, nullptr);
         if (ret != IC_SUCCESS)
         {
@@ -3875,14 +3877,14 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     if (g_frameReadyCb == nullptr)
     {
-        IC_SetCallbacks *f_ptr = (IC_SetCallbacks *)GetProcAddress(tisgrabber, "IC_SetCallbacks");
-        if (f_ptr == nullptr)
+        IC_SetCallbacks *fPtr = (IC_SetCallbacks *)GetProcAddress(tisgrabber, "IC_SetCallbacks");
+        if (fPtr == nullptr)
         {
             FreeLibrary(tisgrabber);
             Napi::Error::New(env, "Cannot find function IC_SetCallbacks in tisgrabber_x64.dll").ThrowAsJavaScriptException();
             return env.Undefined();
         };
-        auto f = *f_ptr;
+        auto f = *fPtr;
         int ret = f(hGrabber, nullptr, nullptr, deviceLostCb, nullptr);
         if (ret != IC_SUCCESS)
         {
