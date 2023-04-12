@@ -37,7 +37,7 @@
     }
 
 #define COUNT_RETURN()                                          \
-    if (ret < IC_SUCCESS)                                       \
+    if (ret < 0)                                       \
     {                                                           \
         retObj.Set("code", Napi::Number::New(env, ret));        \
     }                                                           \
@@ -279,6 +279,7 @@ Napi::Value f_IC_GetDeviceName(const Napi::CallbackInfo &info)
         retObj.Set("message", Napi::String::New(env, "Device is invalid"));
         return retObj;
     }
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     retObj.Set("data", Napi::String::New(env, ret));
     return retObj;
 }
@@ -1222,8 +1223,10 @@ Napi::Value f_IC_GetSerialNumber(const Napi::CallbackInfo &info)
     int ret = f(hGrabber, szSerial);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
-    if (ret == IC_SUCCESS)
+    // 这里 dll 的实现有 bug，实测成功获取到 szSerial 但是会返回 IC_ERROR，因此如下判断
+    if (ret == IC_SUCCESS || ret == IC_ERROR)
     {
+        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
         retObj.Set("data", Napi::String::New(env, szSerial));
     }
     return retObj;
@@ -2072,6 +2075,7 @@ Napi::Value f_IC_GetAvailableFrameRates(const Napi::CallbackInfo &info)
         Index++;
     }
     Napi::Object retObj = Napi::Object::New(env);
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     retObj.Set("data", FloatVectorToJsArray(env, fpsList));
     return retObj;
 }
@@ -3990,6 +3994,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_MemBufferGetData)
     INIT_STATIC_METHOD(IC_SetFrameReadyCallbackEx)
     INIT_STATIC_METHOD(IC_SetDeviceLostCallback)
+    INIT_STATIC_METHOD(IC_GetUniqueName)
     return exports;
 }
 

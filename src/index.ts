@@ -16,7 +16,7 @@ import {
   ICNodeResuleCode,
 } from './type';
 
-const binding = require('../lib/binding/napi-v8/ic_node.node');
+const binding = require('../lib/binding/napi-v8/ic_node.node').ic_static;
 
 const icNodeStatic: ICNodeStatic = {
   IC_InitLibrary: (...args) => binding.IC_InitLibrary(...args),
@@ -52,6 +52,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_SetPropertyValue: (...args) => binding.IC_SetPropertyValue(...args),
   IC_enumProperties: (...args) => binding.IC_enumProperties(...args),
   IC_enumPropertyElements: (...args) => binding.IC_enumPropertyElements(...args),
+  IC_GetDeviceCount : (...args) => binding.IC_GetDeviceCount(...args),
 } as ICNodeStatic;
 
 const DEFAULT_OPTIONS: Partial<ICGrabberInitOptions> = {
@@ -65,6 +66,10 @@ function SUCCESS(res: ICNodeResult<any>) {
 
 function MESSAGE(res: ICNodeResult<any>) {
   return `error code: ${res.code}` + res.message ? `, message: ${res.message}` : '';
+}
+
+function CODE(res: ICNodeResult<any>) {
+  return res.code;
 }
 
 function DATA<T>(res: ICNodeResult<T>): T {
@@ -242,7 +247,13 @@ class ICGrabber {
   }
 
   getSerialNumber(): string {
-    return FORCE_DATA(ICGrabber.METHODS.IC_GetSerialNumber(this.grabber));
+    const res = ICGrabber.METHODS.IC_GetSerialNumber(this.grabber)
+    const code = CODE(res);
+    if (code === ICNodeResuleCode.NOT_AVAILABLE) {
+      return '';
+    } else {
+      return FORCE_DATA(res);
+    }
   }
 
   getSupprotedVideoFormats(): ICNodeVideoFormat[] {

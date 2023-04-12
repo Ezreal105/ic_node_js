@@ -8,6 +8,7 @@ const name = icNode.IC_GetDevice(0).data
 const uniqueName = icNode.IC_GetUniqueNamefromList(0).data
 console.log('[wsttest] uniqueName', uniqueName)
 icNode.IC_OpenDevByUniqueName(grabber, uniqueName).data
-if (icNode.IC_IsDevValid(grabber)) {
-    icNode.IC_StartLive(grabber, 0);
-}
+console.log(icNode.IC_IsPropertyAvailable(grabber, "Trigger", "Software Trigger").data)
+// if (icNode.IC_IsDevValid(grabber)) {
+    
+// }
