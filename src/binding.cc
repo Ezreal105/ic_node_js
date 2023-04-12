@@ -37,7 +37,7 @@
     }
 
 #define COUNT_RETURN()                                          \
-    if (ret < 0)                                       \
+    if (ret < 0)                                                \
     {                                                           \
         retObj.Set("code", Napi::Number::New(env, ret));        \
     }                                                           \
@@ -2847,7 +2847,8 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
     };
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
     Napi::Function callback = info[2].As<Napi::Function>();
 
     IC_enumPropertyElements *f_ptr = (IC_enumPropertyElements *)GetProcAddress(tisgrabber, "IC_enumPropertyElements");
@@ -2890,8 +2891,10 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
     };
 
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     Napi::Function callback = info[3].As<Napi::Function>();
 
     IC_enumPropertyElementInterfaces *f_ptr = (IC_enumPropertyElementInterfaces *)GetProcAddress(tisgrabber, "IC_enumPropertyElementInterfaces");
@@ -2928,8 +2931,10 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
 
     IC_IsPropertyAvailable *f_ptr = (IC_IsPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsPropertyAvailable");
     if (f_ptr == nullptr)
@@ -2941,11 +2946,22 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
     auto f = *f_ptr;
     int ret = f(hGrabber, Property, Element);
     Napi::Object retObj = Napi::Object::New(env);
-    BOOL_RETURN()
+    if (ret == IC_SUCCESS)
+    {
+        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+        retObj.Set("data", Napi::Boolean::New(env, true));
+    }
+    else if (ret == IC_PROPERTY_ELEMENT_NOT_AVAILABLE)
+    {
+        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+        retObj.Set("data", Napi::Boolean::New(env, false));
+    }
+    else
+    {
+        retObj.Set("code", Napi::Number::New(env, ret));
+    }
     return retObj;
 }
-
-// TODO: 继续
 
 Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
 {
@@ -2966,8 +2982,10 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     int *Min;
     int *Max;
 
@@ -3007,8 +3025,10 @@ Napi::Value f_IC_GetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     int *Value;
 
     IC_GetPropertyValue *f_ptr = (IC_GetPropertyValue *)GetProcAddress(tisgrabber, "IC_GetPropertyValue");
@@ -3049,8 +3069,10 @@ Napi::Value f_IC_SetPropertyValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     int Value = (int)info[3].As<Napi::Number>().Int64Value();
 
     IC_SetPropertyValue *f_ptr = (IC_SetPropertyValue *)GetProcAddress(tisgrabber, "IC_SetPropertyValue");
@@ -3085,8 +3107,10 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     float *Min;
     float *Max;
 
@@ -3126,8 +3150,10 @@ Napi::Value f_IC_GetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     float *Value;
 
     IC_GetPropertyAbsoluteValue *f_ptr = (IC_GetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_GetPropertyAbsoluteValue");
@@ -3168,8 +3194,10 @@ Napi::Value f_IC_SetPropertyAbsoluteValue(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     float Value = (float)info[3].As<Napi::Number>().DoubleValue();
 
     IC_SetPropertyAbsoluteValue *f_ptr = (IC_SetPropertyAbsoluteValue *)GetProcAddress(tisgrabber, "IC_SetPropertyAbsoluteValue");
@@ -3204,8 +3232,10 @@ Napi::Value f_IC_GetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     int *On;
 
     IC_GetPropertySwitch *f_ptr = (IC_GetPropertySwitch *)GetProcAddress(tisgrabber, "IC_GetPropertySwitch");
@@ -3246,8 +3276,10 @@ Napi::Value f_IC_SetPropertySwitch(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
-    auto *Element = (char *)info[2].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
+    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+    char *Element = (char *)ElementStr.c_str();
     int On = (int)info[3].As<Napi::Number>().Int32Value();
 
     IC_SetPropertySwitch *f_ptr = (IC_SetPropertySwitch *)GetProcAddress(tisgrabber, "IC_SetPropertySwitch");
@@ -3282,7 +3314,8 @@ Napi::Value f_IC_PropertyOnePush(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto *Property = (char *)info[1].As<Napi::String>().Utf8Value().c_str();
+    auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
+    char *Property = (char *)PropertyStr.c_str();
     auto ElementStr = info[2].As<Napi::String>().Utf8Value();
     char *Element = (char *)ElementStr.c_str();
 
