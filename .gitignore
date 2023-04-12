@@ -173,3 +173,5 @@ About
 gitignore/Node.gitignore at main · github/gitignore
 
 build-tmp-napi-v8/
+
+dist/
