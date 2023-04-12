@@ -3605,7 +3605,7 @@ Napi::Value f_IC_GetMemBufferLastAcq(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, Index, phBuffer);
+    int ret = f(hGrabber, phBuffer);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     if (ret == IC_SUCCESS)
@@ -3765,7 +3765,7 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
         int ret = f(hBuffer, &bufferPtr);
         if (ret == IC_SUCCESS)
         {
-            Napi::Buffer<unsigned char> buffer = Napi::Buffer<unsigned char>::NewOrCopy(env, bufferPtr, size);
+            Napi::Buffer<unsigned char> buffer = Napi::Buffer<unsigned char>::Copy(env, bufferPtr, size);
             retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
             retObj.Set("data", buffer);
         }
