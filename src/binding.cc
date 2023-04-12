@@ -71,7 +71,7 @@ void frameReadyCb(HGRABBER hGrabber, HMEMBUFFER hBuffer, unsigned long frameNumb
     if (g_frameReadyCb != nullptr)
     {
         auto env = g_frameReadyCb->Env();
-        g_frameReadyCb->Call({Napi::External<HGRABBER>::New(env, &hGrabber), Napi::External<HMEMBUFFER>::New(env, &hBuffer), Napi::Number::New(env, frameNumber)});
+        g_frameReadyCb->Call({Napi::External<HGRABBER_t>::New(env, hGrabber), Napi::External<ImageBuffer>::New(env, hBuffer), Napi::Number::New(env, frameNumber)});
     }
 }
 
@@ -80,7 +80,7 @@ void deviceLostCb(HGRABBER hGrabber, void *data = nullptr)
     if (g_deviceLostCb != nullptr)
     {
         auto env = g_deviceLostCb->Env();
-        g_deviceLostCb->Call({Napi::External<HGRABBER>::New(env, &hGrabber)});
+        g_deviceLostCb->Call({Napi::External<HGRABBER_t>::New(env, hGrabber)});
     }
 }
 
@@ -704,8 +704,8 @@ Napi::Value f_IC_CameraPropertyGetRange(const Napi::CallbackInfo &info)
         return retObj;
     }
     Napi::Object data = Napi::Object::New(env);
-    data.Set("lMin", Napi::Number::New(env, *lMin));
-    data.Set("lMax", Napi::Number::New(env, *lMax));
+    data.Set("min", Napi::Number::New(env, *lMin));
+    data.Set("max", Napi::Number::New(env, *lMax));
     retObj.Set("data", data);
     return retObj;
 }
@@ -838,9 +838,7 @@ Napi::Value f_IC_GetAutoCameraProperty(const Napi::CallbackInfo &info)
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
-    Napi::Object data = Napi::Object::New(env);
-    data.Set("iOnOff", Napi::Boolean::New(env, (bool)*iOnOff));
-    retObj.Set("data", data);
+    retObj.Set("data", Napi::Boolean::New(env, (bool)*iOnOff));
     return retObj;
 }
 Napi::Value f_IC_IsVideoPropertyAvailable(const Napi::CallbackInfo &info)
@@ -902,8 +900,8 @@ Napi::Value f_IC_VideoPropertyGetRange(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("lMin", Napi::Number::New(env, *lMin));
-    data.Set("lMax", Napi::Number::New(env, *lMax));
+    data.Set("min", Napi::Number::New(env, *lMin));
+    data.Set("max", Napi::Number::New(env, *lMax));
     retObj.Set("data", data);
     return retObj;
 }
@@ -997,9 +995,7 @@ Napi::Value f_IC_GetAutoVideoProperty(const Napi::CallbackInfo &info)
     int ret = f(hGrabber, iProperty, iOnOff);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
-    Napi::Object data = Napi::Object::New(env);
-    data.Set("iOnOff", Napi::Boolean::New(env, (bool)*iOnOff));
-    retObj.Set("data", data);
+    retObj.Set("data", Napi::Boolean::New(env, (bool)*iOnOff));
     return retObj;
 }
 Napi::Value f_IC_SetVideoProperty(const Napi::CallbackInfo &info)
@@ -1099,9 +1095,9 @@ Napi::Value f_IC_GetImageDescription(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("data", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("lWidth", Napi::Number::New(env, *lWidth));
-    data.Set("lHeight", Napi::Number::New(env, *lHeight));
-    data.Set("iBitsPerPixel", Napi::Number::New(env, *iBitsPerPixel));
+    data.Set("width", Napi::Number::New(env, *lWidth));
+    data.Set("height", Napi::Number::New(env, *lHeight));
+    data.Set("bitsPerPixel", Napi::Number::New(env, *iBitsPerPixel));
     data.Set("format", Napi::Number::New(env, *format));
     retObj.Set("data", data);
     return retObj;
@@ -1730,8 +1726,8 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    auto szDisplaynameStr = info[1].As<Napi::String>().Utf8Value();
-    char *szDisplayname = (char *)szDisplaynameStr.c_str();
+    auto szUniqueNameStr = info[1].As<Napi::String>().Utf8Value();
+    char *szUniqueName = (char *)szUniqueNameStr.c_str();
 
     IC_OpenDevByUniqueName *f_ptr = (IC_OpenDevByUniqueName *)GetProcAddress(tisgrabber, "IC_OpenDevByUniqueName");
     if (f_ptr == nullptr)
@@ -1741,7 +1737,7 @@ Napi::Value f_IC_OpenDevByUniqueName(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *f_ptr;
-    int ret = f(hGrabber, szDisplayname);
+    int ret = f(hGrabber, szUniqueName);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -2370,8 +2366,8 @@ Napi::Value f_IC_GetExpRegValRange(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("lMin", Napi::Number::New(env, *lMin));
-    data.Set("lMax", Napi::Number::New(env, *lMax));
+    data.Set("min", Napi::Number::New(env, *lMin));
+    data.Set("max", Napi::Number::New(env, *lMax));
     retObj.Set("data", data);
     return retObj;
 }
@@ -2983,8 +2979,8 @@ Napi::Value f_IC_GetPropertyValueRange(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("Min", Napi::Number::New(env, *Min));
-    data.Set("Max", Napi::Number::New(env, *Max));
+    data.Set("min", Napi::Number::New(env, *Min));
+    data.Set("max", Napi::Number::New(env, *Max));
     retObj.Set("data", data);
     return retObj;
 }
@@ -3102,8 +3098,8 @@ Napi::Value f_IC_GetPropertyAbsoluteValueRange(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("Min", Napi::Number::New(env, *Min));
-    data.Set("Max", Napi::Number::New(env, *Max));
+    data.Set("min", Napi::Number::New(env, *Min));
+    data.Set("max", Napi::Number::New(env, *Max));
     retObj.Set("data", data);
     return retObj;
 }
@@ -3585,7 +3581,38 @@ Napi::Value f_IC_GetMemBuffer(const Napi::CallbackInfo &info)
     int ret = f(hGrabber, Index, phBuffer);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
-    retObj.Set("data", Napi::External<HMEMBUFFER>::New(env, phBuffer));
+    retObj.Set("data", Napi::External<ImageBuffer>::New(env, *phBuffer));
+    return retObj;
+}
+
+Napi::Value f_IC_GetMemBufferLastAcq(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 1)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
+
+    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    HMEMBUFFER *phBuffer;
+
+    IC_GetMemBufferLastAcq *f_ptr = (IC_GetMemBufferLastAcq *)GetProcAddress(tisgrabber, "IC_GetMemBufferLastAcq");
+    if (f_ptr == nullptr)
+    {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_GetMemBufferLastAcq in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+    auto f = *f_ptr;
+    int ret = f(hGrabber, Index, phBuffer);
+    Napi::Object retObj = Napi::Object::New(env);
+    retObj.Set("code", Napi::Number::New(env, ret));
+    if (ret == IC_SUCCESS)
+    {
+        retObj.Set("data", Napi::External<ImageBuffer>::New(env, *phBuffer));
+    }
+
     return retObj;
 }
 
@@ -3598,7 +3625,7 @@ Napi::Value f_IC_GetMemBufferDescription(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
+    HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int *pWidth;
     int *pHeight;
     int *pBitsPerPixel;
@@ -3615,9 +3642,9 @@ Napi::Value f_IC_GetMemBufferDescription(const Napi::CallbackInfo &info)
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     Napi::Object data = Napi::Object::New(env);
-    data.Set("pWidth", Napi::Number::New(env, *pWidth));
-    data.Set("pHeight", Napi::Number::New(env, *pHeight));
-    data.Set("pBitsPerPixel", Napi::Number::New(env, *pBitsPerPixel));
+    data.Set("width", Napi::Number::New(env, *pWidth));
+    data.Set("height", Napi::Number::New(env, *pHeight));
+    data.Set("bitsPerPixel", Napi::Number::New(env, *pBitsPerPixel));
     retObj.Set("data", data);
     return retObj;
 }
@@ -3634,7 +3661,7 @@ Napi::Value f_IC_MemBufferLock(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
+    HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int lock = (int)info[1].As<Napi::Number>().Int32Value();
 
     IC_MemBufferLock *f_ptr = (IC_MemBufferLock *)GetProcAddress(tisgrabber, "IC_MemBufferLock");
@@ -3659,7 +3686,7 @@ Napi::Value f_IC_MemBufferisLocked(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
+    HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int *plocked;
 
     IC_MemBufferisLocked *f_ptr = (IC_MemBufferisLocked *)GetProcAddress(tisgrabber, "IC_MemBufferisLocked");
@@ -3685,7 +3712,7 @@ Napi::Value f_IC_MemBufferGetIndex(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
+    HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     int *pIndex;
 
     IC_MemBufferGetIndex *f_ptr = (IC_MemBufferGetIndex *)GetProcAddress(tisgrabber, "IC_MemBufferGetIndex");
@@ -3711,7 +3738,7 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
         return env.Undefined();
     }
 
-    HMEMBUFFER hBuffer = *info[0].As<Napi::External<HMEMBUFFER>>().Data();
+    HMEMBUFFER hBuffer = info[0].As<Napi::External<ImageBuffer>>().Data();
     IC_MemBufferGetDataPtr *f_ptr = (IC_MemBufferGetDataPtr *)GetProcAddress(tisgrabber, "IC_MemBufferGetDataPtr");
     IC_GetMemBufferDescription *f_ptr_get_desc = (IC_GetMemBufferDescription *)GetProcAddress(tisgrabber, "IC_GetMemBufferDescription");
     if (f_ptr == nullptr)
@@ -3738,7 +3765,7 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
         int ret = f(hBuffer, &bufferPtr);
         if (ret == IC_SUCCESS)
         {
-            Napi::Buffer<unsigned char> buffer = Napi::Buffer<unsigned char>::Copy(env, bufferPtr, size);
+            Napi::Buffer<unsigned char> buffer = Napi::Buffer<unsigned char>::NewOrCopy(env, bufferPtr, size);
             retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
             retObj.Set("data", buffer);
         }
@@ -3839,66 +3866,6 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
     return retObj;
 }
 
-// Napi::Value f_IC_ListVideoFormats(const Napi::CallbackInfo &info)
-// {
-//     Napi::Env env = info.Env();
-//     if (info.Length() != 1)
-//     {
-//         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     }
-
-//    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-//     IC_ListVideoFormats *f_ptr = (IC_ListVideoFormats *)GetProcAddress(tisgrabber, "IC_ListVideoFormats");
-//     if (f_ptr == nullptr)
-//     {
-//         FreeLibrary(tisgrabber);
-//         Napi::Error::New(env, "Cannot find function IC_ListVideoFormats in tisgrabber_x64.dll").ThrowAsJavaScriptException();
-//         return env.Undefined();
-//     };
-//     auto f = *f_ptr;
-//     Napi::Object retObj = Napi::Object::New(env);
-//     Napi::Array arr = Napi::Array::New(env);
-//     retObj.Set("data", arr);
-//     int count = f(hGrabber, nullptr, 0);
-//     if (count == 0)
-//     {
-//         retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-//     }
-//     else if (count > 0)
-//     {
-//         char **szFormatList = new char *[count];
-//         const int FORMAT_STR_SIZE = 40;
-//         for (size_t i = 0; i < count; i++)
-//         {
-//             szFormatList[i] = new char[FORMAT_STR_SIZE];
-//         }
-
-//         int ret = f(hGrabber, szFormatList, FORMAT_STR_SIZE);
-//         if (ret == IC_SUCCESS)
-//         {
-//             for (size_t i = 0; i < count; i++)
-//             {
-//                 arr.Set(i, Napi::String::New(env, szFormatList[i]));
-//                 delete szFormatList[i];
-//             }
-
-//             retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-//             retObj.Set("data", arr);
-//         }
-//         else
-//         {
-//             retObj.Set("code", Napi::Number::New(env, ret));
-//         }
-
-//         // clean up
-//         for (size_t i = 0; i < count; i++)
-//         {
-//             delete szFormatList[i];
-//         }
-//         delete szFormatList;
-//     }
-// }
 // generate end
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)

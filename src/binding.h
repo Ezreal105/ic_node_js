@@ -186,7 +186,7 @@ extern "C"
 	typedef int AC IC_LoadDeviceSettings(HGRABBER hGrabber, char *szFilename);
 	typedef int AC IC_OpenDevByDisplayName(HGRABBER hGrabber, char *szDisplayname);
 	typedef int AC IC_GetDisplayName(HGRABBER hGrabber, char *szDisplayname, int iLen);
-	typedef int AC IC_OpenDevByUniqueName(HGRABBER hGrabber, char *szDisplayname);
+	typedef int AC IC_OpenDevByUniqueName(HGRABBER hGrabber, char *szUniqueName);
 	typedef int AC IC_GetUniqueName(HGRABBER hGrabber, char *szUniquename, int iLen);
 	typedef int AC IC_IsDevValid(HGRABBER hGrabber);
 	typedef int AC IC_ShowPropertyDialog(HGRABBER hGrabber);

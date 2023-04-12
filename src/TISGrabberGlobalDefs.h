@@ -3,14 +3,12 @@
 #ifndef __GLOBALDEFS_H__
 #define __GLOBALDEFS_H__
 
-
 typedef enum
 {
 	FILETYPE_BMP,
 	FILETYPE_JPEG,
-	FILETYPE_MEGA=65536 // Borland C++ 6 compatibility
+	FILETYPE_MEGA = 65536 // Borland C++ 6 compatibility
 } IMG_FILETYPE;
-
 
 typedef enum
 {
@@ -19,8 +17,8 @@ typedef enum
 	RGB32,
 	UYVY,
 	Y16,
-	NONE,	// used as return value
-	COLORFORMAT_MEGA=65536 // Borland C++ 6 compatibility
+	NONE,										 // used as return value
+	COLORFORMAT_MEGA = 65536 // Borland C++ 6 compatibility
 } COLORFORMAT;
 
 typedef enum
@@ -35,9 +33,8 @@ typedef enum
 	PROP_VID_WHITEBALANCE,
 	PROP_VID_BLACKLIGHTCOMPENSATION,
 	PROP_VID_GAIN,
-	PROP_VID_MEGA=65536 // Borland C++ 6 compatibility
+	PROP_VID_MEGA = 65536 // Borland C++ 6 compatibility
 } VIDEO_PROPERTY;
-
 
 typedef enum
 {
@@ -48,11 +45,10 @@ typedef enum
 	PROP_CAM_EXPOSURE,
 	PROP_CAM_IRIS,
 	PROP_CAM_FOCUS,
-	PROP_CAM_MEGA=65536 // Borland C++ 6 compatibility
+	PROP_CAM_MEGA = 65536 // Borland C++ 6 compatibility
 } CAMERA_PROPERTY;
 
-
-typedef	enum 
+typedef enum
 {
 	eParamLong,
 	eParamBoolean,
