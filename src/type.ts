@@ -76,7 +76,7 @@ export type ICNodeTriggerMode = string;
 export type ICNodeTriggerPolarity = number;
 export type ICNodeSwitch = boolean;
 
-export type ICNodePropertyRange = {
+export type ICNodePropertyValueRange = {
   min: number;
   max: number;
 };
@@ -136,7 +136,7 @@ export type ICNodeStatic = {
   IC_CameraPropertyGetRange(
     grabber: ICNodeGrabber,
     property: ICNodeCameraProperty,
-  ): ICNodeResult<ICNodePropertyRange>;
+  ): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetCameraProperty(
     grabber: ICNodeGrabber,
     property: ICNodeCameraProperty,
@@ -161,7 +161,7 @@ export type ICNodeStatic = {
   IC_VideoPropertyGetRange(
     grabber: ICNodeGrabber,
     property: ICNodeVideoProperty,
-  ): ICNodeResult<ICNodePropertyRange>;
+  ): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetVideoProperty(grabber: ICNodeGrabber, property: ICNodeVideoProperty): ICNodeResult<number>;
   IC_IsVideoPropertyAutoAvailable(
     grabber: ICNodeGrabber,
@@ -235,13 +235,13 @@ export type ICNodeStatic = {
   IC_GetTriggerModes(grabber: ICNodeGrabber): ICNodeResult<ICNodeTriggerMode[]>;
   IC_SetTriggerMode(grabber: ICNodeGrabber, mode: ICNodeTriggerMode): ICNodeResult;
   IC_SetTriggerPolarity(grabber: ICNodeGrabber, polarity: ICNodeTriggerPolarity): ICNodeResult;
-  IC_GetExpRegValRange(grabber: ICNodeGrabber): ICNodeResult<ICNodePropertyRange>;
+  IC_GetExpRegValRange(grabber: ICNodeGrabber): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetExpRegVal(grabber: ICNodeGrabber): ICNodeResult<number>;
   IC_SetExpRegVal(grabber: ICNodeGrabber, value: number): ICNodeResult;
   IC_EnableExpRegValAuto(grabber: ICNodeGrabber, onOff: ICNodeSwitch): ICNodeResult;
   IC_GetExpRegValAuto(grabber: ICNodeGrabber): ICNodeResult<boolean>;
   IC_IsExpAbsValAvailable(grabber: ICNodeGrabber): ICNodeResult<boolean>;
-  IC_GetExpAbsValRange(grabber: ICNodeGrabber): ICNodeResult<ICNodePropertyRange>;
+  IC_GetExpAbsValRange(grabber: ICNodeGrabber): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetExpAbsVal(grabber: ICNodeGrabber): ICNodeResult<number>;
   IC_SetExpAbsVal(grabber: ICNodeGrabber, value: number): ICNodeResult;
   IC_GetColorEnhancement(grabber: ICNodeGrabber): ICNodeResult<boolean>;
@@ -272,7 +272,7 @@ export type ICNodeStatic = {
     grabber: ICNodeGrabber,
     property: string,
     element: string,
-  ): ICNodeResult<ICNodePropertyRange>;
+  ): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetPropertyValue(
     grabber: ICNodeGrabber,
     property: string,
@@ -288,7 +288,7 @@ export type ICNodeStatic = {
     grabber: ICNodeGrabber,
     property: string,
     element: string,
-  ): ICNodeResult<ICNodePropertyRange>;
+  ): ICNodeResult<ICNodePropertyValueRange>;
   IC_GetPropertyAbsoluteValue(
     grabber: ICNodeGrabber,
     property: string,
@@ -357,9 +357,37 @@ export type DevicePreviewInfo = {
   uniqueName: string;
 };
 
-export type ICNodeSwitchPropertyElement = ['Trigger', 'Enable'];
+export type ICNodeSwitchPropertyElement =
+  | ['Trigger', 'Enable']
+  | ['Brightness', 'Auto']
+  | ['Contrast', 'Auto']
+  | ['Exposure', 'Auto']
+  | ['Gain', 'Auto']
+  | ['Sharpness', 'Auto']
+  | ['Gamma', 'Auto']
+  | ['White Balance', 'Auto']
+  | ['Zoom', 'Auto']
+  | ['Focus', 'Auto']
+  | ['Iris', 'Auto']
+  | ['Saturation', 'Auto']
+  | ['Hue', 'Auto']
+  | ['BacklightCompensation', 'Auto'];
+
 export type ICNodeButtonPropertyElement = ['Trigger', 'Software Trigger'];
-export type ICNodeRangePropertyElement = ['Brightness', 'Value'];
+export type ICNodeRangePropertyElement =
+  | ['Brightness', 'Value']
+  | ['Contrast', 'Value']
+  | ['Exposure', 'Value']
+  | ['Gain', 'Value']
+  | ['Sharpness', 'Value']
+  | ['Gamma', 'Value']
+  | ['White Balance', 'Value']
+  | ['Zoom', 'Value']
+  | ['Focus', 'Value']
+  | ['Iris', 'Value']
+  | ['Saturation', 'Value']
+  | ['Hue', 'Value']
+  | ['BacklightCompensation', 'Value'];
 export type ICNodePropertyElement =
   | ICNodeSwitchPropertyElement
   | ICNodeButtonPropertyElement
@@ -374,81 +402,86 @@ export type DeviceMeta = DevicePreviewInfo & {
   supprotedVideoNorms: ICNodeVideoNorm[];
   supportedInputChannels: ICNodeInputChannel[];
   supportedFrameRates: number[];
+  // 是否支持软触发
   supportSoftwareTrigger: boolean;
   // 是否支持亮度调节
   supportBrightness: boolean;
   // 是否支持自动亮度调节
   supportAutoBrightness: boolean;
   // 亮度范围
-  brightnessRange: ICNodePropertyRange | null;
+  brightnessRange: ICNodePropertyValueRange | null;
   // 是否支持对比度调节
   supportContrast: boolean;
   // 是否支持自动对比度调节
   supportAutoContrast: boolean;
   // 对比度范围
-  contrastRange: ICNodePropertyRange | null;
+  contrastRange: ICNodePropertyValueRange | null;
   // 是否支持曝光调节
   supportExposure: boolean;
   // 是否支持自动曝光调节
   supportAutoExposure: boolean;
   // 曝光范围
-  exposureRange: ICNodePropertyRange | null;
+  exposureRange: ICNodePropertyValueRange | null;
   // 是否支持增益调节
   supportGain: boolean;
   // 是否支持自动增益调节
   supportAutoGain: boolean;
   // 增益范围
-  gainRange: ICNodePropertyRange | null;
+  gainRange: ICNodePropertyValueRange | null;
   // 是否支持清晰度调节
   supportSharpness: boolean;
   // 是否支持自动清晰度调节
   supportAutoSharpness: boolean;
   // 清晰度范围
-  sharpnessRange: ICNodePropertyRange | null;
+  sharpnessRange: ICNodePropertyValueRange | null;
   // 是否支持伽马校正调节
   supportGamma: boolean;
   // 是否支持自动伽马校正调节
   supportAutoGamma: boolean;
   // 伽马校正范围
-  gammaRange: ICNodePropertyRange | null;
+  gammaRange: ICNodePropertyValueRange | null;
   // 是否支持白平衡调节
   supportWhiteBalance: boolean;
   // 是否支持自动白平衡调节
   supportAutoWhiteBalance: boolean;
   // 白平衡范围
-  whiteBalanceRange: ICNodePropertyRange | null;
+  whiteBalanceRange: ICNodePropertyValueRange | null;
   // 是否支持缩放(ZOOM)调节
   supportZoom: boolean;
   // 是否支持自动缩放
   supportAutoZoom: boolean;
   // 缩放范围
-  zoomRange: ICNodePropertyRange | null;
-  // 是否支持聚焦(FOCUS调节
+  zoomRange: ICNodePropertyValueRange | null;
+  // 是否支持聚焦(FOCUS)调节
   supportFocus: boolean;
   // 是否支持自动聚焦
   supportAutoFocus: boolean;
   // 聚焦范围
-  focusRange: ICNodePropertyRange | null;
+  focusRange: ICNodePropertyValueRange | null;
   // 是否支持光圈(IRIS)调节
   supportIris: boolean;
   // 是否支持自动光圈
   supportAutoIris: boolean;
   // 光圈范围
-  irisRange: ICNodePropertyRange | null;
+  irisRange: ICNodePropertyValueRange | null;
   // 是否支持饱和度调节
   supportSaturation: boolean;
   // 是否支持自动饱和度调节
   supportAutoSaturation: boolean;
   // 饱和度范围
-  saturationRange: ICNodePropertyRange | null;
+  saturationRange: ICNodePropertyValueRange | null;
   // 是否支持色相调节
   supportHue: boolean;
   // 是否支持自动色相调节
   supportAutoHue: boolean;
   // 色相范围
-  hueRange: ICNodePropertyRange | null;
+  hueRange: ICNodePropertyValueRange | null;
   // 是否支持逆光补偿
   supportBacklightCompensation: boolean;
+  // 是否支持自动逆光补偿
+  supportAutoBacklightCompensation: boolean;
+  // 逆光补偿范围
+  backlightCompensationRange: ICNodePropertyValueRange | null;
 };
 
 export type ICNodeImageFileFormat = 'bmp' | 'jpg' | 'tiff';

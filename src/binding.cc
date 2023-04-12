@@ -4030,6 +4030,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SetFrameReadyCallbackEx)
     INIT_STATIC_METHOD(IC_SetDeviceLostCallback)
     INIT_STATIC_METHOD(IC_GetUniqueName)
+    INIT_STATIC_METHOD(IC_enumProperties)
     return exports;
 }
 
