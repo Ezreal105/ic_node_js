@@ -293,7 +293,7 @@ class ICGrabber {
         return channels;
     }
     getSupportedFrameRates() {
-        return FORCE_DATA(ICGrabber.METHODS.IC_GetAvailableFrameRates(this.grabber));
+        return FORCE_DATA(ICGrabber.METHODS.IC_GetAvailableFrameRates(this.grabber)).map(i => Math.floor(i));
     }
     isPropertyAvailable(property, element) {
         return FORCE_DATA(ICGrabber.METHODS.IC_IsPropertyAvailable(this.grabber, property, element));
