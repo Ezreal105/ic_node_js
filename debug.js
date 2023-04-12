@@ -8,7 +8,8 @@ const name = icNode.IC_GetDevice(0).data
 const uniqueName = icNode.IC_GetUniqueNamefromList(0).data
 console.log('[wsttest] uniqueName', uniqueName)
 icNode.IC_OpenDevByUniqueName(grabber, uniqueName).data
-console.log(icNode.IC_IsPropertyAvailable(grabber, "Trigger", "Software Trigger").data)
+console.log(icNode.IC_IsPropertyAvailable(grabber, "Brightness", "Auto").data)
+console.log(icNode.IC_IsVideoPropertyAutoAvailable(grabber, 0).data)
 console.log(icNode.IC_GetUniqueName(grabber).data)
 // if (icNode.IC_IsDevValid(grabber)) {
     
