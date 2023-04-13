@@ -266,7 +266,7 @@ export type ICNodeStatic = {
   IC_IsPropertyAvailable(
     grabber: ICNodeGrabber,
     property: string,
-    element: string,
+    element: string | null,
   ): ICNodeResult<boolean>;
   IC_GetPropertyValueRange(
     grabber: ICNodeGrabber,

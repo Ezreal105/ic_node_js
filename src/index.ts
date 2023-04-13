@@ -54,7 +54,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_SetPropertyValue: (...args) => binding.IC_SetPropertyValue(...args),
   IC_enumProperties: (...args) => binding.IC_enumProperties(...args),
   IC_enumPropertyElements: (...args) => binding.IC_enumPropertyElements(...args),
-  IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args)
+  IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args),
 } as ICNodeStatic;
 
 const DEFAULT_OPTIONS: Partial<ICGrabberInitOptions> = {
@@ -299,8 +299,10 @@ class ICGrabber {
     );
   }
 
-  isPropertyAvailable(...args: ICNodePropertyElement) {
-    return FORCE_DATA(ICGrabber.METHODS.IC_IsPropertyAvailable(this.grabber, args[0], args[1]));
+  isPropertyAvailable(...args: [ICNodePropertyElement[0]] | ICNodePropertyElement) {
+    return FORCE_DATA(
+      ICGrabber.METHODS.IC_IsPropertyAvailable(this.grabber, args[0], args[1] ?? null),
+    );
   }
 
   propertyOnePlus(...args: ICNodeButtonPropertyElement) {
@@ -308,7 +310,7 @@ class ICGrabber {
   }
 
   getAvailablePropertyElements(): ICNodePropertyElement[] {
-    debugger
+    debugger;
     const properties: Array<ICNodePropertyElement[0]> = [];
     const enumPropertyCb = (property: string) => {
       properties.push(property as ICNodePropertyElement[0]);
@@ -340,7 +342,7 @@ class ICGrabber {
     const supportedInputChannels = this.getSupprotedInputChannels();
     const supportedFrameRates = this.getSupportedFrameRates();
     const supportSoftwareTrigger = this.isPropertyAvailable('Trigger', 'Software Trigger');
-    const supportBrightness = this.isPropertyAvailable('Brightness', 'Value');
+    const supportBrightness = this.isPropertyAvailable('Brightness');
     const supportAutoBrightness = supportBrightness
       ? this.isPropertyAvailable('Brightness', 'Auto')
       : false;
@@ -348,23 +350,23 @@ class ICGrabber {
       ? this.getPropertyValueRange('Brightness', 'Value')
       : null;
 
-    const supportContrast = this.isPropertyAvailable('Contrast', 'Value');
+    const supportContrast = this.isPropertyAvailable('Contrast');
     const supportAutoContrast = supportContrast
       ? this.isPropertyAvailable('Contrast', 'Auto')
       : false;
     const contrastRange = supportContrast ? this.getPropertyValueRange('Contrast', 'Value') : null;
     // 曝光相关
-    const supportExposure = this.isPropertyAvailable('Exposure', null);
+    const supportExposure = this.isPropertyAvailable('Exposure');
     const supportAutoExposure = supportExposure
       ? this.isPropertyAvailable('Exposure', 'Auto')
       : false;
     const exposureRange = supportExposure ? this.getPropertyValueRange('Exposure', 'Value') : null;
     // 增益相关
-    const supportGain = this.isPropertyAvailable('Gain', 'Value');
+    const supportGain = this.isPropertyAvailable('Gain');
     const supportAutoGain = supportGain ? this.isPropertyAvailable('Gain', 'Auto') : false;
     const gainRange = supportGain ? this.getPropertyValueRange('Gain', 'Value') : null;
     // 清晰度相关
-    const supportSharpness = this.isPropertyAvailable('Sharpness', 'Value');
+    const supportSharpness = this.isPropertyAvailable('Sharpness');
     const supportAutoSharpness = supportSharpness
       ? this.isPropertyAvailable('Sharpness', 'Auto')
       : false;
@@ -372,11 +374,11 @@ class ICGrabber {
       ? this.getPropertyValueRange('Sharpness', 'Value')
       : null;
     // 伽马校正相关
-    const supportGamma = this.isPropertyAvailable('Gamma', 'Value');
+    const supportGamma = this.isPropertyAvailable('Gamma');
     const supportAutoGamma = supportGamma ? this.isPropertyAvailable('Gamma', 'Auto') : false;
     const gammaRange = supportGamma ? this.getPropertyValueRange('Gamma', 'Value') : null;
     // 白平衡相关
-    const supportWhiteBalance = this.isPropertyAvailable('White Balance', 'Value');
+    const supportWhiteBalance = this.isPropertyAvailable('White Balance');
     const supportAutoWhiteBalance = supportWhiteBalance
       ? this.isPropertyAvailable('White Balance', 'Auto')
       : false;
@@ -384,19 +386,19 @@ class ICGrabber {
       ? this.getPropertyValueRange('White Balance', 'Value')
       : null;
     // 缩放（ZOOM）相关
-    const supportZoom = this.isPropertyAvailable('Zoom', 'Value');
+    const supportZoom = this.isPropertyAvailable('Zoom');
     const supportAutoZoom = supportZoom ? this.isPropertyAvailable('Zoom', 'Auto') : false;
     const zoomRange = supportZoom ? this.getPropertyValueRange('Zoom', 'Value') : null;
     // 聚焦(FOCUS)相关
-    const supportFocus = this.isPropertyAvailable('Focus', 'Value');
+    const supportFocus = this.isPropertyAvailable('Focus');
     const supportAutoFocus = supportFocus ? this.isPropertyAvailable('Focus', 'Auto') : false;
     const focusRange = supportFocus ? this.getPropertyValueRange('Focus', 'Value') : null;
     // 光圈(IRIS) 相关
-    const supportIris = this.isPropertyAvailable('Iris', 'Value');
+    const supportIris = this.isPropertyAvailable('Iris');
     const supportAutoIris = supportIris ? this.isPropertyAvailable('Iris', 'Auto') : false;
     const irisRange = supportIris ? this.getPropertyValueRange('Iris', 'Value') : null;
     // 饱和度相关
-    const supportSaturation = this.isPropertyAvailable('Saturation', 'Value');
+    const supportSaturation = this.isPropertyAvailable('Saturation');
     const supportAutoSaturation = supportSaturation
       ? this.isPropertyAvailable('Saturation', 'Auto')
       : false;
@@ -404,11 +406,11 @@ class ICGrabber {
       ? this.getPropertyValueRange('Saturation', 'Value')
       : null;
     // 色相相关
-    const supportHue = this.isPropertyAvailable('Hue', 'Value');
+    const supportHue = this.isPropertyAvailable('Hue');
     const supportAutoHue = supportHue ? this.isPropertyAvailable('Hue', 'Auto') : false;
     const hueRange = supportHue ? this.getPropertyValueRange('Hue', 'Value') : null;
     // 逆光补偿相关
-    const supportBacklightCompensation = this.isPropertyAvailable('BacklightCompensation', 'Value');
+    const supportBacklightCompensation = this.isPropertyAvailable('BacklightCompensation');
     const supportAutoBacklightCompensation = supportBacklightCompensation
       ? this.isPropertyAvailable('BacklightCompensation', 'Auto')
       : false;
