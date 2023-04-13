@@ -3796,7 +3796,7 @@ Napi::Value f_IC_MemBufferGetData(const Napi::CallbackInfo &info)
     int pWidth = 0;
     int pHeight = 0;
     int pBitsPerPixel = 0;
-    if ((*f_ptr_get_desc)(hBuffer, &pWidth, &Height, &pBitsPerPixel) == IC_SUCCESS)
+    if ((*f_ptr_get_desc)(hBuffer, &pWidth, &pHeight, &pBitsPerPixel) == IC_SUCCESS)
     {
         size_t size = (pWidth) * (pHeight) * (pBitsPerPixel) / 8;
         auto f = *fPtr;
