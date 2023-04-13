@@ -3983,7 +3983,7 @@ Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
 
 // generate end
 
-Napi::Boolean isGrabberEqual(const Napi::CallbackInfo &info)
+Napi::Value isGrabberEqual(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (info.Length() != 2)
@@ -4018,7 +4018,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     }
     Napi::Object ic_static = Napi::Object::New(env);
     exports.Set("ic_static", ic_static);
-    ic_static.set("isGrabberEqual", Napi::Function::New<isGrabberEqual>(env));
+    ic_static.Set("isGrabberEqual", Napi::Function::New<isGrabberEqual>(env));
     INIT_STATIC_METHOD(IC_InitLibrary)
     INIT_STATIC_METHOD(IC_CreateGrabber)
     INIT_STATIC_METHOD(IC_TidyUP)
