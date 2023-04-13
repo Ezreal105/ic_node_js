@@ -90,7 +90,8 @@ int _cdecl EnumCb(char *Name, void *data)
     EnumCbData *cbData = (EnumCbData *)data;
     // call all js function
     Napi::Function func = cbData->jsFunc.Value();
-    func.Call({Napi::String::New(func.Env(), Name)});
+    auto env = func.Env();
+    func.Call({Napi::String::New(env, Name)});
     return IC_SUCCESS;
 }
 
@@ -2816,8 +2817,9 @@ Napi::Value f_IC_enumProperties(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *fPtr;
-    auto cbData = EnumCbData{Napi::Weak(callback)};
-    int ret = f(hGrabber, &EnumCb, &cbData);
+    auto cbRef = Napi::Weak(callback);
+    EnumCbData cbData = {cbRef};
+    int ret = f(hGrabber, EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -2855,8 +2857,9 @@ Napi::Value f_IC_enumPropertyElements(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *fPtr;
-    auto cbData = EnumCbData{Napi::Weak(callback)};
-    int ret = f(hGrabber, Property, &EnumCb, &cbData);
+    auto cbRef = Napi::Weak(callback);
+    EnumCbData cbData = {cbRef};
+    int ret = f(hGrabber, Property, EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -2901,8 +2904,9 @@ Napi::Value f_IC_enumPropertyElementInterfaces(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *fPtr;
-    auto cbData = EnumCbData{Napi::Weak(callback)};
-    int ret = f(hGrabber, Property, Element, &EnumCb, &cbData);
+    auto cbRef = Napi::Weak(callback);
+    EnumCbData cbData = {cbRef};
+    int ret = f(hGrabber, Property, Element, EnumCb, &cbData);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, ret));
     return retObj;
@@ -2921,7 +2925,7 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
-    if (!info[2].IsString())
+    if (!info[2].IsString() && !info[2].IsNull())
     {
         Napi::TypeError::New(env, "Wrong type of argument 2").ThrowAsJavaScriptException();
         return env.Undefined();
@@ -2929,8 +2933,12 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
     auto PropertyStr = info[1].As<Napi::String>().Utf8Value();
     char *Property = (char *)PropertyStr.c_str();
-    auto ElementStr = info[2].As<Napi::String>().Utf8Value();
-    char *Element = (char *)ElementStr.c_str();
+    char *Element = nullptr;
+    if (info[2].IsString())
+    {
+        auto ElementStr = info[2].As<Napi::String>().Utf8Value();
+        Element = (char *)ElementStr.c_str();
+    }
 
     IC_IsPropertyAvailable *fPtr = (IC_IsPropertyAvailable *)GetProcAddress(tisgrabber, "IC_IsPropertyAvailable");
     if (fPtr == nullptr)
@@ -2947,14 +2955,14 @@ Napi::Value f_IC_IsPropertyAvailable(const Napi::CallbackInfo &info)
         retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
         retObj.Set("data", Napi::Boolean::New(env, true));
     }
-    else if (ret == IC_PROPERTY_ELEMENT_NOT_AVAILABLE)
+    else if (ret == IC_NO_HANDLE || ret == IC_NO_DEVICE)
     {
-        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
-        retObj.Set("data", Napi::Boolean::New(env, false));
+        retObj.Set("code", Napi::Number::New(env, ret));
     }
     else
     {
-        retObj.Set("code", Napi::Number::New(env, ret));
+        retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+        retObj.Set("data", Napi::Boolean::New(env, false));
     }
     return retObj;
 }

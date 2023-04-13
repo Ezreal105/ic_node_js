@@ -67,7 +67,7 @@ function SUCCESS(res: ICNodeResult<any>) {
 }
 
 function MESSAGE(res: ICNodeResult<any>) {
-  return `error code: ${res.code}` + res.message ? `, message: ${res.message}` : '';
+  return `error code: ${res.code}` + (res.message ? `, message: ${res.message}` : '');
 }
 
 function CODE(res: ICNodeResult<any>) {
