@@ -3871,6 +3871,31 @@ Napi::Value f_IC_SetFrameReadyCallbackEx(const Napi::CallbackInfo &info)
     return retObj;
 }
 
+Napi::Value f_IC_UnSetFrameReadyCallbackEx(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 1)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
+
+    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    IC_SetFrameReadyCallbackEx *fPtr = (IC_SetFrameReadyCallbackEx *)GetProcAddress(tisgrabber, "IC_SetFrameReadyCallbackEx");
+    Napi::Object retObj = Napi::Object::New(env);
+    g_frameReadyCb = nullptr;
+    if (fPtr == nullptr)
+    {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_SetFrameReadyCallbackEx in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+    auto f = *fPtr;
+    int ret = f(hGrabber, nullptr, nullptr);
+    retObj.Set("code", Napi::Number::New(env, ret));
+    return retObj;
+}
+
 Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3913,6 +3938,31 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
     return retObj;
 }
 
+Napi::Value f_IC_UnsetDeviceLostCallback(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 1)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
+
+    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    Napi::Object retObj = Napi::Object::New(env);
+    IC_SetCallbacks *fPtr = (IC_SetCallbacks *)GetProcAddress(tisgrabber, "IC_SetCallbacks");
+    g_frameReadyCb == nullptr;
+    if (fPtr == nullptr)
+    {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_SetCallbacks in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+    auto f = *fPtr;
+    int ret = f(hGrabber, nullptr, nullptr, nullptr, nullptr);
+    retObj.Set("code", Napi::Number::New(env, ret));
+    return retObj;
+}
+
 Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -3933,6 +3983,31 @@ Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
 
 // generate end
 
+Napi::Boolean isGrabberEqual(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 2)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return Napi::Boolean::New(env, false);
+    }
+    if (!info[0].IsExternal())
+    {
+        Napi::TypeError::New(env, "Wrong type of argument 0").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+
+    if (!info[1].IsExternal())
+    {
+        Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+
+    HGRABBER hGrabber1 = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    HGRABBER hGrabber2 = info[1].As<Napi::External<HGRABBER_t>>().Data();
+    return Napi::Boolean::New(env, hGrabber1 == hGrabber2);
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {
     tisgrabber = LoadLibrary("tisgrabber_x64.dll");
@@ -3943,6 +4018,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     }
     Napi::Object ic_static = Napi::Object::New(env);
     exports.Set("ic_static", ic_static);
+    ic_static.set("isGrabberEqual", Napi::Function::New<isGrabberEqual>(env));
     INIT_STATIC_METHOD(IC_InitLibrary)
     INIT_STATIC_METHOD(IC_CreateGrabber)
     INIT_STATIC_METHOD(IC_TidyUP)
@@ -4054,7 +4130,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_MemBufferGetIndex)
     INIT_STATIC_METHOD(IC_MemBufferGetData)
     INIT_STATIC_METHOD(IC_SetFrameReadyCallbackEx)
+    INIT_STATIC_METHOD(IC_UnSetFrameReadyCallbackEx)
     INIT_STATIC_METHOD(IC_SetDeviceLostCallback)
+    INIT_STATIC_METHOD(IC_UnsetDeviceLostCallback)
     INIT_STATIC_METHOD(IC_GetUniqueName)
     INIT_STATIC_METHOD(IC_enumProperties)
     INIT_STATIC_METHOD(IC_enumPropertyElements)
