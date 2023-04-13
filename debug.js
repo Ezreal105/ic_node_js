@@ -13,7 +13,7 @@ const enumPropertyCb = (property) => {
    console.log('[wsttest]', property)
 };
 icNode.IC_enumProperties(grabber, enumPropertyCb)
-console.log(icNode.IC_IsVideoPropertyAvailable(grabber, 1).data)
+console.log(icNode.IC_printItemandElementNames(grabber))
 console.log(icNode.IC_IsPropertyAvailable(grabber, "Contrast", null).data)
 console.log(icNode.IC_IsVideoPropertyAutoAvailable(grabber, 0).data)
 console.log(icNode.IC_GetUniqueName(grabber).data)

@@ -54,7 +54,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_SetPropertyValue: (...args) => binding.IC_SetPropertyValue(...args),
   IC_enumProperties: (...args) => binding.IC_enumProperties(...args),
   IC_enumPropertyElements: (...args) => binding.IC_enumPropertyElements(...args),
-  IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args),
+  IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args)
 } as ICNodeStatic;
 
 const DEFAULT_OPTIONS: Partial<ICGrabberInitOptions> = {
@@ -308,6 +308,7 @@ class ICGrabber {
   }
 
   getAvailablePropertyElements(): ICNodePropertyElement[] {
+    debugger
     const properties: Array<ICNodePropertyElement[0]> = [];
     const enumPropertyCb = (property: string) => {
       properties.push(property as ICNodePropertyElement[0]);
@@ -353,7 +354,7 @@ class ICGrabber {
       : false;
     const contrastRange = supportContrast ? this.getPropertyValueRange('Contrast', 'Value') : null;
     // 曝光相关
-    const supportExposure = this.isPropertyAvailable('Exposure', 'Value');
+    const supportExposure = this.isPropertyAvailable('Exposure', null);
     const supportAutoExposure = supportExposure
       ? this.isPropertyAvailable('Exposure', 'Auto')
       : false;

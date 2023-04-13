@@ -92,7 +92,7 @@ int _cdecl EnumCb(char *Name, void *data)
     Napi::Function func = cbData->jsFunc.Value();
     auto env = func.Env();
     func.Call({Napi::String::New(env, Name)});
-    return IC_SUCCESS;
+    return 0; // Do not terminate the enumeration
 }
 
 // generate start
@@ -3913,6 +3913,24 @@ Napi::Value f_IC_SetDeviceLostCallback(const Napi::CallbackInfo &info)
     return retObj;
 }
 
+Napi::Value f_IC_printItemandElementNames(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 1)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
+
+    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    Napi::Object retObj = Napi::Object::New(env);
+    IC_printItemandElementNames *fPtr = (IC_printItemandElementNames *)GetProcAddress(tisgrabber, "IC_printItemandElementNames");
+    auto f = *fPtr;
+    int ret = f(hGrabber);
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+    return retObj;
+}
+
 // generate end
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
@@ -4039,6 +4057,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     INIT_STATIC_METHOD(IC_SetDeviceLostCallback)
     INIT_STATIC_METHOD(IC_GetUniqueName)
     INIT_STATIC_METHOD(IC_enumProperties)
+    INIT_STATIC_METHOD(IC_enumPropertyElements)
+    INIT_STATIC_METHOD(IC_printItemandElementNames)
+
     return exports;
 }
 

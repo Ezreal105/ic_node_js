@@ -3,6 +3,7 @@
 #ifdef _WIN32
 #define AC __stdcall
 #define CDECL __cdecl
+// 返回 0 表示继续执行！！
 typedef int __cdecl IC_ENUMCB(char *Name, void *);
 typedef int cdecl ENUMCODECCB(char *CodecName, void *);
 #else
