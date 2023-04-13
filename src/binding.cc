@@ -1082,7 +1082,7 @@ Napi::Value f_IC_GetImageDescription(const Napi::CallbackInfo &info)
     long lWidth = 0;
     long lHeight = 0;
     int iBitsPerPixel = 0;
-    enum COLORFORMAT format = NONE;
+    COLORFORMAT format = NONE;
 
     IC_GetImageDescription *fPtr = (IC_GetImageDescription *)GetProcAddress(tisgrabber, "IC_GetImageDescription");
     if (fPtr == nullptr)
