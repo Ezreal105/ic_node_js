@@ -11,6 +11,7 @@
     "isolatedModules": true,
     "types": ["node"],
     "baseUrl": ".",
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext", "dom"],
+    "allowSyntheticDefaultImports": true
   }
 }

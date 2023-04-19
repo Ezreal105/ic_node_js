@@ -1,6 +1,10 @@
 import {type ICNodeStatic} from './type';
 
-const binding = require('../lib/binding/napi-v8/ic_node.node').ic_static;
+let binding = {} as ICNodeStatic;
+// 如果是 windows
+if (process.platform === 'win32') {
+  binding = require('../lib/binding/win32/ic_node.node').ic_static;
+}
 
 const icNodeStatic: ICNodeStatic = {
   IC_InitLibrary: (...args) => binding.IC_InitLibrary(...args),
@@ -37,7 +41,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_enumProperties: (...args) => binding.IC_enumProperties(...args),
   IC_enumPropertyElements: (...args) => binding.IC_enumPropertyElements(...args),
   IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args),
-  IC_UnsetDeviceLostCallback: (...args) => binding.IC_UnSetDeviceLostCallback(...args),
+  IC_UnsetDeviceLostCallback: (...args) => binding.IC_UnsetDeviceLostCallback(...args),
   isGrabberEqual: (...args) => binding.isGrabberEqual(...args),
 } as ICNodeStatic;
 
