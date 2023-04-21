@@ -1,6 +1,15 @@
-import {type ICNodeStatic} from './type';
+import {ICNodeResuleCode, type ICNodeStatic} from './type';
 
-let binding = {} as ICNodeStatic;
+function SUCCESS_RES(v?: any) {
+  return {
+    code: ICNodeResuleCode.SUCCESS,
+    data: v,
+  };
+}
+let binding = {
+  IC_GetDeviceCount: () => SUCCESS_RES(0),
+  IC_InitLibrary: () => SUCCESS_RES(),
+} as unknown as ICNodeStatic;
 // 如果是 windows
 if (process.platform === 'win32') {
   binding = require('../lib/binding/win32/ic_node.node').ic_static;
