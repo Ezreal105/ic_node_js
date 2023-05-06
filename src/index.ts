@@ -26,7 +26,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_GetUniqueNamefromList: (...args) => binding.IC_GetUniqueNamefromList(...args),
   IC_GetDevice: (...args) => binding.IC_GetDevice(...args),
   IC_OpenDevByUniqueName: (...args) => binding.IC_OpenDevByUniqueName(...args),
-
+  IC_SetDeviceLostCallback: (...args) => binding.IC_SetDeviceLostCallback(...args),
   IC_GetDisplayName: (...args) => binding.IC_GetDisplayName(...args),
   IC_GetUniqueName: (...args) => binding.IC_GetUniqueName(...args),
   IC_GetSerialNumber: (...args) => binding.IC_GetSerialNumber(...args),
