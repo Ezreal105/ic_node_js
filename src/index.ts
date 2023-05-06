@@ -12,7 +12,7 @@ let binding = {
 } as unknown as ICNodeStatic;
 // 如果是 windows
 if (process.platform === 'win32') {
-  binding = require('../lib/binding/win32/ic_node.node').ic_static;
+  binding = require('../lib/binding/napi-v8/ic_node.node').ic_static;
 }
 
 const icNodeStatic: ICNodeStatic = {
