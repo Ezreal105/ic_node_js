@@ -199,6 +199,28 @@ Napi::Value f_IC_CloseLibrary(const Napi::CallbackInfo &info)
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     return retObj;
 }
+Napi::Value f_IC_ReleaseGrabber(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    if (info.Length() != 1)
+    {
+        Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
+        return env.Undefined();
+    }
+    HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
+    IC_ReleaseGrabber *fPtr = (IC_ReleaseGrabber *)GetProcAddress(tisgrabber, "IC_ReleaseGrabber");
+    if (fPtr == nullptr)
+    {
+        FreeLibrary(tisgrabber);
+        Napi::Error::New(env, "Cannot find function IC_ReleaseGrabber in tisgrabber_x64.dll").ThrowAsJavaScriptException();
+        return env.Undefined();
+    };
+    auto f = *fPtr;
+    f();
+    Napi::Object retObj = Napi::Object::New(env);
+    retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
+    return retObj;
+}
 Napi::Value f_IC_OpenVideoCaptureDevice(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
@@ -4021,6 +4043,7 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     ic_static.Set("isGrabberEqual", Napi::Function::New<isGrabberEqual>(env));
     INIT_STATIC_METHOD(IC_InitLibrary)
     INIT_STATIC_METHOD(IC_CreateGrabber)
+    INIT_STATIC_METHOD(IC_ReleaseGrabber)
     INIT_STATIC_METHOD(IC_TidyUP)
     INIT_STATIC_METHOD(IC_CloseLibrary)
     INIT_STATIC_METHOD(IC_OpenVideoCaptureDevice)
