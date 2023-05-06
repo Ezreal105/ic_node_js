@@ -16,6 +16,7 @@ if (process.platform === 'win32') {
 }
 
 const icNodeStatic: ICNodeStatic = {
+  isGrabberEqual: (...args) => binding.isGrabberEqual(...args),
   IC_InitLibrary: (...args) => binding.IC_InitLibrary(...args),
   IC_CloseLibrary: () => binding.IC_CloseLibrary(),
   IC_TidyUP: () => binding.IC_TidyUP(),
@@ -51,7 +52,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_enumPropertyElements: (...args) => binding.IC_enumPropertyElements(...args),
   IC_GetDeviceCount: (...args) => binding.IC_GetDeviceCount(...args),
   IC_UnsetDeviceLostCallback: (...args) => binding.IC_UnsetDeviceLostCallback(...args),
-  isGrabberEqual: (...args) => binding.isGrabberEqual(...args),
+  IC_GetPropertyAbsoluteValueRange: (...args) => binding.IC_GetPropertyAbsoluteValueRange(...args),
 } as ICNodeStatic;
 
 export default icNodeStatic;
