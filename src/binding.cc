@@ -216,7 +216,7 @@ Napi::Value f_IC_ReleaseGrabber(const Napi::CallbackInfo &info)
         return env.Undefined();
     };
     auto f = *fPtr;
-    f(hGrabber);
+    f(&hGrabber);
     Napi::Object retObj = Napi::Object::New(env);
     retObj.Set("code", Napi::Number::New(env, IC_SUCCESS));
     return retObj;
