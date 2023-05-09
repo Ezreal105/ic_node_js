@@ -508,13 +508,13 @@ Napi::Value f_IC_StartLive(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    if (!info[1].IsNumber())
+    if (!info[1].IsBoolean())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    int iShow = (int)info[1].As<Napi::Number>().Int64Value();
+   int iShow = (int)info[1].As<Napi::Boolean>().Value();
 
     IC_StartLive *fPtr = (IC_StartLive *)GetProcAddress(tisgrabber, "IC_StartLive");
     if (fPtr == nullptr)
@@ -537,13 +537,13 @@ Napi::Value f_IC_PrepareLive(const Napi::CallbackInfo &info)
         Napi::TypeError::New(env, "Wrong number of arguments").ThrowAsJavaScriptException();
         return env.Undefined();
     }
-    if (!info[1].IsNumber())
+    if (!info[1].IsBoolean())
     {
         Napi::TypeError::New(env, "Wrong type of argument 1").ThrowAsJavaScriptException();
         return env.Undefined();
     };
     HGRABBER hGrabber = info[0].As<Napi::External<HGRABBER_t>>().Data();
-    int iShow = (int)info[1].As<Napi::Number>().Int64Value();
+    int iShow = (int)info[1].As<Napi::Boolean>().Value();
 
     IC_PrepareLive *fPtr = (IC_PrepareLive *)GetProcAddress(tisgrabber, "IC_PrepareLive");
     if (fPtr == nullptr)
