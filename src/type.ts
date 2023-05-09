@@ -123,6 +123,7 @@ export type ICNodeStatic = {
   IC_SetInputChannel(grabber: ICNodeGrabber, channel: ICNodeInputChannel): ICNodeResult;
   IC_PrepareLive(grabber: ICNodeGrabber, show: ICNodeSwitch): ICNodeResult;
   IC_SuspendLive(grabber: ICNodeGrabber): ICNodeResult;
+  IC_StartLive(grabber: ICNodeGrabber, show: 0 | 1): ICNodeResult;
   IC_IsLive(grabber: ICNodeGrabber): ICNodeResult<boolean>;
   IC_StopLive(grabber: ICNodeGrabber): ICNodeResult;
   IC_IsCameraPropertyAvailable(
