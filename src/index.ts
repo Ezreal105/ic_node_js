@@ -57,6 +57,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_PrepareLive: (...args) => binding.IC_PrepareLive(...args),
   IC_StartLive: (...args) => binding.IC_StartLive(...args),
   IC_StopLive: (...args) => binding.IC_StopLive(...args),
+  IC_IsDevValid: (...args) => binding.IC_IsDevValid(...args),
 } as ICNodeStatic;
 
 export default icNodeStatic;
