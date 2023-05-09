@@ -54,6 +54,7 @@ const icNodeStatic: ICNodeStatic = {
   IC_UnsetDeviceLostCallback: (...args) => binding.IC_UnsetDeviceLostCallback(...args),
   IC_GetPropertyAbsoluteValueRange: (...args) => binding.IC_GetPropertyAbsoluteValueRange(...args),
   IC_IsLive: (...args) => binding.IC_IsLive(...args),
+  IC_PrepareLive: (...args) => binding.IC_PrepareLive(...args),
   IC_StartLive: (...args) => binding.IC_StartLive(...args),
   IC_StopLive: (...args) => binding.IC_StopLive(...args),
 } as ICNodeStatic;
